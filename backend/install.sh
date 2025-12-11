@@ -12,5 +12,5 @@ pip install --upgrade pip
 pip install yt-dlp
 # Then you'll run the backend with YTDLP_PATH=.venv/bin/yt-dlp
 
-npm i --package-lock-only
+# npm i --package-lock-only
 npm ci
