@@ -1,0 +1,14 @@
+{
+  "name": "yt-player-voice-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "stream-bot.js",
+  "scripts": {
+    "start": "node stream-bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0",
+    "@discordjs/voice": "^0.16.0",
+    "node-fetch": "^3.4.4"
+  }
+}
