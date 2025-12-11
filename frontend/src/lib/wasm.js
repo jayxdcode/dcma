@@ -3,9 +3,9 @@
 // Note: ffmpeg.wasm is heavy; only use for optional features like preview waveform.
 // This returns a dataURL (png) or throws.
 
-import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import { FFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
-const ffmpeg = createFFmpeg({ log: true });
+const ffmpeg = FFmpeg({ log: true });
 
 export async function generateWaveform(streamUrl) {
   if (!ffmpeg.isLoaded()) {

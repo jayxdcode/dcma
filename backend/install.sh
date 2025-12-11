@@ -1,4 +1,4 @@
-sudo apt install -y curl ca-certificates gnupg ffmpeg build-essential nodejs python3
+ apt install -y curl ca-certificates gnupg build-essential nodejs python3
 
 # Verify
 node -v
