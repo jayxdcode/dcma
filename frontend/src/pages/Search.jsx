@@ -9,7 +9,7 @@ export default function Search() {
   async function doSearch(e) {
     e.preventDefault();
     if (!q.trim()) return;
-    const r = await fetch(`${import.meta.env.VITE_BACKEND_BASE || ''}/api/search?q=${encodeURIComponent(q)}&max=8`);
+    const r = await fetch(`${import.meta.env.VITE_BACKEND_BASE || "http://127.0.0.1:8080"}/api/search?q=${encodeURIComponent(q)}&max=8`);
     const j = await r.json();
     setResults(j.results || []);
   }
