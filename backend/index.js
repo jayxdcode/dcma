@@ -22,7 +22,7 @@ const { Storage } = require('megajs'); // megajs exports Storage-like API
 const crypto = require('crypto');
 const stream = require('stream');
 const { promisify } = require('util');
-const runYtdlp = require('./ytdlp.js');
+const runYtdlp = require('./ytdlp');
 
 let YTMusic;
 try {

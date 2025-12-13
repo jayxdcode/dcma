@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+if ((import.meta.env.VITE_BACKEND_BASE).length != 0 && import.meta.env.VITE_BACKEND_BASE) console.log("[search] DEV - backend var present");
+
 export default function Search() {
   const [q, setQ] = useState('');
   const [results, setResults] = useState([]);
