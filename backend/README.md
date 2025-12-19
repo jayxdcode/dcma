@@ -1,4 +1,6 @@
-# Backend (yt-dlp streaming + search)
+# BACKEND SERVER CLOSED AND LOGIC HAD BEEN TRANSPORTED TO ANOTHER SERVER.
+
+## ~~Backend (yt-dlp streaming + search)~~
 
 Deploy as Docker service (Render recommended).
 

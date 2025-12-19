@@ -1,0 +1,209 @@
+import { useState } from 'react';
+import { TextField, Button, Box, Typography, IconButton, InputAdornment } from '@mui/material';
+import { Search, PlayArrow, PlaylistAdd, Image as ImageIcon } from '@mui/icons-material';
+import { usePlayer } from '../lib/playerContext';
+
+// Note: I renamed `Search` from `@mui/icons-material` since it
+// conflicts with the default fumction
+
+const BACKEND_BASE = import.meta.env.VITE_BACKEND_BASE || "";
+
+function mapSearchItemToTrack(item){
+  // item should be in ytmusic-like shape; we map the most important fields.
+  // adapt this mapping if your backend returns a different shape.
+  return {
+    id: item.videoId || item.id || item.video_id || item.trackId || (item.resultId || Math.random().toString(36).slice(2)),
+    title: item.title || item.name || item.videoTitle || item.resultTitle || 'Unknown',
+    artist: (item.artist || (item.authors && item.authors.join(', '))) || (item.channelName) || '',
+    cover: item.thumbnail || (item.thumbnails && item.thumbnails[0] && item.thumbnails[0].url) || 'https://placekitten.com/300/300',
+    duration: item.durationSeconds || item.duration || 0,
+    // set source to youtube videoId (not a stream URL)
+    source: item.videoId || item.id || item.video_id || item.trackId || ''
+  };
+}
+
+export default function SearchPage(){
+  const [q, setQ] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const player = usePlayer();
+
+  async function doSearch(e){
+    e?.preventDefault();
+    if(!q) return;
+    setLoading(true);
+    try {
+      const res = await fetch(`${BACKEND_BASE}/api/search?q=${encodeURIComponent(q)}`);
+      if (!res.ok) throw new Error('Search failed: ' + res.status);
+      const json = await res.json();
+      // expect json.results or json.slice(0, something)
+      const items = json.results || json || [];
+      setResults(items);
+    } catch (err){
+      console.error(err);
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function playNow(item){
+    const t = mapSearchItemToTrack(item);
+    player.setQueue([t], 0, true);
+  }
+
+  function addToQueue(item, nextUp=false){
+    const t = mapSearchItemToTrack(item);
+    player.enqueue(t, nextUp);
+  }
+
+  return (
+    <Box sx={{ maxWidth: '100%', padding: 2, color: 'var(--text, white)' }}>
+    
+      <Typography variant="h4" sx={{ fontWeight: 800, mb: 3, letterSpacing: '-0.5px' }}>
+        Search
+      </Typography>
+
+      {/* SEARCH BAR CONTAINER */}
+      <form onSubmit={doSearch} style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+        <TextField
+          variant="filled"
+          placeholder="What do you want to listen to?"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          // Removes the default underline
+          InputProps={{ disableUnderline: true,
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search sx={{ color: 'var(--text, #888)' }} />
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            flex: 1, // Fills remaining width
+            '& .MuiFilledInput-root': {
+              borderRadius: '50px', // Pill shape
+              backgroundColor: 'rgba(255,255,255,0.08)',
+              border: '1px solid transparent',
+              transition: 'all 0.2s',
+              '&:hover': {
+                backgroundColor: 'rgba(255,255,255,0.12)',
+              },
+              '&.Mui-focused': {
+                backgroundColor: 'rgba(255,255,255,0.12)',
+                border: '1px solid var(--accent, #fff)', // Highlights border on focus
+              },
+              '& input': {
+                paddingTop: '12px', // Vertically center text
+                paddingBottom: '12px',
+                color: 'var(--text, white)',
+              },
+            },
+          }}
+        />
+      
+        {/* Search Button - kept distinct but styled nicely */}
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={loading}
+          sx={{
+            borderRadius: '50px', // Matches input shape
+            paddingX: 4,
+            fontWeight: 700,
+            textTransform: 'none',
+            background: 'linear-gradient(90deg, var(--accent, #1db954), var(--accent-2, #1ed760))',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          }}
+        >
+          Search
+        </Button>
+      </form>
+
+      {/* RESULTS LIST */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        {results.map((r, i) => {
+          const t = mapSearchItemToTrack(r);
+          return (
+            <Box
+              key={i}
+              className="card"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                padding: 1,
+                borderRadius: 2,
+                transition: 'background-color 0.2s ease',
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.07)', // Highlight row on hover
+                  '& .action-buttons': { opacity: 1 }, // Show buttons on hover
+                },
+              }}
+            >
+              {/* Album Art */}
+              <Box
+                sx={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 1,
+                  overflow: 'hidden',
+                  flexShrink: 0,
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                  position: 'relative',
+                }}
+              >
+                {t.cover ? (
+                  <img
+                    src={t.cover}
+                    alt="cover"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <Box sx={{ width: '100%', height: '100%', bgcolor: '#333', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <ImageIcon sx={{ color: '#555' }} />
+                  </Box>
+                )}
+              </Box>
+
+              {/* Text Info */}
+              <Box sx={{ flex: 1, minWidth: 0 /* Allows text truncation to work */ }}>
+                <Typography variant="body1" sx={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {t.title}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'var(--subtext, #aaa)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {t.artist}
+                </Typography>
+              </Box>
+
+              {/* Action Buttons */}
+              {/* We use 'opacity: 0' by default and show on hover for a cleaner look, or just keep them visible if mobile */}
+              <Box className="action-buttons" sx={{ display: 'flex', gap: 1 }}>
+                <IconButton onClick={() => addToQueue(r)} size="small" sx={{ color: 'var(--text, white)' }}>
+                  <PlaylistAdd />
+                </IconButton>
+              
+                <IconButton 
+                  onClick={() => playNow(r)} 
+                  sx={{ 
+                    color: 'var(--accent, #1db954)', 
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    '&:hover': { transform: 'scale(1.1)', background: 'rgba(255,255,255,0.1)' }
+                  }}
+                >
+                  <PlayArrow />
+                </IconButton>
+              </Box>
+            </Box>
+          );
+        })}
+
+        {results.length === 0 && !loading && (
+          <Box sx={{ textAlign: 'center', mt: 4, opacity: 0.5 }}>
+            <Typography variant="body2">No results yet. Try searching for an artist.</Typography>
+          </Box>
+        )}
+      </Box>
+    </Box>
+  );
+}

@@ -1,0 +1,19 @@
+/* ProgressBar.css */
+.top-progress-container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 9999;
+  pointer-events: none;
+}
+.top-progress-bar{
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var('--accent'), var('--accent-2'));
+  transition: width 200ms ease-out, opacity 300ms linear;
+  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+}
+
+/*  background: linear-gradient(90deg, #ffa500, #00a8ff); /* orange -> blue taste */

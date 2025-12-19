@@ -1,39 +1,77 @@
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import Start from './pages/Start';
-import Home from './pages/Home';
-import Search from './pages/Search';
-import Player from './pages/Player';
-import Lyrics from './pages/Lyrics';
-import Activity from './pages/Activity';
+// src/App.jsx
+import { useState, Suspense, lazy, memo } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import TopBar from './components/TopBar';
+import BottomNavBar from './components/BottomNavBar';
+import Player from './components/Player';
+import { PlayerProvider } from './lib/playerContext';
+import ProgressBar from './components/ProgressBar';
 
-export default function App() {
+// lazy pages (code-split)
+const Home = lazy(() => import('./pages/Home'));
+const Search = lazy(() => import('./pages/Search'));
+const LyricsPage = lazy(() => import('./pages/Lyrics'));
+const About = lazy(() => import('./pages/About'));
+const Settings = lazy(() => import('./pages/Settings'));
+
+// lazy player full to avoid initial bundle cost
+const PlayerFull = lazy(() => import('./pages/PlayerFull'));
+
+// memoize top/bottom bars to avoid re-renders when props are stable
+const MemoTopBar = memo(TopBar);
+const MemoBottomNav = memo(BottomNavBar);
+
+export default function App({ palette, setPalette, presets, selectedPresetKey, setThemeByKey }){
+  const [isPlayerOpen, setPlayerOpen] = useState(false);
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="p-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold">YTPlayer</h1>
-        <nav className="space-x-3">
-          <Link to="/" className="text-sm hover:underline">Start</Link>
-          <Link to="/home" className="text-sm hover:underline">Home</Link>
-          <Link to="/search" className="text-sm hover:underline">Search</Link>
-          <Link to="/activity" className="text-sm hover:underline">Activity</Link>
-        </nav>
-      </header>
+    <PlayerProvider>
+      <div className="app-shell" aria-label="Hitori App">
+        <MemoTopBar
+          palette={palette}
+          setPalette={setPalette}
+          presets={presets}
+          selectedPresetKey={selectedPresetKey}
+          setThemeByKey={setThemeByKey}
+        />
 
-      <main className="flex-1 p-6">
-        <Routes>
-          <Route path="/" element={<Start />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/player" element={<Player />} />
-          <Route path="/lyrics" element={<Lyrics />} />
-          <Route path="/activity" element={<Activity />} />
-        </Routes>
-      </main>
+        <ProgressBar />
 
-      <footer className="p-4 text-sm text-muted-foreground text-center">
-        YTPlayer — demo layout
-      </footer>
-    </div>
+        <main className="app-main">
+          {/* Suspense fallback is minimal; the ProgressBar above shows top loading */}
+          <Suspense fallback={<div aria-hidden style={{minHeight: 200}} />}>
+            <Routes>
+              <Route path="/" element={<Home/>} />
+              <Route path="/search" element={<Search/>} />
+              <Route path="/lyrics" element={<LyricsPage/>} />
+              {/* keep /player route commented unless you want it routed */}
+              <Route path="/about" element={<About/>} />
+              <Route path="/settings" element={
+                <Settings
+                  selectedPresetKey={selectedPresetKey}
+                  setThemeByKey={setThemeByKey}
+                  presets={presets}
+                />
+              } />
+            </Routes>
+          </Suspense>
+        </main>
+
+        {/* PlayerFull is lazy: only loaded when open or navigated to */}
+        <Suspense fallback={null}>
+          {isPlayerOpen && (
+            <PlayerFull
+              open={isPlayerOpen}
+              onClose={() => setPlayerOpen(false)}
+            />
+          )}
+        </Suspense>
+
+        {/* Small persistent player component (should be light) */}
+        <Player onOpen={() => setPlayerOpen(true)} />
+
+        <MemoBottomNav />
+      </div>
+    </PlayerProvider>
   );
 }

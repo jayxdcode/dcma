@@ -3,8 +3,8 @@ Discord Music Activity (uses Discord Embedded App SDK)
 
 
 ## Deploy
-- Backend (yt-dlp stream): Render (Docker)
-- Voice-bot: Render (Docker)
+- ~~Backend (yt-dlp stream): Render (Docker)~~ **(deprecated)**
+- ~~Voice-bot: Render (Docker)~~ **(not implemented)**
 - Frontend (React + Vite): Vercel or Netlify
 
 ## Env vars (backend)
