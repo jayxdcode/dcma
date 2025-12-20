@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - 'frontend/package.json' # Only runs when you edit package.json
-  workflow-dispatch:
+  workflow_dispatch:
 
 jobs:
   update-lock:
