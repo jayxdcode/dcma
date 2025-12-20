@@ -84,3 +84,6 @@ node_modules
 
 # backuped
 **/frontend-bak
+
+# files with nc (no commit) prefixes
+**/nc-* 

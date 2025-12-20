@@ -406,7 +406,7 @@ export default function SearchPage() {
 
       {/* suggestions dropdown */}
       {suggestions.length > 0 && (
-        <Paper sx={{ maxWidth: 720, mb: 1 }}>
+        <Paper sx={{ maxWidth: 350, mb: 1 }}>
           <List dense>
             {suggestions.map((s, idx) => (
               <ListItem

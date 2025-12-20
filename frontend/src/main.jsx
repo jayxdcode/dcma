@@ -3,8 +3,11 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import App from './App';
+import { DiscordProvider } from './lib/discordSdk';
 import './index.css';
 import { CATPPUCCIN_PRESETS, buildMuiThemeFromPalette } from './theme';
+
+const discordClientId = import.meta.env.VITE_DISCORD_CLIENT_ID || null; // set this in .env for prod
 
 // palette extracted from image (default)
 const imagePalette = {
@@ -59,4 +62,8 @@ function Root(){
   );
 }
 
-createRoot(document.getElementById('root')).render(<Root/>);
+createRoot(document.getElementById('root')).render(
+  <DiscordProvider clientId={discordClientId}>
+    <Root/>
+  </DiscordProvider>
+);

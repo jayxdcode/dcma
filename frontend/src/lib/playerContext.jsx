@@ -7,7 +7,7 @@ export function usePlayer(){ return useContext(PlayerContext); }
 // const BACKEND_BASE = import.meta.env.VITE_BACKEND_BASE || "";
 
 const isProxyOn = false;  // KEEP THIS FALSE
-const YT_API_SRC = isProxyOn ? `${BACKEND_BASE}/iframe_api` : "https://www.youtube.com/iframe_api";
+const YT_API_SRC = isProxyOn ? `${BACKEND_BASE}/iframe_api` : "https://www.youtube-nocookie.com/iframe_api"; // use no cookie :)
 const SPONSORBLOCK_API = "https://sponsor.ajay.app/api/skipSegments";
 
 async function loadYouTubeApi() {

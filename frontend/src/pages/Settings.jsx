@@ -26,7 +26,7 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
               }}
             >
               {presetKeys.map(k => <MenuItem key={k} value={k}>{k.charAt(0).toUpperCase() + k.slice(1)}</MenuItem>)}
-              <MenuItem value="image">Adaptive (Album Art)</MenuItem>
+              <MenuItem value="image">Default</MenuItem>
             </Select>
           </FormControl>
         </Paper>
