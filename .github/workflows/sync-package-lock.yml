@@ -25,4 +25,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update package-lock.json [skip ci]"
-          file_pattern: 'package-lock.json'
+          file_pattern: 'frontend/package-lock.json'
