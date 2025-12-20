@@ -7,7 +7,7 @@ export function usePlayer(){ return useContext(PlayerContext); }
 // const BACKEND_BASE = import.meta.env.VITE_BACKEND_BASE || "";
 
 const isProxyOn = false;  // KEEP THIS FALSE
-const YT_API_SRC = isProxyOn ? `${BACKEND_BASE}/iframe_api` : "https://www.youtube-nocookie.com/iframe_api"; // use no cookie :)
+const YT_API_SRC = isProxyOn ? `${BACKEND_BASE}/iframe_api` : "https://www.youtube.com/iframe_api";
 const SPONSORBLOCK_API = "https://sponsor.ajay.app/api/skipSegments";
 
 async function loadYouTubeApi() {
@@ -93,7 +93,7 @@ export function PlayerProvider({ children, initialQueue }) {
         if (!playerRef.current && containerRef.current && window.YT) {
           playerRef.current = new window.YT.Player(containerRef.current, {
             height: '1', width: '1', videoId: '',
-            playerVars: { controls: 0, disablekb: 1, modestbranding: 1, rel: 0, playsinline: 1 },
+            playerVars: { nocookie: 1, controls: 0, disablekb: 1, modestbranding: 1, rel: 0, playsinline: 1 },
             events: {
               onReady: (e) => { try { e.target.setVolume(Math.round(volume * 100)); } catch(e){} },
               onStateChange: (e) => {
