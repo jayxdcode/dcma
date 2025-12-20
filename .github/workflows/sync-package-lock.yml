@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'frontend/package.json' # Only runs when you edit package.json
+  workflow-dispatch:
 
 jobs:
   update-lock:
@@ -18,7 +19,7 @@ jobs:
           node-version: '20' # Use your preferred version
           
       - name: Regenerate Lockfile
-        run: npm install --package-lock-only # Updates lockfile without full install
+        run: cd frontend && npm install --package-lock-only # Updates lockfile without full install
 
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
