@@ -1,0 +1,27 @@
+name: Sync Frontend Lockfile
+on:
+  push:
+    paths:
+      - 'frontend/package.json' # Only runs when you edit package.json
+
+jobs:
+  update-lock:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Important: allows the bot to push changes
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use your preferred version
+          
+      - name: Regenerate Lockfile
+        run: npm install --package-lock-only # Updates lockfile without full install
+
+      - name: Commit and Push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update package-lock.json [skip ci]"
+          file_pattern: 'package-lock.json'
