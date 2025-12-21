@@ -3,7 +3,7 @@
 // Query param `ins` selects instance index (default 0). Query param `path` can override forwarded path.
 // Example: GET /api/piped/search?q=beatles&ins=0
 
-const RAW_WIKI_URL = 'https://raw.githubusercontent.com/wiki/TeamPiped/Piped-Frontend/Instances.md';
+const RAW_WIKI_URL = 'https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md';
 const INSTANCES_CACHE_TTL = Number(process.env.INSTANCES_TTL_MS || 1000 * 60 * 5);
 let _instancesCache = null;
 let _instancesAt = 0;

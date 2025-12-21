@@ -2,7 +2,7 @@
 // Returns parsed instances from the TeamPiped wiki Instances.md
 // Uses wiki raw URL: https://raw.githubusercontent.com/wiki/TeamPiped/Piped-Frontend/Instances.md
 
-const RAW_WIKI_URL = 'https://raw.githubusercontent.com/wiki/TeamPiped/Piped-Frontend/Instances.md';
+const RAW_WIKI_URL = 'https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md';
 const CACHE_TTL_MS = Number(process.env.INSTANCES_TTL_MS || 1000 * 60 * 5); // 5 minutes default
 let _cache = null;
 let _cacheAt = 0;
