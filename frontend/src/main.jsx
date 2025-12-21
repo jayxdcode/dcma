@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import App from './App';
 import { DiscordProvider } from './lib/discordSdk';
+import { ModalProvider } from './components/ModalProvider';
 import './index.css';
 import { CATPPUCCIN_PRESETS, buildMuiThemeFromPalette } from './theme';
 
@@ -63,7 +64,9 @@ function Root(){
 }
 
 createRoot(document.getElementById('root')).render(
-  <DiscordProvider clientId={discordClientId}>
-    <Root/>
-  </DiscordProvider>
+  <ModalProvider>
+    <DiscordProvider clientId={discordClientId}>
+      <Root/>
+    </DiscordProvider>
+  </ModalProvider>
 );

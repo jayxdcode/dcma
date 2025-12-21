@@ -17,7 +17,7 @@ const ModalContext = createContext();
 
 export const ModalProvider = ({ children }) => {
   // Alert State
-  const [alert, setAlert] = useState({ open: false, message: '', severity: 'success' });
+  const [alertData, setAlertData] = useState({ open: false, message: '', severity: 'success' });
   
   // Dialog State (Used for both Confirm and Prompt)
   const [dialog, setDialog] = useState({
@@ -35,7 +35,7 @@ export const ModalProvider = ({ children }) => {
 
   // Standard non-blocking Alert
   const showAlert = useCallback((message, severity = 'success') => {
-    setAlert({ open: true, message, severity });
+    setAlertData({ open: true, message, severity });
   }, []);
 
   // Promise-based Confirm
@@ -92,17 +92,17 @@ export const ModalProvider = ({ children }) => {
 
       {/* 1. Global Alert (Snackbar) */}
       <Snackbar
-        open={alert.open}
+        open={alertData.open}
         autoHideDuration={4000}
-        onClose={() => setAlert({ ...alert, open: false })}
+        onClose={() => setAlertData({ ...alertData, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Alert 
           variant="filled" 
-          severity={alert.severity}
-          sx={{ bgcolor: alert.severity === 'success' ? 'var(--accent)' : 'var(--accent-2)' }}
+          severity={alertData.severity}
+          sx={{ bgcolor: alertData.severity === 'success' ? 'var(--accent)' : 'var(--accent-2)' }}
         >
-          {alert.message}
+          {alertData.message}
         </Alert>
       </Snackbar>
 
