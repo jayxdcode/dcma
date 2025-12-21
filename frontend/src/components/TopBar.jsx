@@ -20,6 +20,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import InfoIcon from '@mui/icons-material/Info';
 import { useDiscord, getBotIconUrl, getBotDirectoryLink } from '../lib/discordSdk'; // adjust path if needed
+import { useModals } from './ModalProvider'
 
 // ---------- Helpers ----------
 function extractGuildFromSdk(sdk, readyPayload) {
@@ -62,6 +63,8 @@ function BotCard({ sdk, readyPayload, guild, onClose }) {
   const dirLink = getBotDirectoryLink ? getBotDirectoryLink(clientId) : null;
   const inviteLink = buildInviteUrl(clientId);
   
+  const { showAlert } = useModals();
+  
   async function handleOpenInvite() {
     if (!inviteLink) return;
     const w = window.open(inviteLink, '_blank', 'noopener,noreferrer');
@@ -69,9 +72,9 @@ function BotCard({ sdk, readyPayload, guild, onClose }) {
     if (!w) {
       try {
         await navigator.clipboard.writeText(inviteLink);
-        alert('Invite link copied to clipboard.');
+        showAlert('Invite link copied to clipboard.');
       } catch {
-        alert('Could not open invite link and failed to copy to clipboard.');
+        showAlert('Could not open invite link and failed to copy to clipboard.');
       }
     } else {
       // focus opened window where possible and close popover
@@ -85,10 +88,10 @@ function BotCard({ sdk, readyPayload, guild, onClose }) {
     try {
       await navigator.clipboard.writeText(inviteLink);
       // small inline feedback (you can replace this with a Snackbar)
-      alert('Invite link copied to clipboard.');
+      showAlert('Invite link copied to clipboard.');
     } catch (err) {
       console.error('copy failed', err);
-      alert('Failed to copy link — please copy it manually:\n' + inviteLink);
+      showAlert('Failed to copy link — please copy it manually:\n' + inviteLink);
     }
   }
   

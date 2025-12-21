@@ -1,10 +1,14 @@
 // src/lib/lyrics.js
-const APP_VERSION = '1.4-a';
+import hitori from '../../hitori.json';
+import { useModals } from '../components/ModalProvider';
+
+const APP_VERSION = hitori.versionName;
 const APP_USER_AGENT = `Hitori v${APP_VERSION} (https://github.com/jayxdcode/dcma)`;
 const LRCLIB_HEADERS = {
-  'User-Agent': APP_USER_AGENT,
-  'Accept': 'application/json'
+  'User-Agent': APP_USER_AGENT
 };
+
+const { showPrompt } = useModals();
 
 function joinPaths(...parts) {
   return parts
@@ -17,7 +21,10 @@ const isDiscordProxy = window.location.hostname.includes('discordsays.com');
 if (isDiscordProxy) console.log("[lyrics] discordsays.com proxy detected! App is running :)")
 const BACKEND_URL = isDiscordProxy 
   ? '/api/v1'
-  : joinPaths(import.meta.env.VITE_BACKEND_BASE, '/api');
+  : new URL('/api', import.meta.env.VITE_BACKEND_BASE).href;
+const LRCLIB_API = isDiscordProxy
+  ? '/lrclib'
+  : 'https://lrclib.net/api'
   
 // process.env may not be available in browser; attempt to read safely
 const BACKEND_API_KEY =
@@ -149,7 +156,7 @@ export async function loadLyrics(
 
   try {
     const q = encodeURIComponent([title, artist, album].join(' '));
-    const searchUrl = `/lrclib/api/search?q=${q}`; // mapped url (discord blocks anything but requests in the same domain)
+    const searchUrl = new URL(`/search?q=${q}`, LRCLIB_API).href; // mapped url (discord blocks anything but requests in the same domain)
     console.debug('[lyrics] searching lrclib at:', searchUrl);
 
     const r = await fetch(searchUrl, {
@@ -200,6 +207,6 @@ export async function loadLyrics(
 }
 
 export function promptForManualLyrics(reload) {
-  const q = prompt('Search manually for lyrics:');
+  const q = showPrompt('Search manually for lyrics:');
   if (q?.trim()) reload({ flag: true, query: q.trim() });
 }
