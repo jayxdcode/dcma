@@ -2,77 +2,77 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { DiscordSDK } from '@discord/embedded-app-sdk';
 
-const DiscordContext = createContext({ sdk: null });
+const DiscordContext = createContext({ sdk: null, readyPayload: null });
 
-/** Singleton SDK instance (module-level) */
+/** Singleton SDK instance */
 let sdkInstance = null;
 
 /**
- * Initialize the Discord Embedded App SDK singleton.
- * - clientId: string (required to initialize; pass null in local dev to skip)
- * - opts.timeout: ms to wait for sdk.ready() before timing out (default 4500)
+ * Initialize the Discord Embedded App SDK.
  */
 export async function initDiscordSdk(clientId, opts = {}) {
   const { timeout = 4500 } = opts;
-  if (!clientId) return null; // allow skipping in local/dev
+  if (!clientId) return null;
   if (sdkInstance) return sdkInstance;
   
   try {
     const sdk = new DiscordSDK(clientId);
     sdkInstance = sdk;
     
-    // wait for ready() but don't block forever in local/dev
     await Promise.race([
       sdk.ready(),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('discord sdk ready() timeout')), timeout))
-    ]).catch(err => {
-      // not fatal — SDK object still exists and may become usable later
-      console.warn('Discord SDK ready() failed or timed out:', err);
-    });
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Discord SDK timeout')), timeout))
+    ]);
     
     return sdkInstance;
   } catch (err) {
-    console.warn('Failed to create DiscordSDK', err);
-    sdkInstance = null;
+    console.warn('Failed to initialize DiscordSDK:', err);
     return null;
   }
 }
 
-/** Return the singleton SDK (may be null if not initialized) */
 export function getDiscordSdk() {
   return sdkInstance;
 }
 
 /**
- * Try to find guild info from SDK payloads and set an external <img> by id.
- * elementId: DOM id of the <img>
- * options:
- *   - size: number (img size param for CDN) default 256
- *   - fallback: fallback URL to use if no guild/icon found
- * Returns true if guild icon applied, false otherwise.
+ * GENERATE BOT LINKS
+ */
+
+// Returns the CDN link for the Bot/Application icon
+export function getBotIconUrl(clientId, iconHash, size = 256) {
+  if (!clientId || !iconHash) return null;
+  return `https://cdn.discordapp.com/app-icons/${clientId}/${iconHash}.png?size=${size}`;
+}
+
+// Returns the link to the Bot's App Directory profile
+export function getBotDirectoryLink(clientId) {
+  if (!clientId) return '#';
+  return `https://discord.com/application-directory/${clientId}`;
+}
+
+/**
+ * GUILD ICON LOGIC
  */
 export function setGuildIconOnElement(elementId, { size = 256, fallback } = {}) {
   const el = document.getElementById(elementId);
   if (!el) return false;
   
   const sdk = sdkInstance;
-  let guild = null;
-  
-  if (sdk) {
-    const candidates = [sdk.context, sdk._lastReadyPayload, sdk.lastPayload, sdk.readyPayload];
-    for (const c of candidates) {
-      if (!c) continue;
-      if (c.guild && c.guild.id) { guild = c.guild; break; }
-      if (c.guild_id || c.guildId) {
-        guild = { id: c.guild_id || c.guildId, icon: c.guild_icon || c.icon };
-        break;
-      }
-    }
+  if (!sdk || !sdk.readyPayload) {
+    if (fallback) el.src = fallback;
+    return false;
   }
-  
-  if (guild && guild.id && guild.icon) {
-    const ext = String(guild.icon).startsWith('a_') ? 'gif' : 'png';
-    el.src = `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${ext}?size=${size}`;
+
+  // Guild info is usually inside the readyPayload after handshake
+  const guild = sdk.readyPayload.guild;
+  const guildId = sdk.guildId || guild?.id;
+  const iconHash = guild?.icon;
+
+  if (guildId && iconHash) {
+    const isAnimated = iconHash.startsWith('a_');
+    const ext = isAnimated ? 'gif' : 'png';
+    el.src = `https://cdn.discordapp.com/icons/${guildId}/${iconHash}.${ext}?size=${size}`;
     return true;
   }
   
@@ -81,29 +81,41 @@ export function setGuildIconOnElement(elementId, { size = 256, fallback } = {}) 
 }
 
 /**
- * React provider that initializes the SDK once and puts it in context.
- * Usage: wrap your app with <DiscordProvider clientId={...}>...</DiscordProvider>
+ * REACT PROVIDER
  */
 export function DiscordProvider({ children, clientId }) {
-  const [sdk, setSdk] = useState(getDiscordSdk());
+  const [sdk, setSdk] = useState(null);
+  const [readyPayload, setReadyPayload] = useState(null);
   
   useEffect(() => {
     let mounted = true;
-    (async () => {
+    
+    const start = async () => {
       const s = await initDiscordSdk(clientId);
-      if (mounted) setSdk(s);
-      // attempt to set the external guild icon automatically (non-blocking)
-      try {
-        setGuildIconOnElement('guild-icon', { fallback: '/assets/default-guild.png' });
-      } catch (e) { /* ignore */ }
-    })();
+      if (!mounted || !s) return;
+
+      setSdk(s);
+      setReadyPayload(s.readyPayload);
+
+      // Give React one tick to render the <img> before searching the DOM
+      setTimeout(() => {
+        setGuildIconOnElement('guild-icon', { 
+          fallback: 'https://cdn.discordapp.com/embed/avatars/0.png' 
+        });
+      }, 50);
+    };
+
+    start();
     return () => { mounted = false; };
   }, [clientId]);
   
-  return <DiscordContext.Provider value={{ sdk }}>{children}</DiscordContext.Provider>;
+  return (
+    <DiscordContext.Provider value={{ sdk, readyPayload }}>
+      {children}
+    </DiscordContext.Provider>
+  );
 }
 
-/** hook for consumers */
 export function useDiscord() {
   return useContext(DiscordContext);
 }

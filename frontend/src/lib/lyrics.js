@@ -1,18 +1,30 @@
 // src/lib/lyrics.js
-const APP_VERSION = '1.3-a';
+const APP_VERSION = '1.4-a';
 const APP_USER_AGENT = `Hitori v${APP_VERSION} (https://github.com/jayxdcode/dcma)`;
 const LRCLIB_HEADERS = {
   'User-Agent': APP_USER_AGENT,
   'Accept': 'application/json'
 };
 
-const BACKEND_URL = 'https://src-backend.onrender.com/api/translate';
+function joinPaths(...parts) {
+  return parts
+    .map(part => part.replace(/(^\/+|\/+$)/g, '')) // Remove leading/trailing slashes
+    .filter(x => x.length > 0) // Remove empty strings
+    .join('/'); // Join with a single slash
+}
+
+const isDiscordProxy = window.location.hostname.includes('discordsays.com');
+if (isDiscordProxy) console.log("[lyrics] discordsays.com proxy detected! App is running :)")
+const BACKEND_URL = isDiscordProxy 
+  ? '/api/v1'
+  : joinPaths(import.meta.env.VITE_BACKEND_BASE, '/api');
+  
 // process.env may not be available in browser; attempt to read safely
 const BACKEND_API_KEY =
   (typeof process !== 'undefined' && process.env && process.env.BACKEND_API_KEY)
     ? process.env.BACKEND_API_KEY
     : '';
-
+    
 /**
  * Utility types (JS version)
  *
@@ -32,7 +44,7 @@ export function parseLRCToArray(lrc) {
     // reset lastIndex to ensure global regex works per-line reliably
     rx.lastIndex = 0;
     while ((m = rx.exec(raw))) {
-      const time =
+      const time =I 
         +m[1] * 60000 +
         +m[2] * 1000 +
         (m[3] ? +m[3].padEnd(3, '0') : 0);
@@ -84,7 +96,8 @@ async function fetchTranslationAndRomanization(track, lyrics, signal) {
     return { rom: '', transl: '' };
   }
   try {
-    const r = await fetch(BACKEND_URL, {
+    const u = '/' + joinPaths(BACKEND_URL, '/translate'); 
+    const r = await fetch(u, {
       method: 'POST',
       headers: {
         'X-API-Key': BACKEND_API_KEY || '',
@@ -136,7 +149,7 @@ export async function loadLyrics(
 
   try {
     const q = encodeURIComponent([title, artist, album].join(' '));
-    const searchUrl = `https://lrclib.net/api/search?q=${q}`;
+    const searchUrl = `/lrclib/api/search?q=${q}`; // mapped url (discord blocks anything but requests in the same domain)
     console.debug('[lyrics] searching lrclib at:', searchUrl);
 
     const r = await fetch(searchUrl, {

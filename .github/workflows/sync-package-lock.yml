@@ -1,8 +1,5 @@
 name: Sync Frontend Lockfile
 on:
-  push:
-    paths:
-      - 'frontend/package.json' # Only runs when you edit package.json
   workflow_dispatch:
 
 jobs:
