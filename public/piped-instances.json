@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-21T19:06:00.077Z",
+  "generated_at": "2025-12-21T19:49:47.568Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": null,
   "instances": [
@@ -11,38 +11,38 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "openai",
+          "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:46:32.474Z"
+          "checked_at": "2025-12-21T19:31:15.844Z"
         },
         {
           "attempt": 2,
           "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:46:54.065Z"
+          "checked_at": "2025-12-21T19:31:30.086Z"
         },
         {
           "attempt": 3,
-          "term": "piped",
+          "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:47:22.108Z"
+          "checked_at": "2025-12-21T19:31:57.152Z"
         },
         {
           "attempt": 4,
-          "term": "rick astley",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:47:49.277Z"
+          "checked_at": "2025-12-21T19:32:18.837Z"
         },
         {
           "attempt": 5,
           "term": "rick astley",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:48:22.802Z"
+          "checked_at": "2025-12-21T19:32:53.573Z"
         }
       ],
       "metrics": {
@@ -54,7 +54,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T18:48:22.802Z",
+      "checked_at": "2025-12-21T19:32:53.573Z",
       "version": null,
       "isLatest": false
     },
@@ -66,38 +66,38 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "openai",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:42:01.310Z"
+          "checked_at": "2025-12-21T19:27:12.909Z"
         },
         {
           "attempt": 2,
-          "term": "rick astley",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:42:29.426Z"
+          "checked_at": "2025-12-21T19:27:37.403Z"
         },
         {
           "attempt": 3,
-          "term": "openai",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:42:55.298Z"
+          "checked_at": "2025-12-21T19:28:07.052Z"
         },
         {
           "attempt": 4,
-          "term": "rick astley",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:43:16.827Z"
+          "checked_at": "2025-12-21T19:28:26.636Z"
         },
         {
           "attempt": 5,
-          "term": "rick astley",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:43:51.761Z"
+          "checked_at": "2025-12-21T19:29:02.725Z"
         }
       ],
       "metrics": {
@@ -109,7 +109,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T18:43:51.761Z",
+      "checked_at": "2025-12-21T19:29:02.725Z",
       "version": null,
       "isLatest": false
     },
@@ -121,38 +121,38 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "rick astley",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:44:09.739Z"
+          "checked_at": "2025-12-21T19:29:33.992Z"
         },
         {
           "attempt": 2,
-          "term": "Never Gonna Give You Up",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-21T18:44:35.398Z"
-        },
-        {
-          "attempt": 3,
-          "term": "Never Gonna Give You Up",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-21T18:44:55.760Z"
-        },
-        {
-          "attempt": 4,
           "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:45:27.777Z"
+          "checked_at": "2025-12-21T19:29:58.349Z"
+        },
+        {
+          "attempt": 3,
+          "term": "rick astley",
+          "suggestions": null,
+          "search": null,
+          "checked_at": "2025-12-21T19:30:14.191Z"
+        },
+        {
+          "attempt": 4,
+          "term": "lofi hip hop",
+          "suggestions": null,
+          "search": null,
+          "checked_at": "2025-12-21T19:30:39.132Z"
         },
         {
           "attempt": 5,
           "term": "rick astley",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:46:02.558Z"
+          "checked_at": "2025-12-21T19:31:00.279Z"
         }
       ],
       "metrics": {
@@ -164,7 +164,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T18:46:02.558Z",
+      "checked_at": "2025-12-21T19:31:00.279Z",
       "version": null,
       "isLatest": false
     },
@@ -176,38 +176,38 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "piped",
+          "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:52:31.767Z"
+          "checked_at": "2025-12-21T19:37:36.162Z"
         },
         {
           "attempt": 2,
           "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:53:06.526Z"
+          "checked_at": "2025-12-21T19:37:55.648Z"
         },
         {
           "attempt": 3,
-          "term": "openai",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:53:40.981Z"
+          "checked_at": "2025-12-21T19:38:23.313Z"
         },
         {
           "attempt": 4,
-          "term": "lofi hip hop",
+          "term": "rick astley",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:54:05.104Z"
+          "checked_at": "2025-12-21T19:38:55.604Z"
         },
         {
           "attempt": 5,
           "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:54:38.807Z"
+          "checked_at": "2025-12-21T19:39:28.996Z"
         }
       ],
       "metrics": {
@@ -219,7 +219,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T18:54:38.807Z",
+      "checked_at": "2025-12-21T19:39:28.996Z",
       "version": null,
       "isLatest": false
     },
@@ -231,38 +231,38 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "rick astley",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:37:48.785Z"
+          "checked_at": "2025-12-21T19:23:21.440Z"
         },
         {
           "attempt": 2,
           "term": "rick astley",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:38:09.735Z"
+          "checked_at": "2025-12-21T19:23:42.563Z"
         },
         {
           "attempt": 3,
-          "term": "piped",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:38:42.081Z"
+          "checked_at": "2025-12-21T19:23:59.826Z"
         },
         {
           "attempt": 4,
-          "term": "lofi hip hop",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:39:12.547Z"
+          "checked_at": "2025-12-21T19:24:29.748Z"
         },
         {
           "attempt": 5,
-          "term": "rick astley",
+          "term": "piped",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:39:32.217Z"
+          "checked_at": "2025-12-21T19:24:51.354Z"
         }
       ],
       "metrics": {
@@ -274,7 +274,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T18:39:32.217Z",
+      "checked_at": "2025-12-21T19:24:51.354Z",
       "version": null,
       "isLatest": false
     },
@@ -286,38 +286,38 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-21T18:50:33.074Z"
-        },
-        {
-          "attempt": 2,
           "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:51:03.714Z"
+          "checked_at": "2025-12-21T19:35:21.821Z"
+        },
+        {
+          "attempt": 2,
+          "term": "piped",
+          "suggestions": null,
+          "search": null,
+          "checked_at": "2025-12-21T19:35:51.112Z"
         },
         {
           "attempt": 3,
-          "term": "rick astley",
+          "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:51:19.919Z"
+          "checked_at": "2025-12-21T19:36:18.512Z"
         },
         {
           "attempt": 4,
-          "term": "piped",
+          "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:51:39.358Z"
+          "checked_at": "2025-12-21T19:36:42.455Z"
         },
         {
           "attempt": 5,
-          "term": "piped",
+          "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T18:51:59.162Z"
+          "checked_at": "2025-12-21T19:37:09.223Z"
         }
       ],
       "metrics": {
@@ -329,7 +329,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T18:51:59.162Z",
+      "checked_at": "2025-12-21T19:37:09.223Z",
       "version": null,
       "isLatest": false
     },
@@ -346,208 +346,93 @@
             "url": "https://pipedapi.leptons.xyz/search/suggestions?q=piped",
             "ok": false,
             "status": 403,
-            "time_ms": 53,
+            "time_ms": 33,
             "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
           "search": {
             "url": "https://pipedapi.leptons.xyz/search?query=piped",
             "ok": false,
             "status": 403,
-            "time_ms": 54,
+            "time_ms": 48,
             "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
-          "checked_at": "2025-12-21T18:35:44.842Z"
+          "checked_at": "2025-12-21T19:21:22.749Z"
         },
         {
           "attempt": 2,
-          "term": "openai",
+          "term": "Never Gonna Give You Up",
           "suggestions": {
-            "url": "https://pipedapi.leptons.xyz/search/suggestions?q=openai",
+            "url": "https://pipedapi.leptons.xyz/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 403,
-            "time_ms": 38,
+            "time_ms": 26,
             "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
           "search": {
-            "url": "https://pipedapi.leptons.xyz/search?query=openai",
+            "url": "https://pipedapi.leptons.xyz/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 403,
-            "time_ms": 41,
+            "time_ms": 42,
             "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
-          "checked_at": "2025-12-21T18:36:15.967Z"
+          "checked_at": "2025-12-21T19:21:56.813Z"
         },
         {
           "attempt": 3,
-          "term": "lofi hip hop",
+          "term": "Never Gonna Give You Up",
           "suggestions": {
-            "url": "https://pipedapi.leptons.xyz/search/suggestions?q=lofi%20hip%20hop",
+            "url": "https://pipedapi.leptons.xyz/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 403,
-            "time_ms": 72,
+            "time_ms": 36,
             "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
           "search": {
-            "url": "https://pipedapi.leptons.xyz/search?query=lofi%20hip%20hop",
+            "url": "https://pipedapi.leptons.xyz/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 403,
-            "time_ms": 57,
+            "time_ms": 32,
             "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
-          "checked_at": "2025-12-21T18:36:47.324Z"
+          "checked_at": "2025-12-21T19:22:11.338Z"
         },
         {
           "attempt": 4,
-          "term": "piped",
+          "term": "rick astley",
           "suggestions": {
-            "url": "https://pipedapi.leptons.xyz/search/suggestions?q=piped",
+            "url": "https://pipedapi.leptons.xyz/search/suggestions?q=rick%20astley",
             "ok": false,
             "status": 403,
-            "time_ms": 56,
+            "time_ms": 37,
             "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
           "search": {
-            "url": "https://pipedapi.leptons.xyz/search?query=piped",
+            "url": "https://pipedapi.leptons.xyz/search?query=rick%20astley",
             "ok": false,
             "status": 403,
-            "time_ms": 39,
+            "time_ms": 27,
             "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
-          "checked_at": "2025-12-21T18:37:07.419Z"
-        },
-        {
-          "attempt": 5,
-          "term": "openai",
-          "suggestions": {
-            "url": "https://pipedapi.leptons.xyz/search/suggestions?q=openai",
-            "ok": false,
-            "status": 403,
-            "time_ms": 52,
-            "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
-          },
-          "search": {
-            "url": "https://pipedapi.leptons.xyz/search?query=openai",
-            "ok": false,
-            "status": 403,
-            "time_ms": 44,
-            "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
-          },
-          "checked_at": "2025-12-21T18:37:24.726Z"
-        }
-      ],
-      "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 271,
-        "avg_search_ms": 235
-      },
-      "checked_at": "2025-12-21T18:37:24.726Z",
-      "version": null,
-      "isLatest": false
-    },
-    {
-      "name": "https://pipedapi.drgns.space",
-      "api_url": "https://pipedapi.drgns.space",
-      "cdn": "![](https://pipedapi.drgns.space/registered/badge)",
-      "raw": "drgns.space | https://pipedapi.drgns.space | 🇺🇸 | No | ![](https://pipedapi.drgns.space/registered/badge)",
-      "runs": [
-        {
-          "attempt": 1,
-          "term": "piped",
-          "suggestions": {
-            "url": "https://pipedapi.drgns.space/search/suggestions?q=piped",
-            "ok": false,
-            "status": 404,
-            "time_ms": 59,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi.drgns.space/search?query=piped",
-            "ok": false,
-            "status": 404,
-            "time_ms": 75,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:48:53.467Z"
-        },
-        {
-          "attempt": 2,
-          "term": "openai",
-          "suggestions": {
-            "url": "https://pipedapi.drgns.space/search/suggestions?q=openai",
-            "ok": false,
-            "status": 404,
-            "time_ms": 14,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi.drgns.space/search?query=openai",
-            "ok": false,
-            "status": 404,
-            "time_ms": 68,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:49:08.776Z"
-        },
-        {
-          "attempt": 3,
-          "term": "openai",
-          "suggestions": {
-            "url": "https://pipedapi.drgns.space/search/suggestions?q=openai",
-            "ok": false,
-            "status": 404,
-            "time_ms": 70,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi.drgns.space/search?query=openai",
-            "ok": false,
-            "status": 404,
-            "time_ms": 69,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:49:31.654Z"
-        },
-        {
-          "attempt": 4,
-          "term": "piped",
-          "suggestions": {
-            "url": "https://pipedapi.drgns.space/search/suggestions?q=piped",
-            "ok": false,
-            "status": 404,
-            "time_ms": 63,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi.drgns.space/search?query=piped",
-            "ok": false,
-            "status": 404,
-            "time_ms": 59,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:49:51.806Z"
+          "checked_at": "2025-12-21T19:22:41.481Z"
         },
         {
           "attempt": 5,
           "term": "Never Gonna Give You Up",
           "suggestions": {
-            "url": "https://pipedapi.drgns.space/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "url": "https://pipedapi.leptons.xyz/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
-            "status": 404,
-            "time_ms": 15,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+            "status": 403,
+            "time_ms": 27,
+            "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
           "search": {
-            "url": "https://pipedapi.drgns.space/search?query=Never%20Gonna%20Give%20You%20Up",
+            "url": "https://pipedapi.leptons.xyz/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
-            "status": 404,
-            "time_ms": 66,
-            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+            "status": 403,
+            "time_ms": 42,
+            "body_sample": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><style>*{box-si"
           },
-          "checked_at": "2025-12-21T18:50:14.497Z"
+          "checked_at": "2025-12-21T19:23:00.715Z"
         }
       ],
       "metrics": {
@@ -556,10 +441,10 @@
         "suggestion_success_rate": 0,
         "search_success_rate": 0,
         "combined_success_rate": 0,
-        "avg_suggestion_ms": 221,
-        "avg_search_ms": 337
+        "avg_suggestion_ms": 159,
+        "avg_search_ms": 191
       },
-      "checked_at": "2025-12-21T18:50:14.497Z",
+      "checked_at": "2025-12-21T19:23:00.715Z",
       "version": null,
       "isLatest": false
     },
@@ -571,60 +456,60 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "rick astley",
-          "suggestions": {
-            "url": "https://pipedapi.kavin.rocks/search/suggestions?q=rick%20astley",
-            "ok": false,
-            "status": 521,
-            "time_ms": 87,
-            "body_sample": ""
-          },
-          "search": {
-            "url": "https://pipedapi.kavin.rocks/search?query=rick%20astley",
-            "ok": false,
-            "status": 521,
-            "time_ms": 77,
-            "body_sample": ""
-          },
-          "checked_at": "2025-12-21T18:33:22.141Z"
-        },
-        {
-          "attempt": 2,
           "term": "piped",
           "suggestions": {
             "url": "https://pipedapi.kavin.rocks/search/suggestions?q=piped",
             "ok": false,
             "status": 521,
-            "time_ms": 71,
+            "time_ms": 60,
             "body_sample": ""
           },
           "search": {
             "url": "https://pipedapi.kavin.rocks/search?query=piped",
             "ok": false,
             "status": 521,
-            "time_ms": 72,
+            "time_ms": 48,
             "body_sample": ""
           },
-          "checked_at": "2025-12-21T18:33:53.296Z"
+          "checked_at": "2025-12-21T19:19:11.099Z"
         },
         {
-          "attempt": 3,
-          "term": "openai",
+          "attempt": 2,
+          "term": "Never Gonna Give You Up",
           "suggestions": {
-            "url": "https://pipedapi.kavin.rocks/search/suggestions?q=openai",
+            "url": "https://pipedapi.kavin.rocks/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 521,
-            "time_ms": 51,
+            "time_ms": 41,
             "body_sample": ""
           },
           "search": {
-            "url": "https://pipedapi.kavin.rocks/search?query=openai",
+            "url": "https://pipedapi.kavin.rocks/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 521,
-            "time_ms": 73,
+            "time_ms": 49,
             "body_sample": ""
           },
-          "checked_at": "2025-12-21T18:34:25.817Z"
+          "checked_at": "2025-12-21T19:19:38.348Z"
+        },
+        {
+          "attempt": 3,
+          "term": "Never Gonna Give You Up",
+          "suggestions": {
+            "url": "https://pipedapi.kavin.rocks/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 521,
+            "time_ms": 37,
+            "body_sample": "<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]-->\n<head"
+          },
+          "search": {
+            "url": "https://pipedapi.kavin.rocks/search?query=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 521,
+            "time_ms": 46,
+            "body_sample": "<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]-->\n<head"
+          },
+          "checked_at": "2025-12-21T19:20:10.157Z"
         },
         {
           "attempt": 4,
@@ -633,36 +518,36 @@
             "url": "https://pipedapi.kavin.rocks/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 521,
-            "time_ms": 60,
+            "time_ms": 65,
             "body_sample": ""
           },
           "search": {
             "url": "https://pipedapi.kavin.rocks/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 521,
-            "time_ms": 70,
+            "time_ms": 36,
             "body_sample": ""
           },
-          "checked_at": "2025-12-21T18:34:43.415Z"
+          "checked_at": "2025-12-21T19:20:39.881Z"
         },
         {
           "attempt": 5,
-          "term": "lofi hip hop",
+          "term": "Never Gonna Give You Up",
           "suggestions": {
-            "url": "https://pipedapi.kavin.rocks/search/suggestions?q=lofi%20hip%20hop",
+            "url": "https://pipedapi.kavin.rocks/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 521,
-            "time_ms": 84,
+            "time_ms": 57,
             "body_sample": ""
           },
           "search": {
-            "url": "https://pipedapi.kavin.rocks/search?query=lofi%20hip%20hop",
+            "url": "https://pipedapi.kavin.rocks/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 521,
-            "time_ms": 59,
+            "time_ms": 49,
             "body_sample": ""
           },
-          "checked_at": "2025-12-21T18:35:18.327Z"
+          "checked_at": "2025-12-21T19:20:58.682Z"
         }
       ],
       "metrics": {
@@ -671,355 +556,10 @@
         "suggestion_success_rate": 0,
         "search_success_rate": 0,
         "combined_success_rate": 0,
-        "avg_suggestion_ms": 353,
-        "avg_search_ms": 351
+        "avg_suggestion_ms": 260,
+        "avg_search_ms": 228
       },
-      "checked_at": "2025-12-21T18:35:18.327Z",
-      "version": null,
-      "isLatest": false
-    },
-    {
-      "name": "https://pipedapi-libre.kavin.rocks",
-      "api_url": "https://pipedapi-libre.kavin.rocks",
-      "cdn": "![](https://pipedapi-libre.kavin.rocks/registered/badge)",
-      "raw": "kavin.rocks libre (Official) | https://pipedapi-libre.kavin.rocks | 🇳🇱 | No | ![](https://pipedapi-libre.kavin.rocks/registered/badge)",
-      "runs": [
-        {
-          "attempt": 1,
-          "term": "piped",
-          "suggestions": {
-            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=piped",
-            "ok": false,
-            "status": 502,
-            "time_ms": 281,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi-libre.kavin.rocks/search?query=piped",
-            "ok": false,
-            "status": 502,
-            "time_ms": 267,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:39:54.078Z"
-        },
-        {
-          "attempt": 2,
-          "term": "lofi hip hop",
-          "suggestions": {
-            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=lofi%20hip%20hop",
-            "ok": false,
-            "status": 502,
-            "time_ms": 89,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi-libre.kavin.rocks/search?query=lofi%20hip%20hop",
-            "ok": false,
-            "status": 502,
-            "time_ms": 267,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:40:13.416Z"
-        },
-        {
-          "attempt": 3,
-          "term": "openai",
-          "suggestions": {
-            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=openai",
-            "ok": false,
-            "status": 502,
-            "time_ms": 89,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi-libre.kavin.rocks/search?query=openai",
-            "ok": false,
-            "status": 502,
-            "time_ms": 266,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:40:37.402Z"
-        },
-        {
-          "attempt": 4,
-          "term": "Never Gonna Give You Up",
-          "suggestions": {
-            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
-            "ok": false,
-            "status": 502,
-            "time_ms": 89,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi-libre.kavin.rocks/search?query=Never%20Gonna%20Give%20You%20Up",
-            "ok": false,
-            "status": 502,
-            "time_ms": 269,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:40:56.743Z"
-        },
-        {
-          "attempt": 5,
-          "term": "piped",
-          "suggestions": {
-            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=piped",
-            "ok": false,
-            "status": 502,
-            "time_ms": 264,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi-libre.kavin.rocks/search?query=piped",
-            "ok": false,
-            "status": 502,
-            "time_ms": 267,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T18:41:31.218Z"
-        }
-      ],
-      "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 812,
-        "avg_search_ms": 1336
-      },
-      "checked_at": "2025-12-21T18:41:31.218Z",
-      "version": null,
-      "isLatest": false
-    },
-    {
-      "name": "https://piped-api.codespace.cz",
-      "api_url": "https://piped-api.codespace.cz",
-      "cdn": "![](https://piped-api.codespace.cz/registered/badge)",
-      "raw": "codespace.cz | https://piped-api.codespace.cz | 🇨🇿 | No | ![](https://piped-api.codespace.cz/registered/badge)",
-      "runs": [
-        {
-          "attempt": 1,
-          "term": "piped",
-          "suggestions": {
-            "url": "https://piped-api.codespace.cz/search/suggestions?q=piped",
-            "ok": false,
-            "status": 403,
-            "time_ms": 927,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "search": {
-            "url": "https://piped-api.codespace.cz/search?query=piped",
-            "ok": false,
-            "status": 403,
-            "time_ms": 292,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "checked_at": "2025-12-21T18:55:10.237Z"
-        },
-        {
-          "attempt": 2,
-          "term": "openai",
-          "suggestions": {
-            "url": "https://piped-api.codespace.cz/search/suggestions?q=openai",
-            "ok": false,
-            "status": 403,
-            "time_ms": 292,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "search": {
-            "url": "https://piped-api.codespace.cz/search?query=openai",
-            "ok": false,
-            "status": 403,
-            "time_ms": 292,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "checked_at": "2025-12-21T18:55:42.971Z"
-        },
-        {
-          "attempt": 3,
-          "term": "openai",
-          "suggestions": {
-            "url": "https://piped-api.codespace.cz/search/suggestions?q=openai",
-            "ok": false,
-            "status": 403,
-            "time_ms": 293,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "search": {
-            "url": "https://piped-api.codespace.cz/search?query=openai",
-            "ok": false,
-            "status": 403,
-            "time_ms": 292,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "checked_at": "2025-12-21T18:56:15.057Z"
-        },
-        {
-          "attempt": 4,
-          "term": "Never Gonna Give You Up",
-          "suggestions": {
-            "url": "https://piped-api.codespace.cz/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
-            "ok": false,
-            "status": 403,
-            "time_ms": 292,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "search": {
-            "url": "https://piped-api.codespace.cz/search?query=Never%20Gonna%20Give%20You%20Up",
-            "ok": false,
-            "status": 403,
-            "time_ms": 293,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "checked_at": "2025-12-21T18:56:51.259Z"
-        },
-        {
-          "attempt": 5,
-          "term": "openai",
-          "suggestions": {
-            "url": "https://piped-api.codespace.cz/search/suggestions?q=openai",
-            "ok": false,
-            "status": 403,
-            "time_ms": 292,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "search": {
-            "url": "https://piped-api.codespace.cz/search?query=openai",
-            "ok": false,
-            "status": 403,
-            "time_ms": 292,
-            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
-          },
-          "checked_at": "2025-12-21T18:57:10.771Z"
-        }
-      ],
-      "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 2096,
-        "avg_search_ms": 1461
-      },
-      "checked_at": "2025-12-21T18:57:10.771Z",
-      "version": null,
-      "isLatest": false
-    },
-    {
-      "name": "https://api.piped.private.coffee",
-      "api_url": "https://api.piped.private.coffee",
-      "cdn": "![](https://api.piped.private.coffee/registered/badge)",
-      "raw": "private.coffee | https://api.piped.private.coffee | 🇦🇹 | No | ![](https://api.piped.private.coffee/registered/badge)",
-      "runs": [
-        {
-          "attempt": 1,
-          "term": "Never Gonna Give You Up",
-          "suggestions": {
-            "url": "https://api.piped.private.coffee/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
-            "ok": false,
-            "status": 404,
-            "time_ms": 305,
-            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
-          },
-          "search": {
-            "url": "https://api.piped.private.coffee/search?query=Never%20Gonna%20Give%20You%20Up",
-            "ok": false,
-            "status": 400,
-            "time_ms": 305,
-            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
-          },
-          "checked_at": "2025-12-21T18:59:25.191Z"
-        },
-        {
-          "attempt": 2,
-          "term": "piped",
-          "suggestions": {
-            "url": "https://api.piped.private.coffee/search/suggestions?q=piped",
-            "ok": false,
-            "status": 404,
-            "time_ms": 102,
-            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
-          },
-          "search": {
-            "url": "https://api.piped.private.coffee/search?query=piped",
-            "ok": false,
-            "status": 400,
-            "time_ms": 304,
-            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
-          },
-          "checked_at": "2025-12-21T18:59:40.971Z"
-        },
-        {
-          "attempt": 3,
-          "term": "openai",
-          "suggestions": {
-            "url": "https://api.piped.private.coffee/search/suggestions?q=openai",
-            "ok": false,
-            "status": 404,
-            "time_ms": 313,
-            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
-          },
-          "search": {
-            "url": "https://api.piped.private.coffee/search?query=openai",
-            "ok": false,
-            "status": 400,
-            "time_ms": 308,
-            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
-          },
-          "checked_at": "2025-12-21T19:00:15.299Z"
-        },
-        {
-          "attempt": 4,
-          "term": "piped",
-          "suggestions": {
-            "url": "https://api.piped.private.coffee/search/suggestions?q=piped",
-            "ok": false,
-            "status": 404,
-            "time_ms": 313,
-            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
-          },
-          "search": {
-            "url": "https://api.piped.private.coffee/search?query=piped",
-            "ok": false,
-            "status": 400,
-            "time_ms": 305,
-            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
-          },
-          "checked_at": "2025-12-21T19:00:50.916Z"
-        },
-        {
-          "attempt": 5,
-          "term": "Never Gonna Give You Up",
-          "suggestions": {
-            "url": "https://api.piped.private.coffee/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
-            "ok": false,
-            "status": 404,
-            "time_ms": 314,
-            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
-          },
-          "search": {
-            "url": "https://api.piped.private.coffee/search?query=Never%20Gonna%20Give%20You%20Up",
-            "ok": false,
-            "status": 400,
-            "time_ms": 304,
-            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
-          },
-          "checked_at": "2025-12-21T19:01:11.205Z"
-        }
-      ],
-      "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 1347,
-        "avg_search_ms": 1526
-      },
-      "checked_at": "2025-12-21T19:01:11.205Z",
+      "checked_at": "2025-12-21T19:20:58.682Z",
       "version": null,
       "isLatest": false
     },
@@ -1036,36 +576,36 @@
             "url": "https://pipedapi.darkness.services/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 404,
-            "time_ms": 77,
+            "time_ms": 533,
             "body_sample": "404 page not found\n"
           },
           "search": {
             "url": "https://pipedapi.darkness.services/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 404,
-            "time_ms": 1445,
+            "time_ms": 29,
             "body_sample": "404 page not found\n"
           },
-          "checked_at": "2025-12-21T19:01:46.613Z"
+          "checked_at": "2025-12-21T19:46:17.039Z"
         },
         {
           "attempt": 2,
-          "term": "lofi hip hop",
+          "term": "Never Gonna Give You Up",
           "suggestions": {
-            "url": "https://pipedapi.darkness.services/search/suggestions?q=lofi%20hip%20hop",
+            "url": "https://pipedapi.darkness.services/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 404,
-            "time_ms": 13,
+            "time_ms": 10,
             "body_sample": "404 page not found\n"
           },
           "search": {
-            "url": "https://pipedapi.darkness.services/search?query=lofi%20hip%20hop",
+            "url": "https://pipedapi.darkness.services/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 404,
-            "time_ms": 56,
+            "time_ms": 92,
             "body_sample": "404 page not found\n"
           },
-          "checked_at": "2025-12-21T19:02:10.766Z"
+          "checked_at": "2025-12-21T19:46:37.426Z"
         },
         {
           "attempt": 3,
@@ -1074,55 +614,55 @@
             "url": "https://pipedapi.darkness.services/search/suggestions?q=openai",
             "ok": false,
             "status": 404,
-            "time_ms": 40,
+            "time_ms": 31,
             "body_sample": "404 page not found\n"
           },
           "search": {
             "url": "https://pipedapi.darkness.services/search?query=openai",
             "ok": false,
             "status": 404,
-            "time_ms": 59,
+            "time_ms": 28,
             "body_sample": "404 page not found\n"
           },
-          "checked_at": "2025-12-21T19:02:42.154Z"
+          "checked_at": "2025-12-21T19:46:57.047Z"
         },
         {
           "attempt": 4,
-          "term": "piped",
+          "term": "Never Gonna Give You Up",
           "suggestions": {
-            "url": "https://pipedapi.darkness.services/search/suggestions?q=piped",
+            "url": "https://pipedapi.darkness.services/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 404,
-            "time_ms": 42,
+            "time_ms": 28,
             "body_sample": "404 page not found\n"
           },
           "search": {
-            "url": "https://pipedapi.darkness.services/search?query=piped",
+            "url": "https://pipedapi.darkness.services/search?query=Never%20Gonna%20Give%20You%20Up",
             "ok": false,
             "status": 404,
-            "time_ms": 41,
+            "time_ms": 84,
             "body_sample": "404 page not found\n"
           },
-          "checked_at": "2025-12-21T19:03:13.849Z"
+          "checked_at": "2025-12-21T19:47:32.365Z"
         },
         {
           "attempt": 5,
-          "term": "openai",
+          "term": "lofi hip hop",
           "suggestions": {
-            "url": "https://pipedapi.darkness.services/search/suggestions?q=openai",
+            "url": "https://pipedapi.darkness.services/search/suggestions?q=lofi%20hip%20hop",
             "ok": false,
             "status": 404,
-            "time_ms": 15,
+            "time_ms": 9,
             "body_sample": "404 page not found\n"
           },
           "search": {
-            "url": "https://pipedapi.darkness.services/search?query=openai",
+            "url": "https://pipedapi.darkness.services/search?query=lofi%20hip%20hop",
             "ok": false,
             "status": 404,
-            "time_ms": 57,
+            "time_ms": 27,
             "body_sample": "404 page not found\n"
           },
-          "checked_at": "2025-12-21T19:03:40.016Z"
+          "checked_at": "2025-12-21T19:48:03.887Z"
         }
       ],
       "metrics": {
@@ -1131,10 +671,470 @@
         "suggestion_success_rate": 0,
         "search_success_rate": 0,
         "combined_success_rate": 0,
-        "avg_suggestion_ms": 187,
-        "avg_search_ms": 1658
+        "avg_suggestion_ms": 611,
+        "avg_search_ms": 260
       },
-      "checked_at": "2025-12-21T19:03:40.016Z",
+      "checked_at": "2025-12-21T19:48:03.887Z",
+      "version": null,
+      "isLatest": false
+    },
+    {
+      "name": "https://pipedapi.drgns.space",
+      "api_url": "https://pipedapi.drgns.space",
+      "cdn": "![](https://pipedapi.drgns.space/registered/badge)",
+      "raw": "drgns.space | https://pipedapi.drgns.space | 🇺🇸 | No | ![](https://pipedapi.drgns.space/registered/badge)",
+      "runs": [
+        {
+          "attempt": 1,
+          "term": "openai",
+          "suggestions": {
+            "url": "https://pipedapi.drgns.space/search/suggestions?q=openai",
+            "ok": false,
+            "status": 404,
+            "time_ms": 218,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi.drgns.space/search?query=openai",
+            "ok": false,
+            "status": 404,
+            "time_ms": 36,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:33:27.344Z"
+        },
+        {
+          "attempt": 2,
+          "term": "Never Gonna Give You Up",
+          "suggestions": {
+            "url": "https://pipedapi.drgns.space/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 404,
+            "time_ms": 224,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi.drgns.space/search?query=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 404,
+            "time_ms": 257,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:33:46.408Z"
+        },
+        {
+          "attempt": 3,
+          "term": "Never Gonna Give You Up",
+          "suggestions": {
+            "url": "https://pipedapi.drgns.space/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 404,
+            "time_ms": 36,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi.drgns.space/search?query=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 404,
+            "time_ms": 48,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:34:11.648Z"
+        },
+        {
+          "attempt": 4,
+          "term": "rick astley",
+          "suggestions": {
+            "url": "https://pipedapi.drgns.space/search/suggestions?q=rick%20astley",
+            "ok": false,
+            "status": 404,
+            "time_ms": 10,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi.drgns.space/search?query=rick%20astley",
+            "ok": false,
+            "status": 404,
+            "time_ms": 647,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:34:34.366Z"
+        },
+        {
+          "attempt": 5,
+          "term": "Never Gonna Give You Up",
+          "suggestions": {
+            "url": "https://pipedapi.drgns.space/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 404,
+            "time_ms": 10,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi.drgns.space/search?query=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 404,
+            "time_ms": 34,
+            "body_sample": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/1.22.1</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:34:58.920Z"
+        }
+      ],
+      "metrics": {
+        "suggestion_success_count": 0,
+        "search_success_count": 0,
+        "suggestion_success_rate": 0,
+        "search_success_rate": 0,
+        "combined_success_rate": 0,
+        "avg_suggestion_ms": 498,
+        "avg_search_ms": 1022
+      },
+      "checked_at": "2025-12-21T19:34:58.920Z",
+      "version": null,
+      "isLatest": false
+    },
+    {
+      "name": "https://pipedapi-libre.kavin.rocks",
+      "api_url": "https://pipedapi-libre.kavin.rocks",
+      "cdn": "![](https://pipedapi-libre.kavin.rocks/registered/badge)",
+      "raw": "kavin.rocks libre (Official) | https://pipedapi-libre.kavin.rocks | 🇳🇱 | No | ![](https://pipedapi-libre.kavin.rocks/registered/badge)",
+      "runs": [
+        {
+          "attempt": 1,
+          "term": "lofi hip hop",
+          "suggestions": {
+            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=lofi%20hip%20hop",
+            "ok": false,
+            "status": 502,
+            "time_ms": 260,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi-libre.kavin.rocks/search?query=lofi%20hip%20hop",
+            "ok": false,
+            "status": 502,
+            "time_ms": 253,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:25:19.801Z"
+        },
+        {
+          "attempt": 2,
+          "term": "piped",
+          "suggestions": {
+            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=piped",
+            "ok": false,
+            "status": 502,
+            "time_ms": 84,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi-libre.kavin.rocks/search?query=piped",
+            "ok": false,
+            "status": 502,
+            "time_ms": 253,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:25:36.508Z"
+        },
+        {
+          "attempt": 3,
+          "term": "Never Gonna Give You Up",
+          "suggestions": {
+            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 502,
+            "time_ms": 85,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi-libre.kavin.rocks/search?query=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 502,
+            "time_ms": 253,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:26:07.336Z"
+        },
+        {
+          "attempt": 4,
+          "term": "lofi hip hop",
+          "suggestions": {
+            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=lofi%20hip%20hop",
+            "ok": false,
+            "status": 502,
+            "time_ms": 84,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi-libre.kavin.rocks/search?query=lofi%20hip%20hop",
+            "ok": false,
+            "status": 502,
+            "time_ms": 253,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:26:27.580Z"
+        },
+        {
+          "attempt": 5,
+          "term": "lofi hip hop",
+          "suggestions": {
+            "url": "https://pipedapi-libre.kavin.rocks/search/suggestions?q=lofi%20hip%20hop",
+            "ok": false,
+            "status": 502,
+            "time_ms": 251,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi-libre.kavin.rocks/search?query=lofi%20hip%20hop",
+            "ok": false,
+            "status": 502,
+            "time_ms": 253,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:26:49.590Z"
+        }
+      ],
+      "metrics": {
+        "suggestion_success_count": 0,
+        "search_success_count": 0,
+        "suggestion_success_rate": 0,
+        "search_success_rate": 0,
+        "combined_success_rate": 0,
+        "avg_suggestion_ms": 764,
+        "avg_search_ms": 1265
+      },
+      "checked_at": "2025-12-21T19:26:49.590Z",
+      "version": null,
+      "isLatest": false
+    },
+    {
+      "name": "https://piped-api.codespace.cz",
+      "api_url": "https://piped-api.codespace.cz",
+      "cdn": "![](https://piped-api.codespace.cz/registered/badge)",
+      "raw": "codespace.cz | https://piped-api.codespace.cz | 🇨🇿 | No | ![](https://piped-api.codespace.cz/registered/badge)",
+      "runs": [
+        {
+          "attempt": 1,
+          "term": "rick astley",
+          "suggestions": {
+            "url": "https://piped-api.codespace.cz/search/suggestions?q=rick%20astley",
+            "ok": false,
+            "status": 403,
+            "time_ms": 979,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "search": {
+            "url": "https://piped-api.codespace.cz/search?query=rick%20astley",
+            "ok": false,
+            "status": 403,
+            "time_ms": 294,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "checked_at": "2025-12-21T19:39:47.871Z"
+        },
+        {
+          "attempt": 2,
+          "term": "piped",
+          "suggestions": {
+            "url": "https://piped-api.codespace.cz/search/suggestions?q=piped",
+            "ok": false,
+            "status": 403,
+            "time_ms": 293,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "search": {
+            "url": "https://piped-api.codespace.cz/search?query=piped",
+            "ok": false,
+            "status": 403,
+            "time_ms": 294,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "checked_at": "2025-12-21T19:40:12.243Z"
+        },
+        {
+          "attempt": 3,
+          "term": "Never Gonna Give You Up",
+          "suggestions": {
+            "url": "https://piped-api.codespace.cz/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 403,
+            "time_ms": 295,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "search": {
+            "url": "https://piped-api.codespace.cz/search?query=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 403,
+            "time_ms": 298,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "checked_at": "2025-12-21T19:40:46.268Z"
+        },
+        {
+          "attempt": 4,
+          "term": "rick astley",
+          "suggestions": {
+            "url": "https://piped-api.codespace.cz/search/suggestions?q=rick%20astley",
+            "ok": false,
+            "status": 403,
+            "time_ms": 98,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "search": {
+            "url": "https://piped-api.codespace.cz/search?query=rick%20astley",
+            "ok": false,
+            "status": 403,
+            "time_ms": 294,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "checked_at": "2025-12-21T19:41:16.632Z"
+        },
+        {
+          "attempt": 5,
+          "term": "rick astley",
+          "suggestions": {
+            "url": "https://piped-api.codespace.cz/search/suggestions?q=rick%20astley",
+            "ok": false,
+            "status": 403,
+            "time_ms": 98,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "search": {
+            "url": "https://piped-api.codespace.cz/search?query=rick%20astley",
+            "ok": false,
+            "status": 403,
+            "time_ms": 295,
+            "body_sample": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>403 Forbidden</title>\n</head><body>\n<h1>Forbidden</h1>\n<p>You don't have permission to access this resource.</p>\n</body></html>\n"
+          },
+          "checked_at": "2025-12-21T19:41:34.153Z"
+        }
+      ],
+      "metrics": {
+        "suggestion_success_count": 0,
+        "search_success_count": 0,
+        "suggestion_success_rate": 0,
+        "search_success_rate": 0,
+        "combined_success_rate": 0,
+        "avg_suggestion_ms": 1763,
+        "avg_search_ms": 1475
+      },
+      "checked_at": "2025-12-21T19:41:34.153Z",
+      "version": null,
+      "isLatest": false
+    },
+    {
+      "name": "https://api.piped.private.coffee",
+      "api_url": "https://api.piped.private.coffee",
+      "cdn": "![](https://api.piped.private.coffee/registered/badge)",
+      "raw": "private.coffee | https://api.piped.private.coffee | 🇦🇹 | No | ![](https://api.piped.private.coffee/registered/badge)",
+      "runs": [
+        {
+          "attempt": 1,
+          "term": "Never Gonna Give You Up",
+          "suggestions": {
+            "url": "https://api.piped.private.coffee/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 404,
+            "time_ms": 302,
+            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
+          },
+          "search": {
+            "url": "https://api.piped.private.coffee/search?query=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 400,
+            "time_ms": 303,
+            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
+          },
+          "checked_at": "2025-12-21T19:44:17.522Z"
+        },
+        {
+          "attempt": 2,
+          "term": "openai",
+          "suggestions": {
+            "url": "https://api.piped.private.coffee/search/suggestions?q=openai",
+            "ok": false,
+            "status": 404,
+            "time_ms": 304,
+            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
+          },
+          "search": {
+            "url": "https://api.piped.private.coffee/search?query=openai",
+            "ok": false,
+            "status": 400,
+            "time_ms": 301,
+            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
+          },
+          "checked_at": "2025-12-21T19:44:46.866Z"
+        },
+        {
+          "attempt": 3,
+          "term": "openai",
+          "suggestions": {
+            "url": "https://api.piped.private.coffee/search/suggestions?q=openai",
+            "ok": false,
+            "status": 404,
+            "time_ms": 304,
+            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
+          },
+          "search": {
+            "url": "https://api.piped.private.coffee/search?query=openai",
+            "ok": false,
+            "status": 400,
+            "time_ms": 303,
+            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
+          },
+          "checked_at": "2025-12-21T19:45:07.007Z"
+        },
+        {
+          "attempt": 4,
+          "term": "Never Gonna Give You Up",
+          "suggestions": {
+            "url": "https://api.piped.private.coffee/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 404,
+            "time_ms": 101,
+            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
+          },
+          "search": {
+            "url": "https://api.piped.private.coffee/search?query=Never%20Gonna%20Give%20You%20Up",
+            "ok": false,
+            "status": 400,
+            "time_ms": 302,
+            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
+          },
+          "checked_at": "2025-12-21T19:45:31.294Z"
+        },
+        {
+          "attempt": 5,
+          "term": "openai",
+          "suggestions": {
+            "url": "https://api.piped.private.coffee/search/suggestions?q=openai",
+            "ok": false,
+            "status": 404,
+            "time_ms": 101,
+            "body_sample": "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>404. Not Found</title><style>h1, p { font-family: sans-serif; }</style></head><body><h1 style=\"text-align: center;\">404. Not Found</h1><hr><p style=\"text-align: center\">io.activej.http.HttpError: HTTP code 404: Not found</p><hr><p style=\"text-align: cent"
+          },
+          "search": {
+            "url": "https://api.piped.private.coffee/search?query=openai",
+            "ok": false,
+            "status": 400,
+            "time_ms": 308,
+            "body_sample": "{\"error\":\"query and filter are required parameters\"}"
+          },
+          "checked_at": "2025-12-21T19:46:00.195Z"
+        }
+      ],
+      "metrics": {
+        "suggestion_success_count": 0,
+        "search_success_count": 0,
+        "suggestion_success_rate": 0,
+        "search_success_rate": 0,
+        "combined_success_rate": 0,
+        "avg_suggestion_ms": 1112,
+        "avg_search_ms": 1517
+      },
+      "checked_at": "2025-12-21T19:46:00.195Z",
       "version": null,
       "isLatest": false
     },
@@ -1146,60 +1146,60 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "rick astley",
+          "term": "openai",
           "suggestions": {
-            "url": "https://pipedapi.reallyaweso.me/search/suggestions?q=rick%20astley",
+            "url": "https://pipedapi.reallyaweso.me/search/suggestions?q=openai",
             "ok": false,
             "status": 502,
-            "time_ms": 535,
+            "time_ms": 285,
             "body_sample": ""
           },
           "search": {
-            "url": "https://pipedapi.reallyaweso.me/search?query=rick%20astley",
+            "url": "https://pipedapi.reallyaweso.me/search?query=openai",
             "ok": false,
             "status": 502,
-            "time_ms": 409,
+            "time_ms": 402,
             "body_sample": ""
           },
-          "checked_at": "2025-12-21T18:57:42.935Z"
+          "checked_at": "2025-12-21T19:42:00.313Z"
         },
         {
           "attempt": 2,
-          "term": "rick astley",
-          "suggestions": {
-            "url": "https://pipedapi.reallyaweso.me/search/suggestions?q=rick%20astley",
-            "ok": false,
-            "status": 502,
-            "time_ms": 95,
-            "body_sample": ""
-          },
-          "search": {
-            "url": "https://pipedapi.reallyaweso.me/search?query=rick%20astley",
-            "ok": false,
-            "status": 502,
-            "time_ms": 410,
-            "body_sample": ""
-          },
-          "checked_at": "2025-12-21T18:58:01.802Z"
-        },
-        {
-          "attempt": 3,
           "term": "lofi hip hop",
           "suggestions": {
             "url": "https://pipedapi.reallyaweso.me/search/suggestions?q=lofi%20hip%20hop",
             "ok": false,
             "status": 502,
-            "time_ms": 95,
+            "time_ms": 93,
             "body_sample": ""
           },
           "search": {
             "url": "https://pipedapi.reallyaweso.me/search?query=lofi%20hip%20hop",
             "ok": false,
             "status": 502,
-            "time_ms": 299,
+            "time_ms": 492,
             "body_sample": ""
           },
-          "checked_at": "2025-12-21T18:58:25.159Z"
+          "checked_at": "2025-12-21T19:42:23.225Z"
+        },
+        {
+          "attempt": 3,
+          "term": "piped",
+          "suggestions": {
+            "url": "https://pipedapi.reallyaweso.me/search/suggestions?q=piped",
+            "ok": false,
+            "status": 502,
+            "time_ms": 93,
+            "body_sample": ""
+          },
+          "search": {
+            "url": "https://pipedapi.reallyaweso.me/search?query=piped",
+            "ok": false,
+            "status": 502,
+            "time_ms": 285,
+            "body_sample": ""
+          },
+          "checked_at": "2025-12-21T19:42:55.354Z"
         },
         {
           "attempt": 4,
@@ -1208,17 +1208,17 @@
             "url": "https://pipedapi.reallyaweso.me/search/suggestions?q=piped",
             "ok": false,
             "status": 502,
-            "time_ms": 499,
+            "time_ms": 282,
             "body_sample": ""
           },
           "search": {
             "url": "https://pipedapi.reallyaweso.me/search?query=piped",
             "ok": false,
             "status": 502,
-            "time_ms": 312,
+            "time_ms": 284,
             "body_sample": ""
           },
-          "checked_at": "2025-12-21T18:58:43.404Z"
+          "checked_at": "2025-12-21T19:43:27.139Z"
         },
         {
           "attempt": 5,
@@ -1227,17 +1227,17 @@
             "url": "https://pipedapi.reallyaweso.me/search/suggestions?q=openai",
             "ok": false,
             "status": 502,
-            "time_ms": 290,
+            "time_ms": 606,
             "body_sample": ""
           },
           "search": {
             "url": "https://pipedapi.reallyaweso.me/search?query=openai",
             "ok": false,
             "status": 502,
-            "time_ms": 287,
+            "time_ms": 283,
             "body_sample": ""
           },
-          "checked_at": "2025-12-21T18:59:03.975Z"
+          "checked_at": "2025-12-21T19:43:46.730Z"
         }
       ],
       "metrics": {
@@ -1246,10 +1246,10 @@
         "suggestion_success_rate": 0,
         "search_success_rate": 0,
         "combined_success_rate": 0,
-        "avg_suggestion_ms": 1514,
-        "avg_search_ms": 1717
+        "avg_suggestion_ms": 1359,
+        "avg_search_ms": 1746
       },
-      "checked_at": "2025-12-21T18:59:03.975Z",
+      "checked_at": "2025-12-21T19:43:46.730Z",
       "version": null,
       "isLatest": false
     },
@@ -1261,60 +1261,60 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "rick astley",
-          "suggestions": {
-            "url": "https://pipedapi.orangenet.cc/search/suggestions?q=rick%20astley",
-            "ok": false,
-            "status": 502,
-            "time_ms": 386,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "search": {
-            "url": "https://pipedapi.orangenet.cc/search?query=rick%20astley",
-            "ok": false,
-            "status": 502,
-            "time_ms": 395,
-            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
-          },
-          "checked_at": "2025-12-21T19:04:02.071Z"
-        },
-        {
-          "attempt": 2,
           "term": "piped",
           "suggestions": {
             "url": "https://pipedapi.orangenet.cc/search/suggestions?q=piped",
             "ok": false,
             "status": 502,
-            "time_ms": 360,
+            "time_ms": 381,
             "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
           },
           "search": {
             "url": "https://pipedapi.orangenet.cc/search?query=piped",
             "ok": false,
             "status": 502,
-            "time_ms": 358,
+            "time_ms": 354,
             "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
           },
-          "checked_at": "2025-12-21T19:04:35.443Z"
+          "checked_at": "2025-12-21T19:48:25.942Z"
         },
         {
-          "attempt": 3,
-          "term": "Never Gonna Give You Up",
+          "attempt": 2,
+          "term": "openai",
           "suggestions": {
-            "url": "https://pipedapi.orangenet.cc/search/suggestions?q=Never%20Gonna%20Give%20You%20Up",
+            "url": "https://pipedapi.orangenet.cc/search/suggestions?q=openai",
             "ok": false,
             "status": 502,
-            "time_ms": 441,
+            "time_ms": 114,
             "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
           },
           "search": {
-            "url": "https://pipedapi.orangenet.cc/search?query=Never%20Gonna%20Give%20You%20Up",
+            "url": "https://pipedapi.orangenet.cc/search?query=openai",
             "ok": false,
             "status": 502,
-            "time_ms": 355,
+            "time_ms": 392,
             "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
           },
-          "checked_at": "2025-12-21T19:05:03.853Z"
+          "checked_at": "2025-12-21T19:48:43.394Z"
+        },
+        {
+          "attempt": 3,
+          "term": "rick astley",
+          "suggestions": {
+            "url": "https://pipedapi.orangenet.cc/search/suggestions?q=rick%20astley",
+            "ok": false,
+            "status": 502,
+            "time_ms": 366,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "search": {
+            "url": "https://pipedapi.orangenet.cc/search?query=rick%20astley",
+            "ok": false,
+            "status": 502,
+            "time_ms": 348,
+            "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
+          },
+          "checked_at": "2025-12-21T19:49:04.658Z"
         },
         {
           "attempt": 4,
@@ -1323,36 +1323,36 @@
             "url": "https://pipedapi.orangenet.cc/search/suggestions?q=rick%20astley",
             "ok": false,
             "status": 502,
-            "time_ms": 373,
+            "time_ms": 391,
             "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
           },
           "search": {
             "url": "https://pipedapi.orangenet.cc/search?query=rick%20astley",
             "ok": false,
             "status": 502,
-            "time_ms": 370,
+            "time_ms": 351,
             "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
           },
-          "checked_at": "2025-12-21T19:05:31.905Z"
+          "checked_at": "2025-12-21T19:49:23.188Z"
         },
         {
           "attempt": 5,
-          "term": "lofi hip hop",
+          "term": "piped",
           "suggestions": {
-            "url": "https://pipedapi.orangenet.cc/search/suggestions?q=lofi%20hip%20hop",
+            "url": "https://pipedapi.orangenet.cc/search/suggestions?q=piped",
             "ok": false,
             "status": 502,
-            "time_ms": 363,
+            "time_ms": 355,
             "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
           },
           "search": {
-            "url": "https://pipedapi.orangenet.cc/search?query=lofi%20hip%20hop",
+            "url": "https://pipedapi.orangenet.cc/search?query=piped",
             "ok": false,
             "status": 502,
-            "time_ms": 352,
+            "time_ms": 342,
             "body_sample": "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
           },
-          "checked_at": "2025-12-21T19:06:00.070Z"
+          "checked_at": "2025-12-21T19:49:47.560Z"
         }
       ],
       "metrics": {
@@ -1361,10 +1361,10 @@
         "suggestion_success_rate": 0,
         "search_success_rate": 0,
         "combined_success_rate": 0,
-        "avg_suggestion_ms": 1923,
-        "avg_search_ms": 1830
+        "avg_suggestion_ms": 1607,
+        "avg_search_ms": 1787
       },
-      "checked_at": "2025-12-21T19:06:00.070Z",
+      "checked_at": "2025-12-21T19:49:47.560Z",
       "version": null,
       "isLatest": false
     }
