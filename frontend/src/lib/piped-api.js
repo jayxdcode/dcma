@@ -4,16 +4,6 @@
 
 const BASE = '/api/piped'; // <-- your app/server should proxy /piped -> actual piped instance or an mitm router for dynamic 
 
-async function _fetch(url, opts) {
-  if (typeof fetch !== 'undefined') return fetch(url, opts);
-  try {
-    const { default: nodeFetch } = await import('node-fetch');
-    return nodeFetch(url, opts);
-  } catch (err) {
-    throw new Error('Fetch not available. Provide global fetch or install node-fetch.');
-  }
-}
-
 /** Safely join base + path without producing double or missing slashes */
 function safeJoin(base, path) {
   if (!base) return String(path || '');
@@ -46,7 +36,7 @@ function buildUrl(path, params = {}) {
 async function request(path, opts = {}) {
   const { method = 'GET', body, headers, params } = opts;
   const url = buildUrl(path, params);
-  const res = await _fetch(url, { method, body, headers });
+  const res = await fetch(url, { method, body, headers });
   if (!res.ok) {
     const text = await res.text().catch(() => '');
     const err = new Error(`Piped API error ${res.status} ${res.statusText}: ${text}`);
