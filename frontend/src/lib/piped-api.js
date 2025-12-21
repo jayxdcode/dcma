@@ -434,26 +434,6 @@ export async function albumPage(albumId) {
   }
 }
 
-/**
- * getInstanceList()
- * Attempts to fetch proxy-provided /instances, otherwise fetches raw INSTANCES.md fallback
- */
-export async function getInstanceList() {
-  try {
-    const data = await request('/instances');
-    return data;
-  } catch (e) {
-    try {
-      const wiki = await _fetch('https://raw.githubusercontent.com/TeamPiped/Piped/master/INSTANCES.md');
-      if (wiki.ok) {
-        const txt = await wiki.text();
-        return { raw: txt };
-      }
-    } catch (err) {}
-    throw new Error('getInstanceList: unable to load instances list from proxy or upstream.');
-  }
-}
-
 export default {
   search,
   suggestions,
@@ -462,11 +442,5 @@ export default {
   artistPage,
   albumPage,
   playlistPage,
-  getStreams,
-  getInstanceList
+  getStreams
 };
-
-
-
-
-
