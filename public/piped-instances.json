@@ -1,282 +1,93 @@
 {
-  "generated_at": "2025-12-22T02:06:00.794Z",
+  "generated_at": "2025-12-22T02:37:00.570Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
-  "version_priority": null,
+  "version_priority": "2025.0.0",
   "instances": [
     {
       "name": "https://api.piped.private.coffee",
       "api_url": "https://api.piped.private.coffee",
       "cdn": "![](https://api.piped.private.coffee/registered/badge)",
       "raw": "private.coffee | https://api.piped.private.coffee | 🇦🇹 | No | ![](https://api.piped.private.coffee/registered/badge)",
-      "runs": [
+      "suggestions": [
         {
-          "attempt": 1,
-          "term": "openai",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:08.901Z"
-        },
-        {
-          "attempt": 2,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:14.108Z"
-        },
-        {
-          "attempt": 3,
-          "term": "Never Gonna Give You Up",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:19.295Z"
-        },
-        {
-          "attempt": 4,
-          "term": "openai",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:24.782Z"
-        },
-        {
-          "attempt": 5,
+          "kind": "suggest",
           "term": "rick astley",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:30.839Z"
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 181,
+          "body_sample": "[\"rick astley\",\"rick astley never gonna give you up\",\"rick astley glastonbury 2023\",\"rick astley the smiths\",\"rick astley together forever\",\"rick astley live\",\"rick astley cry for help\",\"rick astley she wants to dance with me\",\"rick astley never gonna give you up lyrics\",\"rick astley christmas song\",\"rick astley foo fi"
+        },
+        {
+          "kind": "suggest",
+          "term": "iris out",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 185,
+          "body_sample": "[\"iris out\",\"iris out kenshi yonezu\",\"iris out english cover\",\"iris out reaction\",\"iris out cover\",\"iris out piano\",\"iris out lyrics\",\"iris out 1 hour\",\"iris out chainsaw man\",\"iris out instrumental\",\"iris out slowed\",\"iris out karaoke\",\"iris out reze version\",\"iris out reaction mashup\"]"
+        },
+        {
+          "kind": "suggest",
+          "term": "ado",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 180,
+          "body_sample": "[\"adopt me\",\"adore you\",\"adolescence\",\"adopt me trading\",\"adopt me house build\",\"ado\",\"adore you miley cyrus\",\"adopt me christmas 2025\",\"adopt me admin abuse\",\"adom tv live\",\"adomas vyšniauskas\",\"adonay youtube\",\"adonai\",\"adolf hitler\"]"
         }
       ],
-      "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 0,
-        "avg_search_ms": 0
-      },
-      "checked_at": "2025-12-22T02:05:30.839Z",
-      "version": null,
-      "isLatest": false
-    },
-    {
-      "name": "https://piped-api.codespace.cz",
-      "api_url": "https://piped-api.codespace.cz",
-      "cdn": "![](https://piped-api.codespace.cz/registered/badge)",
-      "raw": "codespace.cz | https://piped-api.codespace.cz | 🇨🇿 | No | ![](https://piped-api.codespace.cz/registered/badge)",
-      "runs": [
+      "searches": [
         {
-          "attempt": 1,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:41.784Z"
+          "kind": "search",
+          "term": "erika",
+          "filter": "all",
+          "path": "/search",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=all",
+          "ok": true,
+          "status": 200,
+          "time_ms": 475,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=KmCgdFX9C1s\",\"type\":\"stream\",\"title\":\"Nicki Minaj calls Vance 'assassin' in exchange with Erika Kirk | REUTERS\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/KmCgdFX9C1s/hq720_2.jpg?host=i.ytimg.com&rs=AOn4CLCMtlGjpBt89GZ_PdTFy3yFjVdhjg&sqp=-oaymwE2CNAFEJQDSFXyq4qpAygIARUAAIhCGABwAcABBvA"
         },
         {
-          "attempt": 2,
-          "term": "Never Gonna Give You Up",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:46.308Z"
-        },
-        {
-          "attempt": 3,
-          "term": "Never Gonna Give You Up",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:49.469Z"
-        },
-        {
-          "attempt": 4,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:52.545Z"
-        },
-        {
-          "attempt": 5,
-          "term": "lofi hip hop",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:57.488Z"
-        }
-      ],
-      "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 0,
-        "avg_search_ms": 0
-      },
-      "checked_at": "2025-12-22T02:04:57.488Z",
-      "version": null,
-      "isLatest": false
-    },
-    {
-      "name": "https://pipedapi.darkness.services",
-      "api_url": "https://pipedapi.darkness.services",
-      "cdn": "![](https://pipedapi.darkness.services/registered/badge)",
-      "raw": "darkness.services | https://pipedapi.darkness.services | 🇺🇸 | No | ![](https://pipedapi.darkness.services/registered/badge)",
-      "runs": [
-        {
-          "attempt": 1,
-          "term": "openai",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:36.209Z"
-        },
-        {
-          "attempt": 2,
-          "term": "Never Gonna Give You Up",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:40.957Z"
-        },
-        {
-          "attempt": 3,
-          "term": "lofi hip hop",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:43.364Z"
-        },
-        {
-          "attempt": 4,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:48.855Z"
-        },
-        {
-          "attempt": 5,
-          "term": "lofi hip hop",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:05:54.880Z"
-        }
-      ],
-      "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 0,
-        "avg_search_ms": 0
-      },
-      "checked_at": "2025-12-22T02:05:54.880Z",
-      "version": null,
-      "isLatest": false
-    },
-    {
-      "name": "https://pipedapi.drgns.space",
-      "api_url": "https://pipedapi.drgns.space",
-      "cdn": "![](https://pipedapi.drgns.space/registered/badge)",
-      "raw": "drgns.space | https://pipedapi.drgns.space | 🇺🇸 | No | ![](https://pipedapi.drgns.space/registered/badge)",
-      "runs": [
-        {
-          "attempt": 1,
-          "term": "openai",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:10.318Z"
-        },
-        {
-          "attempt": 2,
-          "term": "lofi hip hop",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:14.176Z"
-        },
-        {
-          "attempt": 3,
-          "term": "openai",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:16.694Z"
-        },
-        {
-          "attempt": 4,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:20.705Z"
-        },
-        {
-          "attempt": 5,
-          "term": "lofi hip hop",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:04:24.955Z"
-        }
-      ],
-      "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 0,
-        "avg_search_ms": 0
-      },
-      "checked_at": "2025-12-22T02:04:24.955Z",
-      "version": null,
-      "isLatest": false
-    },
-    {
-      "name": "https://pipedapi.leptons.xyz",
-      "api_url": "https://pipedapi.leptons.xyz",
-      "cdn": "![](https://pipedapi.leptons.xyz/registered/badge)",
-      "raw": "leptons.xyz | https://pipedapi.leptons.xyz | 🇦🇹 | Yes | ![](https://pipedapi.leptons.xyz/registered/badge)",
-      "runs": [
-        {
-          "attempt": 1,
-          "term": "openai",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:03:21.185Z"
-        },
-        {
-          "attempt": 2,
+          "kind": "search",
           "term": "rick astley",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:03:24.822Z"
+          "filter": "music_songs",
+          "path": "/search",
+          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=music_songs",
+          "ok": true,
+          "status": 200,
+          "time_ms": 460,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=lYBUbBu4W08\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/eC9DfRcYSk4FE-fvDCJSu_4xsKdVMKxwmFTYFZwP8OqB7R4TKxAjKoR-Kp1lXeRi2WddPFYulSte4eW-=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel"
         },
         {
-          "attempt": 3,
-          "term": "lofi hip hop",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:03:29.699Z"
-        },
-        {
-          "attempt": 4,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:03:35.959Z"
-        },
-        {
-          "attempt": 5,
-          "term": "openai",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-22T02:03:39.688Z"
+          "kind": "search",
+          "term": "iris out",
+          "filter": "music_videos",
+          "path": "/search",
+          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_videos",
+          "ok": true,
+          "status": 200,
+          "time_ms": 431,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmZD-TU96q4\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmZD-TU96q4/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3k5RltzYfug575ZJLL7LqgbEi3pEg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-aW"
         }
       ],
       "metrics": {
-        "suggestion_success_count": 0,
-        "search_success_count": 0,
-        "suggestion_success_rate": 0,
-        "search_success_rate": 0,
-        "combined_success_rate": 0,
-        "avg_suggestion_ms": 0,
-        "avg_search_ms": 0
+        "suggestion_success_count": 3,
+        "search_success_count": 3,
+        "suggestion_success_rate": 1,
+        "search_success_rate": 1,
+        "combined_success_rate": 1,
+        "avg_suggestion_ms": 182,
+        "avg_search_ms": 455,
+        "combined_latency_ms": 637
       },
-      "checked_at": "2025-12-22T02:03:39.688Z",
-      "version": null,
-      "isLatest": false
+      "checked_at": "2025-12-22T02:36:56.214Z",
+      "version": "2025.0.0",
+      "isLatest": true
     }
   ]
 }
