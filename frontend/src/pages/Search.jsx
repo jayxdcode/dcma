@@ -123,7 +123,7 @@ export default function SearchPage() {
 
   // suggestions
   const [suggestions, setSuggestions] = useState([]);
-  const [suggestLoading, setSuggestLoading] = useState(false);
+  // const [suggestLoading, setSuggestLoading] = useState(false);
   const [suggestVisible, setSuggestVisible] = useState(false);
 
   // filters & sort
@@ -190,10 +190,10 @@ export default function SearchPage() {
   useEffect(() => {
     if (!q) {
       setSuggestions([]);
-      setSuggestLoading(false);
+      // setSuggestLoading(false);
       return;
     }
-    setSuggestLoading(true);
+    // setSuggestLoading(true);
     if (suggestTimer.current) clearTimeout(suggestTimer.current);
     suggestTimer.current = setTimeout(async () => {
       try {
@@ -204,7 +204,7 @@ export default function SearchPage() {
         console.warn('suggest fetch failed', err);
         setSuggestions([]);
       } finally {
-        setSuggestLoading(false);
+        // setSuggestLoading(false);
       }
     }, 250);
     return () => clearTimeout(suggestTimer.current);
@@ -419,14 +419,13 @@ export default function SearchPage() {
           top: 94,
           left: 16,
           maxWidth: 420,
+          height: 'min(30vh, 400px)',
           width: 'min(60vw, 420px)',
           boxShadow: 6,
           overflow: 'hidden'
         }}>
           <List dense>
-            {suggestLoading ? (
-              <ListItem><Typography>Loading suggestions...</Typography></ListItem>
-            ) : suggestions.map((s, idx) => (
+            { suggestions.map((s, idx) => (
               <ListItem
                 key={idx}
                 button

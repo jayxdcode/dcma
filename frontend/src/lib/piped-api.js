@@ -86,13 +86,13 @@ function normalizeVideoItem(item) {
 
 /**
  * search(q, opts)
- * opts: { sort, type, limit }
+ * opts: { filter, limit }
  * returns { music_all, music_videos, music_albums, music_artists, raw }
  */
 export async function search(q, opts = {}) {
   if (!q) throw new Error('search: q is required');
-  const { sort = 'rel', type = 'all', limit } = opts;
-  const params = { q, sort, type, limit };
+  const { filter = 'all', limit } = opts;
+  const params = { q, filter, limit };
   const data = await request('/search', { params });
 
   const buckets = {
