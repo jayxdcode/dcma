@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-21T23:55:25.222Z",
+  "generated_at": "2025-12-22T02:06:00.794Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": null,
   "instances": [
@@ -14,35 +14,35 @@
           "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:54:34.468Z"
+          "checked_at": "2025-12-22T02:05:08.901Z"
         },
         {
           "attempt": 2,
-          "term": "lofi hip hop",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-21T23:54:40.199Z"
-        },
-        {
-          "attempt": 3,
-          "term": "rick astley",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-21T23:54:45.928Z"
-        },
-        {
-          "attempt": 4,
-          "term": "rick astley",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-21T23:54:51.098Z"
-        },
-        {
-          "attempt": 5,
           "term": "piped",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:54:56.354Z"
+          "checked_at": "2025-12-22T02:05:14.108Z"
+        },
+        {
+          "attempt": 3,
+          "term": "Never Gonna Give You Up",
+          "suggestions": null,
+          "search": null,
+          "checked_at": "2025-12-22T02:05:19.295Z"
+        },
+        {
+          "attempt": 4,
+          "term": "openai",
+          "suggestions": null,
+          "search": null,
+          "checked_at": "2025-12-22T02:05:24.782Z"
+        },
+        {
+          "attempt": 5,
+          "term": "rick astley",
+          "suggestions": null,
+          "search": null,
+          "checked_at": "2025-12-22T02:05:30.839Z"
         }
       ],
       "metrics": {
@@ -54,7 +54,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T23:54:56.355Z",
+      "checked_at": "2025-12-22T02:05:30.839Z",
       "version": null,
       "isLatest": false
     },
@@ -69,35 +69,35 @@
           "term": "piped",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:54:00.526Z"
+          "checked_at": "2025-12-22T02:04:41.784Z"
         },
         {
           "attempt": 2,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-21T23:54:05.950Z"
-        },
-        {
-          "attempt": 3,
-          "term": "piped",
-          "suggestions": null,
-          "search": null,
-          "checked_at": "2025-12-21T23:54:10.752Z"
-        },
-        {
-          "attempt": 4,
           "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:54:16.775Z"
+          "checked_at": "2025-12-22T02:04:46.308Z"
+        },
+        {
+          "attempt": 3,
+          "term": "Never Gonna Give You Up",
+          "suggestions": null,
+          "search": null,
+          "checked_at": "2025-12-22T02:04:49.469Z"
+        },
+        {
+          "attempt": 4,
+          "term": "piped",
+          "suggestions": null,
+          "search": null,
+          "checked_at": "2025-12-22T02:04:52.545Z"
         },
         {
           "attempt": 5,
           "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:54:22.366Z"
+          "checked_at": "2025-12-22T02:04:57.488Z"
         }
       ],
       "metrics": {
@@ -109,7 +109,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T23:54:22.366Z",
+      "checked_at": "2025-12-22T02:04:57.488Z",
       "version": null,
       "isLatest": false
     },
@@ -121,38 +121,38 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "lofi hip hop",
+          "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:55:00.904Z"
+          "checked_at": "2025-12-22T02:05:36.209Z"
         },
         {
           "attempt": 2,
           "term": "Never Gonna Give You Up",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:55:06.347Z"
+          "checked_at": "2025-12-22T02:05:40.957Z"
         },
         {
           "attempt": 3,
           "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:55:10.261Z"
+          "checked_at": "2025-12-22T02:05:43.364Z"
         },
         {
           "attempt": 4,
-          "term": "lofi hip hop",
+          "term": "piped",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:55:15.494Z"
+          "checked_at": "2025-12-22T02:05:48.855Z"
         },
         {
           "attempt": 5,
-          "term": "openai",
+          "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:55:19.244Z"
+          "checked_at": "2025-12-22T02:05:54.880Z"
         }
       ],
       "metrics": {
@@ -164,7 +164,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T23:55:19.244Z",
+      "checked_at": "2025-12-22T02:05:54.880Z",
       "version": null,
       "isLatest": false
     },
@@ -176,38 +176,38 @@
       "runs": [
         {
           "attempt": 1,
-          "term": "piped",
+          "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:53:24.969Z"
+          "checked_at": "2025-12-22T02:04:10.318Z"
         },
         {
           "attempt": 2,
-          "term": "Never Gonna Give You Up",
+          "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:53:28.541Z"
+          "checked_at": "2025-12-22T02:04:14.176Z"
         },
         {
           "attempt": 3,
           "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:53:33.186Z"
+          "checked_at": "2025-12-22T02:04:16.694Z"
         },
         {
           "attempt": 4,
-          "term": "lofi hip hop",
+          "term": "piped",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:53:39.062Z"
+          "checked_at": "2025-12-22T02:04:20.705Z"
         },
         {
           "attempt": 5,
-          "term": "rick astley",
+          "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:53:44.082Z"
+          "checked_at": "2025-12-22T02:04:24.955Z"
         }
       ],
       "metrics": {
@@ -219,7 +219,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T23:53:44.082Z",
+      "checked_at": "2025-12-22T02:04:24.955Z",
       "version": null,
       "isLatest": false
     },
@@ -234,35 +234,35 @@
           "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:52:35.330Z"
+          "checked_at": "2025-12-22T02:03:21.185Z"
         },
         {
           "attempt": 2,
           "term": "rick astley",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:52:39.792Z"
+          "checked_at": "2025-12-22T02:03:24.822Z"
         },
         {
           "attempt": 3,
           "term": "lofi hip hop",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:52:44.760Z"
+          "checked_at": "2025-12-22T02:03:29.699Z"
         },
         {
           "attempt": 4,
-          "term": "openai",
+          "term": "piped",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:52:49.299Z"
+          "checked_at": "2025-12-22T02:03:35.959Z"
         },
         {
           "attempt": 5,
           "term": "openai",
           "suggestions": null,
           "search": null,
-          "checked_at": "2025-12-21T23:52:53.087Z"
+          "checked_at": "2025-12-22T02:03:39.688Z"
         }
       ],
       "metrics": {
@@ -274,7 +274,7 @@
         "avg_suggestion_ms": 0,
         "avg_search_ms": 0
       },
-      "checked_at": "2025-12-21T23:52:53.088Z",
+      "checked_at": "2025-12-22T02:03:39.688Z",
       "version": null,
       "isLatest": false
     }
