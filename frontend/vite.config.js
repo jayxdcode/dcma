@@ -5,6 +5,7 @@ export default defineConfig({
   base: './', // relative asset paths so dist works in subfolders
   plugins: [react()],
   build: {
+    minify: false,
     target: 'es2022'
   }
 });
