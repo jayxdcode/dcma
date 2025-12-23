@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-23T15:47:06.524Z",
+  "generated_at": "2025-12-23T16:33:26.390Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -11,68 +11,68 @@
       "suggestions": [
         {
           "kind": "suggest",
-          "term": "erika",
+          "term": "союз советский социалистических республик",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 149,
-          "body_sample": "[\"erika kirk\",\"erika\",\"erika german song\",\"erika kirk nicki minaj\",\"erika kirk interview\",\"erika diane\",\"erika kirk speech\",\"erika kirk candace owens\",\"erika song\",\"erika kirk jd vance\",\"erika costell\",\"erika i don't know\",\"erika kirk grifting comment\",\"erika isac\"]"
+          "time_ms": 279,
+          "body_sample": "[\"cccp national anthem 1977\",\"soviet anthem belarus\",\"soviet national anthem 1977\"]"
         },
         {
           "kind": "suggest",
-          "term": "ado",
+          "term": "iris out",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 147,
-          "body_sample": "[\"adopt me\",\"adore you\",\"adolescence\",\"adopt me house build\",\"adopt me trading\",\"adom tv live\",\"ado\",\"adopt me christmas 2025\",\"adore you miley cyrus\",\"adopt me channel\",\"adolf hitler\",\"adom fm 106.3 live\",\"adoration live\",\"adored stone roses\"]"
+          "time_ms": 195,
+          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out reaction\",\"iris out kenshi yonezu\",\"iris out piano\",\"iris out reze version\",\"iris out lyrics\",\"iris out guitar\",\"iris out cover\",\"iris out 1 hour\",\"iris out english\",\"iris out instrumental\",\"iris out karaoke\",\"iris out guitar tab\"]"
         },
         {
           "kind": "suggest",
-          "term": "Never Gonna Give You Up",
+          "term": "rick astley",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 149,
-          "body_sample": "[\"never gonna give you up\",\"never gonna give you up rick astley\",\"never gonna give you up karaoke\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up piano\",\"never gonna give you up remix\",\"never gonna give you up instrumental\",\"never gonna give you up reaction\",\"never gonna gi"
+          "time_ms": 198,
+          "body_sample": "[\"rick astley never gonna give you up\",\"rick astley\",\"rick astley glastonbury 2023\",\"rick astley together forever\",\"rick astley the smiths\",\"rick astley cry for help\",\"rick astley never gonna give you up lyrics\",\"rick astley foo fighters\",\"rick astley blossoms\",\"rick astley songs\",\"rick astley pink pony club\",\"rick ast"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "rick astley",
+          "term": "Never Gonna Give You Up",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 1499,
+          "time_ms": 815,
           "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDRxusbm2_TGTnDWEIhBTYW2cUQkw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\""
         },
         {
           "kind": "search",
-          "term": "ado",
+          "term": "erika",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 503,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=U8BlNEKq0r8\",\"type\":\"stream\",\"title\":\"愛して愛して愛して - Aishite Aishite Aishite\",\"thumbnail\":\"https://proxy.piped.private.coffee/rcsmSd7_A5MiehvHRLbVecTB4vjVqoL0Hrd0XMUujvmiLy0OWOXe2_hGZ5zrtAvsY_WtYvmrfbgj7Jpk6g=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/c"
+          "time_ms": 562,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Ta-jK-tbZEg\",\"type\":\"stream\",\"title\":\"Erika (EDM/Techno)\",\"thumbnail\":\"https://proxy.piped.private.coffee/kYWk-yGau_3cR-rZkPU3HBpmEceUN2kBSmkl7EoLSf0ebUlyVGgpXKB-xv6trnCHjnlen1J4-rZ_a3AN=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Erich and Matzler\",\"uploaderUrl\":null,\"up"
         },
         {
           "kind": "search",
-          "term": "erika",
+          "term": "союз советский социалистических республик",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 461,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=1MSdoHtZKdo\",\"type\":\"stream\",\"title\":\"LaMasque - ERIKA 2026 - Techno Mix\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/1MSdoHtZKdo/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3m_uBNPapaFdc6RPlU3s-yww53uTg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Bronk Dienstleistungen\",\"up"
+          "time_ms": 507,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=erKjfJJUblM\",\"type\":\"stream\",\"title\":\"Гимн Союза Советских Социалистических Республик (1977)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/erKjfJJUblM/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3mKJIhQR6lQhVjktv5Ky8nRX44SFg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Музыка "
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 148,
-        "avg_search_ms": 821,
-        "combined_latency_ms": 969
+        "avg_suggestion_ms": 224,
+        "avg_search_ms": 628,
+        "combined_latency_ms": 852
       },
-      "checked_at": "2025-12-23T15:47:02.566Z",
+      "checked_at": "2025-12-23T16:33:21.766Z",
       "version": "2025.0.0",
       "isLatest": true
     }
