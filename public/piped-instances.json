@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-23T05:28:52.093Z",
+  "generated_at": "2025-12-23T05:50:38.956Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -16,18 +16,18 @@
           "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 175,
-          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons live\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons lyrics\",\"imagine dragons bad liar\",\"imagine dragons on top of the world\",\"imag"
+          "time_ms": 209,
+          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons live\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons bad liar\",\"imagine dragons lyrics\",\"imagine dragons on top of the world\",\"imag"
         },
         {
           "kind": "suggest",
-          "term": "ado",
+          "term": "rick astley",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 177,
-          "body_sample": "[\"adopt me\",\"adore you\",\"adolescence\",\"adopt me trading\",\"adopt me house build\",\"ado\",\"adom tv live\",\"adopt me christmas 2025\",\"adore you miley cyrus\",\"adopt me grinding\",\"adonai\",\"adolf hitler\",\"adopt me channel\",\"adolescence reaction\"]"
+          "time_ms": 204,
+          "body_sample": "[\"rick astley never gonna give you up\",\"rick astley\",\"rick astley glastonbury 2023\",\"rick astley the smiths\",\"rick astley together forever\",\"rick astley cry for help\",\"rick astley live\",\"rick astley never gonna give you up lyrics\",\"rick astley foo fighters\",\"rick astley blossoms\",\"rick astley songs\",\"rick astley pink p"
         },
         {
           "kind": "suggest",
@@ -36,43 +36,43 @@
           "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 173,
+          "time_ms": 203,
           "body_sample": "[\"erika kirk\",\"erika\",\"erika german song\",\"erika kirk nicki minaj\",\"erika kirk interview\",\"erika diane\",\"erika kirk speech\",\"erika song\",\"erika kirk jd vance\",\"erika i don't know\",\"erika isac\",\"erika kirk grifting comment\",\"erika costell\",\"erika kirk body language analysis\"]"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "ado",
+          "term": "союз советский социалистических республик",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 598,
-          "body_sample": "{\"items\":[{\"url\":\"/channel/UCln9P4Qm3-EAY4aiEPmRwEA\",\"type\":\"channel\",\"name\":\"Ado\",\"thumbnail\":\"https://proxy.piped.private.coffee/BKpE74RwbPJ8zLaad9Y2XoX7SmIEsoma1KB8dNzwtWwiOqgTNnYI_guEP1iAaTBrdk4nHakx=s176-c-k-c0x00ffffff-no-rw-mo?host=yt3.googleusercontent.com\",\"description\":\"元気です。\",\"subscribers\":8700000,\"videos\":-"
+          "time_ms": 541,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=aKoCYJNbuIA\",\"type\":\"stream\",\"title\":\"Союз Советских Социалистических Республик также СССР. Текст из Википедии озвучен роботом\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/aKoCYJNbuIA/hqdefault.jpg?host=i.ytimg.com&rs=AOn4CLAPwYY4IFxRHDtp9jOmhp0N7E6U4g&sqp=-oaymwE2COADEI4CSFXyq4qpAygIA"
+        },
+        {
+          "kind": "search",
+          "term": "iris out",
+          "filter": "music_songs",
+          "path": "/search",
+          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_songs",
+          "ok": true,
+          "status": 200,
+          "time_ms": 494,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Cb0JZhdmjtg\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/VGf2lFXKQdSyrz2g3Czj66doPtUxvJBrWDK6UFeOj8zRqS-tgs_D8FG5-8pYTX-Uh9FxZBDJIXtN1nKF=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-"
         },
         {
           "kind": "search",
           "term": "erika",
-          "filter": "music_songs",
-          "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
-          "ok": true,
-          "status": 200,
-          "time_ms": 480,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Ta-jK-tbZEg\",\"type\":\"stream\",\"title\":\"Erika (EDM/Techno)\",\"thumbnail\":\"https://proxy.piped.private.coffee/kYWk-yGau_3cR-rZkPU3HBpmEceUN2kBSmkl7EoLSf0ebUlyVGgpXKB-xv6trnCHjnlen1J4-rZ_a3AN=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Erich and Matzler\",\"uploaderUrl\":null,\"up"
-        },
-        {
-          "kind": "search",
-          "term": "союз советский социалистических республик",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 406,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=erKjfJJUblM\",\"type\":\"stream\",\"title\":\"Гимн Союза Советских Социалистических Республик (1977)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/erKjfJJUblM/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3mKJIhQR6lQhVjktv5Ky8nRX44SFg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Музыка "
+          "time_ms": 419,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=1MSdoHtZKdo\",\"type\":\"stream\",\"title\":\"LaMasque - ERIKA 2026 - Techno Mix\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/1MSdoHtZKdo/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3m_uBNPapaFdc6RPlU3s-yww53uTg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Bronk Dienstleistungen\",\"up"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 175,
-        "avg_search_ms": 495,
-        "combined_latency_ms": 670
+        "avg_suggestion_ms": 205,
+        "avg_search_ms": 485,
+        "combined_latency_ms": 690
       },
-      "checked_at": "2025-12-23T05:28:48.041Z",
+      "checked_at": "2025-12-23T05:50:33.347Z",
       "version": "2025.0.0",
       "isLatest": true
     }
