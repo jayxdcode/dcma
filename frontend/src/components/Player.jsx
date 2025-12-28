@@ -4,6 +4,7 @@ import { IconButton, LinearProgress } from '@mui/material';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
 import SkipNext from '@mui/icons-material/SkipNext';
+import SkipPrevious from '@mui/icons-material/SkipPrevious';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { usePlayer } from '../lib/playerContext';
 
@@ -56,6 +57,9 @@ export default function Player({ onOpen }) {
 
         {/* Controls */}
         <div style={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton onClick={toggle} sx={{ color: 'white' }}>
+            <SkipPrevious />
+          </IconButton>
           <IconButton onClick={toggle} sx={{ color: 'white' }}>
             {playing ? <Pause /> : <PlayArrow />}
           </IconButton>

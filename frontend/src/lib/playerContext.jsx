@@ -10,6 +10,45 @@ const isProxyOn = false;  // KEEP THIS FALSE
 const YT_API_SRC = isProxyOn ? `${BACKEND_BASE}/iframe_api` : "https://www.youtube.com/iframe_api";
 const SPONSORBLOCK_API = "https://sponsor.ajay.app/api/skipSegments";
 
+function normalizeTrack(t) {
+  if (!t || typeof t !== 'object') return t;
+
+  const raw = t.raw || t; // some items already have raw nested
+
+  // prefer obvious canonical keys, but fallback to many variants
+  const id = t.id || t.videoId || raw?.id || raw?.videoId || raw?.watchId || '';
+  const title = t.title || raw?.title || raw?.name || raw?.videoTitle || '';
+  const artist =
+    t.artist ||
+    t.uploader ||
+    t.uploaderName ||
+    raw?.uploader ||
+    raw?.uploaderName ||
+    (raw?.authors && Array.isArray(raw.authors) ? raw.authors.join(', ') : '') ||
+    '';
+  const cover =
+    t.cover ||
+    t.thumbnail ||
+    t.thumbnailUrl ||
+    (t.thumbnails && t.thumbnails[0] && (t.thumbnails[0].url || t.thumbnails[0])) ||
+    raw?.thumbnail ||
+    raw?.thumbnailUrl ||
+    raw?.thumbnails?.[0]?.url ||
+    raw?.uploaderAvatar ||
+    '';
+
+  const duration = t.duration ?? t.durationSeconds ?? raw?.duration ?? 0;
+  return {
+    ...t,
+    id,
+    title,
+    artist,
+    cover,
+    duration,
+    raw: raw // keep original raw for debugging / advanced use
+  };
+}
+
 async function loadYouTubeApi() {
   try {
     if (window.YT && window.YT.Player) return window.YT;
@@ -51,7 +90,12 @@ export function PlayerProvider({ children, initialQueue }) {
   const [queue, setQueueState] = useState(() => {
     try {
       const last = JSON.parse(localStorage.getItem('lastPlay') || 'null');
-      if (last && last.queue) return last.queue;
+      // inside useState init for queue:
+      if (last && last.queue) {
+        try {
+          return (last.queue || []).map(normalizeTrack);
+        } catch(e){}
+      }
     } catch(e){}
     return initialQueue || [];
   });
@@ -156,7 +200,8 @@ export function PlayerProvider({ children, initialQueue }) {
   useEffect(() => {
     const t = queue[index];
     if (!t) return;
-    const videoId = t.source;
+    console.log('[playerContext] DEBUG: ', t); // DELETE AFTER TEST
+    const videoId = t.id;
     
     // GUARD: Prevent infinite reloads if the ID hasn't changed
     if (currentVideoIdRef.current === videoId) return;
@@ -187,7 +232,7 @@ export function PlayerProvider({ children, initialQueue }) {
             a.currentTime = 0;
             await a.play().catch(()=>{});
             fetchSponsorBlockSegments(videoId);
-            try { localStorage.setItem('lastPlay', JSON.stringify({ title: t.title, artist: t.artist, id: t.id, queue })); } catch(e){}
+            try { localStorage.setItem('lastPlay', JSON.stringify({ title: t.title, artist: t.artist, album: t.album ?? null, cover: t.cover, id: t.id, queue })); } catch(e){}
             return;
           }
         } catch(e){}
@@ -195,7 +240,7 @@ export function PlayerProvider({ children, initialQueue }) {
 
       loadViaYT();
       fetchSponsorBlockSegments(videoId);
-      try { localStorage.setItem('lastPlay', JSON.stringify({ title: t.title, artist: t.artist, id: t.id, queue })); } catch(e){}
+      try { localStorage.setItem('lastPlay', JSON.stringify({ title: t.title, artist: t.artist, album: t.album ?? null, cover: t.cover, id: t.id, queue })); } catch(e){}
     })();
   }, [index, queue]); // Kept queue here, but the GUARD at top prevents the loop
 
@@ -255,15 +300,17 @@ export function PlayerProvider({ children, initialQueue }) {
 
   const enqueue = (track, goNext=false) => {
     if (!track) return;
-    goNext ? setQueueState(q => [track, ...q]) : setQueueState(q => [...q, track]);
+    const t = normalizeTrack(track);
+    goNext ? setQueueState(q => [...q].splice(1, 0, track)) : setQueueState(q => [...q, track]);
   };
 
   const setQueue = (newQueue, startIndex = 0, autoplay = true) => {
-    setQueueState(newQueue || []);
+    const normalized = Array.isArray(newQueue) ? newQueue.map(normalizeTrack) : [];
+    setQueueState(normalized);
     setIndexState(startIndex);
     if (autoplay) setTimeout(() => play(), 100);
   };
-  
+
   const setIndex = (i, autoplay = true) => {
     setIndexState(i);
     setTimeout(() => { if (autoplay) play(); }, 100);

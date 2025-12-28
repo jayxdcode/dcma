@@ -34,6 +34,11 @@ export default function PlayerFull({ open, onClose }) {
   const touchStartY = useRef(0);
   const touchStartX = useRef(0);
 
+  // DEBUG 
+  useEffect(()=> {
+    console.debug('[PlayerFull] track keys:', Object.keys(track || {}), track);
+  }, [track]);
+
   // Load Lyrics — depend on the metadata used for searching
   useEffect(() => {
     if (!track?.title || !track?.artist) {

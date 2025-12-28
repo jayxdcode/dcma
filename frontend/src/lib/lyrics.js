@@ -2,29 +2,34 @@
 import hitori from '../../hitori.json';
 import { useModals } from '../components/ModalProvider';
 
+// Sorryyyyy, i cant lass this as User-Agent :/
 const APP_VERSION = hitori.versionName;
-const APP_USER_AGENT = `Hitori v${APP_VERSION} (https://github.com/jayxdcode/dcma)`;
-const LRCLIB_HEADERS = {
-  'User-Agent': APP_USER_AGENT
-};
+const APP_INFO = `Hitori v${APP_VERSION} (https://github.com/jayxdcode/dcma)`;
 
-const { showPrompt } = useModals();
+const isAbsolute = (url) => /^[a-z][a-z0-9+.-]*:/i.test(url);
 
 function joinPaths(...parts) {
-  return parts
+  const res = parts
     .map(part => part.replace(/(^\/+|\/+$)/g, '')) // Remove leading/trailing slashes
     .filter(x => x.length > 0) // Remove empty strings
     .join('/'); // Join with a single slash
+
+  if (isAbsolute(parts[0])) {
+     return res;
+  } else {
+     return `/${res}`;
+  }
 }
 
 const isDiscordProxy = window.location.hostname.includes('discordsays.com');
 if (isDiscordProxy) console.log("[lyrics] discordsays.com proxy detected! App is running :)")
-const BACKEND_URL = isDiscordProxy 
+const BACKEND_URL = isDiscordProxy
   ? '/api/v1'
   : new URL('/api', import.meta.env.VITE_BACKEND_BASE).href;
+console.log("[lyrics] Backend: ", BACKEND_URL);
 const LRCLIB_API = isDiscordProxy
   ? '/lrclib'
-  : 'https://lrclib.net/api'
+  : 'https://lrclib.net/api/'
   
 // process.env may not be available in browser; attempt to read safely
 const BACKEND_API_KEY =
@@ -51,7 +56,7 @@ export function parseLRCToArray(lrc) {
     // reset lastIndex to ensure global regex works per-line reliably
     rx.lastIndex = 0;
     while ((m = rx.exec(raw))) {
-      const time =I 
+      const time =
         +m[1] * 60000 +
         +m[2] * 1000 +
         (m[3] ? +m[3].padEnd(3, '0') : 0);
@@ -103,7 +108,7 @@ async function fetchTranslationAndRomanization(track, lyrics, signal) {
     return { rom: '', transl: '' };
   }
   try {
-    const u = '/' + joinPaths(BACKEND_URL, '/translate'); 
+    const u = joinPaths(BACKEND_URL, '/translate'); 
     const r = await fetch(u, {
       method: 'POST',
       headers: {
@@ -156,11 +161,10 @@ export async function loadLyrics(
 
   try {
     const q = encodeURIComponent([title, artist, album].join(' '));
-    const searchUrl = new URL(`/search?q=${q}`, LRCLIB_API).href; // mapped url (discord blocks anything but requests in the same domain)
+    const searchUrl = joinPaths(LRCLIB_API, `/search?q=${q}`); // mapped url (discord blocks anything but requests in the same domain)
     console.debug('[lyrics] searching lrclib at:', searchUrl);
 
     const r = await fetch(searchUrl, {
-      headers: LRCLIB_HEADERS,
       signal: signal ?? undefined
     });
 
@@ -189,7 +193,7 @@ export async function loadLyrics(
     onTransReady(mergeLRC(base, null, null));
 
     // Try to fetch romanization & translation (optional)
-    const { rom, transl } = await fetchTranslationAndRomanization(
+    const { rom, transl } = raw.length === 1 ? { rom: null, transl: null } : await fetchTranslationAndRomanization(
       { title, artist, album, duration },
       base,
       signal
@@ -206,7 +210,8 @@ export async function loadLyrics(
   }
 }
 
-export function promptForManualLyrics(reload) {
-  const q = showPrompt('Search manually for lyrics:');
+export async function promptForManualLyrics(reload) {
+  const { showPrompt } = useModals();
+  const q = await showPrompt('Search manually for lyrics:');
   if (q?.trim()) reload({ flag: true, query: q.trim() });
 }

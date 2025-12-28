@@ -1,5 +1,5 @@
 // src/pages/Search.jsx
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import {
   TextField,
   Button,
@@ -23,16 +23,13 @@ import {
   MoreVert,
   Image as ImageIcon,
   GraphicEq as GraphicEqIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
 import { usePlayer } from '../lib/playerContext';
-
-// IMPORT from piped-api (no duplication)
 import { search as pipedSearch, suggestions as pipedSuggestions } from '../lib/piped-api.js';
 
-// session storage key
 const SS_KEY = 'search:last:v1';
 
-// small id extractor
 const getYTId = (url) => {
   if (!url) return null;
   const s = String(url);
@@ -40,97 +37,70 @@ const getYTId = (url) => {
   return m ? m[1] : null;
 };
 
-// map generic piped item -> UI track (keeps original raw)
-function mapSearchItemToTrack(item) {
-  return {
-    id:
-      item.videoId ||
-      item.id ||
-      getYTId(item.url) ||
-      item.video_id ||
-      item.trackId ||
-      item.resultId ||
-      item.uid ||
-      Math.random().toString(36).slice(2),
-    title: item.title || item.name || item.videoTitle || item.resultTitle || 'Unknown',
-    artist:
-      item.artist || (item.authors && item.authors.join(', ')) || item.uploaderName || item.channelName || '',
-    cover:
-      item.thumbnail ||
-      (item.thumbnails && item.thumbnails[0] && item.thumbnails[0].url) ||
-      'https://placecats.com/300/300',
-    duration: item.durationSeconds || item.duration || 0,
-    source: item.videoId || item.id || getYTId(item.url) || item.video_id || item.trackId || '',
-    relevance: item.relevance || item.score || 0,
-    raw: item,
-  };
-}
-
-// choose bucket by filter key (tolerant to different bucket names)
 function bucketForFilter(filter, buckets) {
   if (!buckets) return [];
   const b = buckets;
-
   const flatten = (arrOrMaybe) => {
     if (!arrOrMaybe) return [];
     if (Array.isArray(arrOrMaybe)) return arrOrMaybe;
-    // object may contain .items or .results
     if (Array.isArray(arrOrMaybe.items)) return arrOrMaybe.items;
     if (Array.isArray(arrOrMaybe.results)) return arrOrMaybe.results;
     return [];
   };
 
   if (filter === 'all') {
-    // prefer music_all, then merge all music_* arrays
     if (Array.isArray(b.music_all)) return flatten(b.music_all);
-    // merge
     const merged = [];
     for (const k of Object.keys(b)) {
       if (k.startsWith('music_') && Array.isArray(b[k])) merged.push(...b[k]);
     }
     if (merged.length) return merged;
-    // fallback to any top-level array-ish fields
     for (const k of ['items', 'results', 'videos', 'contents']) {
       if (Array.isArray(b[k])) return flatten(b[k]);
     }
     return [];
   }
 
-  // map other filters to likely bucket names
   if (filter === 'music_songs' || filter === 'songs') {
-    return flatten(b.music_songs) .length ? flatten(b.music_songs) : (flatten(b.music_videos).length ? flatten(b.music_videos) : flatten(b.music_all));
+    const a = flatten(b.music_songs);
+    if (a.length) return a;
+    const b2 = flatten(b.music_videos);
+    if (b2.length) return b2;
+    return flatten(b.music_all);
   }
-  if (filter === 'channels') {
-    return flatten(b.music_artists).length ? flatten(b.music_artists) : flatten(b.channels) || [];
+  if (filter === 'music_artists') {
+    const a = flatten(b.music_artists);
+    if (a.length) return a;
+    return flatten(b.channels) || [];
   }
-  if (filter === 'albums') {
-    return flatten(b.music_albums).length ? flatten(b.music_albums) : flatten(b.albums) || [];
+  if (filter === 'music_albums') {
+    const a = flatten(b.music_albums);
+    if (a.length) return a;
+    return flatten(b.albums) || [];
   }
-  if (filter === 'playlists') {
-    return flatten(b.music_playlists).length ? flatten(b.music_playlists) : flatten(b.playlists) || [];
+  if (filter === 'music_playlists') {
+    const a = flatten(b.music_playlists);
+    if (a.length) return a;
+    return flatten(b.playlists) || [];
   }
 
-  // fallback: try to return music_all or items
   if (Array.isArray(b.music_all)) return flatten(b.music_all);
   return flatten(b.items || b.results || b.videos || b.contents || []);
 }
 
 export default function SearchPage() {
   const [q, setQ] = useState('');
-  const [results, setResults] = useState([]); // UI-ready mapped tracks shown
-  const [buckets, setBuckets] = useState(null); // full piped bucketed response
+  const [results, setResults] = useState([]);
+  const [buckets, setBuckets] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // suggestions
   const [suggestions, setSuggestions] = useState([]);
-  // const [suggestLoading, setSuggestLoading] = useState(false);
   const [suggestVisible, setSuggestVisible] = useState(false);
+  const [suggestLoading, setSuggestLoading] = useState(false);
 
-  // filters & sort
   const [filter, setFilter] = useState('all');
-  const [sortBy, setSortBy] = useState('relevance'); // relevance | views | duration
+  const [sortBy, setSortBy] = useState('relevance');
 
-  // menu state
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [menuTarget, setMenuTarget] = useState(null);
 
@@ -139,8 +109,17 @@ export default function SearchPage() {
 
   const inputRef = useRef(null);
   const suggestTimer = useRef(null);
+  const latestSuggestReq = useRef(0);
+  const mounted = useRef(true);
 
-  // restore session: read saved buckets if present
+  const [suggestPos, setSuggestPos] = useState({ top: 0, left: 0, width: 360 });
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
+
+  // restore session
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(SS_KEY);
@@ -149,19 +128,16 @@ export default function SearchPage() {
       if (parsed?.query) setQ(parsed.query);
       if (parsed?.buckets) {
         setBuckets(parsed.buckets);
-        // pick initial displayed results using current filter
         const bucketItems = bucketForFilter(parsed.filter || filter, parsed.buckets);
-        const mapped = (Array.isArray(bucketItems) ? bucketItems : []).map(mapSearchItemToTrack);
+        const mapped = Array.isArray(bucketItems) ? bucketItems : [];
         setResults(mapped);
       }
       if (parsed?.filter) setFilter(parsed.filter);
       if (parsed?.sortBy) setSortBy(parsed.sortBy);
-    } catch (e) {
-      // ignore
-    }
-  }, []); // run once
+    } catch (e) { /* ignore */ }
+  }, []);
 
-  // keep playingId in sync with player
+  // player sync
   useEffect(() => {
     if (!player) return;
     if (typeof player.getCurrent === 'function') {
@@ -186,31 +162,60 @@ export default function SearchPage() {
     }
   }, [player]);
 
-  // suggestions debounce effect (calls imported pipedSuggestions)
+  // Suggestions debounce + cancel stale responses
   useEffect(() => {
-    if (!q) {
+    // don't show suggestions for empty or very short queries
+    if (!q || q.trim().length < 2) {
       setSuggestions([]);
-      // setSuggestLoading(false);
+      setSuggestLoading(false);
       return;
     }
-    // setSuggestLoading(true);
+
+    setSuggestLoading(true);
     if (suggestTimer.current) clearTimeout(suggestTimer.current);
+
+    const reqId = ++latestSuggestReq.current;
     suggestTimer.current = setTimeout(async () => {
       try {
         const s = await pipedSuggestions(q, { limit: 8 });
+        // check stale
+        if (reqId !== latestSuggestReq.current) return;
         const normalized = Array.isArray(s) ? s.map(x => (typeof x === 'string' ? x : (x.text || x.query || JSON.stringify(x)))) : [];
-        setSuggestions(normalized);
+        if (mounted.current) setSuggestions(normalized);
       } catch (err) {
         console.warn('suggest fetch failed', err);
-        setSuggestions([]);
+        if (reqId === latestSuggestReq.current && mounted.current) setSuggestions([]);
       } finally {
-        // setSuggestLoading(false);
+        if (reqId === latestSuggestReq.current && mounted.current) setSuggestLoading(false);
       }
-    }, 250);
+    }, 300); // debounce 300ms
+
     return () => clearTimeout(suggestTimer.current);
   }, [q]);
 
-  // perform search and save buckets to sessionStorage
+  // compute suggestion position under input to avoid covering the input
+  useLayoutEffect(() => {
+    function updatePos() {
+      const el = inputRef.current;
+      if (!el) return;
+      const root = el.getBoundingClientRect();
+      const width = Math.min(Math.max(root.width, 240), 720);
+      setSuggestPos({
+        top: root.bottom + window.scrollY + 8,
+        left: root.left + window.scrollX,
+        width,
+      });
+    }
+    updatePos();
+    window.addEventListener('resize', updatePos);
+    window.addEventListener('scroll', updatePos, { passive: true });
+    return () => {
+      window.removeEventListener('resize', updatePos);
+      window.removeEventListener('scroll', updatePos);
+    };
+  }, [inputRef, suggestVisible]);
+
+  // search
   async function doSearch(e, typedQuery) {
     if (e && e.preventDefault) e.preventDefault();
     const query = typeof typedQuery === 'string' ? typedQuery : q;
@@ -219,21 +224,18 @@ export default function SearchPage() {
     setResults([]);
     setBuckets(null);
     try {
-      const b = await pipedSearch(query, { limit: 50, filter }); // pipedSearch returns bucketed object
+      const b = await pipedSearch(query, { limit: 50, filter });
       if (!b) {
         setBuckets(null);
         setResults([]);
         return;
       }
       setBuckets(b);
-      // derive array for current filter
       const rawBucketItems = bucketForFilter(filter, b);
-      const mapped = (Array.isArray(rawBucketItems) ? rawBucketItems : []).map(mapSearchItemToTrack);
-      // optional: apply local sort immediately
+      const mapped = Array.isArray(rawBucketItems) ? rawBucketItems : [];
       const sorted = applySort(mapped, sortBy);
       setResults(sorted);
 
-      // persist full buckets in session
       const save = { query, buckets: b, timestamp: Date.now(), filter, sortBy };
       try { sessionStorage.setItem(SS_KEY, JSON.stringify(save)); } catch (e) {}
     } catch (err) {
@@ -245,7 +247,6 @@ export default function SearchPage() {
     }
   }
 
-  // apply sort helper
   function applySort(arr, sortKey) {
     if (!Array.isArray(arr)) return arr;
     const copy = [...arr];
@@ -259,11 +260,10 @@ export default function SearchPage() {
     return copy;
   }
 
-  // when filter or sort change, re-read from buckets (NO RE-QUERY)
   useEffect(() => {
     if (!buckets) return;
     const rawBucketItems = bucketForFilter(filter, buckets);
-    const mapped = (Array.isArray(rawBucketItems) ? rawBucketItems : []).map(mapSearchItemToTrack);
+    const mapped = Array.isArray(rawBucketItems) ? rawBucketItems : [];
     const sorted = applySort(mapped, sortBy);
     setResults(sorted);
     try {
@@ -273,9 +273,9 @@ export default function SearchPage() {
     } catch (e) {}
   }, [filter, sortBy, buckets]);
 
-  // play handlers
+  // play + enqueue helpers
   function playFromCover(item) {
-    const t = mapSearchItemToTrack(item);
+    const t = item;
     if (player && typeof player.playTrack === 'function') {
       player.playTrack(t, { openPlayer: false });
     } else if (player && typeof player.setQueue === 'function') {
@@ -283,8 +283,9 @@ export default function SearchPage() {
     }
     setPlayingId(t.id);
   }
+
   function playAndOpenPlayer(item) {
-    const t = mapSearchItemToTrack(item);
+    const t = item;
     if (player && typeof player.playTrack === 'function') {
       player.playTrack(t, { openPlayer: true });
     } else if (player && typeof player.setQueue === 'function') {
@@ -293,12 +294,13 @@ export default function SearchPage() {
     }
     setPlayingId(t.id);
   }
+
   function enqueue(item, nextUp = false) {
-    const t = mapSearchItemToTrack(item);
+    const t = item;
     if (player && typeof player.enqueue === 'function') player.enqueue(t, nextUp);
   }
 
-  // menu handlers
+  // menus
   function openMenu(e, item) { setMenuAnchor(e.currentTarget); setMenuTarget(item); }
   function closeMenu() { setMenuAnchor(null); setMenuTarget(null); }
   async function handleMenuAddToQueue() { if (menuTarget) { enqueue(menuTarget, false); closeMenu(); } }
@@ -310,6 +312,34 @@ export default function SearchPage() {
   function onInputBlur() { setTimeout(() => setSuggestVisible(false), 150); }
 
   function handleSortChange(e) { setSortBy(e.target.value || 'relevance'); }
+
+  // clear input helper
+  function clearInput() {
+    setQ('');
+    setSuggestions([]);
+    setSuggestVisible(false);
+    inputRef.current?.focus();
+  }
+
+  // improved filter click: load from sessionStorage if no buckets present
+  function onFilterClick(key) {
+    if (!buckets) {
+      try {
+        const raw = sessionStorage.getItem(SS_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed?.buckets) {
+            setBuckets(parsed.buckets);
+            const items = bucketForFilter(key, parsed.buckets);
+            setResults(Array.isArray(items) ? items : []);
+            setFilter(key);
+            return;
+          }
+        }
+      } catch (e) { /* ignore */ }
+    }
+    setFilter(key);
+  }
 
   const topResult = results && results.length > 0 ? results[0] : null;
   const otherResults = results && results.length > 1 ? results.slice(1) : [];
@@ -331,8 +361,18 @@ export default function SearchPage() {
           InputProps={{
             disableUnderline: true,
             startAdornment: (
-              <InputAdornment position="start" sx={{ alignItems: 'center', mr: 1, display: 'flex', height: '100%' }}>
+              <InputAdornment position="start" sx={{ alignItems: 'center', mr: 1, marginTop: '0 !important', display: 'flex', height: '100%' }}>
                 <SearchIcon sx={{ color: 'var(--text, #888)', fontSize: 20, verticalAlign: 'middle', lineHeight: 1 }} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end" sx={{ display: 'flex', alignItems: 'center' }}>
+                {suggestLoading ? <CircularProgress size={18} /> : null}
+                {q ? (
+                  <IconButton aria-label="clear" size="small" onClick={clearInput} sx={{ ml: 1 }}>
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                ) : null}
               </InputAdornment>
             ),
             sx: { display: 'flex', alignItems: 'center' },
@@ -382,7 +422,7 @@ export default function SearchPage() {
             return (
               <Box
                 key={opt.key}
-                onClick={() => setFilter(opt.key)}
+                onClick={() => onFilterClick(opt.key)}
                 sx={{
                   cursor: 'pointer',
                   opacity: selected ? 1 : 0.7,
@@ -391,6 +431,7 @@ export default function SearchPage() {
                   paddingY: 0.25,
                   borderRadius: 1,
                   '&:hover': { opacity: 1 },
+                  borderBottom: selected ? '2px solid var(--accent-2, #1ed760)' : '2px solid transparent'
                 }}
               >
                 {opt.label}
@@ -411,26 +452,26 @@ export default function SearchPage() {
         </Box>
       </Box>
 
-      {/* floating suggestions */}
+      {/* floating suggestions (positioned under input so it doesn't cover it) */}
       {suggestVisible && suggestions.length > 0 && (
         <Paper sx={{
           position: 'absolute',
           zIndex: 60,
-          top: 94,
-          left: 16,
-          maxWidth: 420,
-          height: 'min(30vh, 400px)',
-          width: 'min(60vw, 420px)',
+          top: suggestPos.top,
+          left: suggestPos.left,
+          width: suggestPos.width,
+          maxWidth: 'calc(100% - 32px)',
+          height: 'min(25vh, 300px)',
           boxShadow: 6,
           overflow: 'hidden'
         }}>
           <List dense>
-            { suggestions.map((s, idx) => (
+            {suggestions.map((s, idx) => (
               <ListItem
                 key={idx}
                 button
                 onMouseDown={(ev) => {
-                  ev.preventDefault();
+                  ev.preventDefault(); // keep focus
                   setQ(s);
                   doSearch(null, s);
                   setSuggestVisible(false);
@@ -444,69 +485,91 @@ export default function SearchPage() {
       )}
 
       {/* results */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
-        {topResult && (
-          <Box
-            className="top-result"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              padding: 1,
-              borderRadius: 1,
-              border: '1px solid rgba(255,255,255,0.04)'
-            }}
-          >
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1, minHeight: 160 }}>
+        {/* spinner when searching */}
+        {loading && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 220 }}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {/* Top result card */}
+        {!loading && topResult && (
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography variant="subtitle2" sx={{ color: 'var(--subtext,#bbb)', fontWeight: 700 }}>Top result</Typography>
             <Box
-              onClick={() => playFromCover(topResult)}
+              className="top-result"
               sx={{
-                width: 84,
-                height: 84,
-                borderRadius: 1,
-                overflow: 'hidden',
-                flexShrink: 0,
-                position: 'relative',
-                cursor: 'pointer',
-                '&:hover .play-overlay': { opacity: 1, transform: 'scale(1)' }
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                padding: 2,
+                borderRadius: 2,
+                backgroundColor: 'var(--surface-2, rgba(255,255,255,0.02))',
+                border: '1px solid rgba(255,255,255,0.04)'
               }}
             >
-              <img src={topResult.cover} alt="cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              <IconButton
-                className="play-overlay"
+              <Box
+                onClick={() => playFromCover(topResult)}
                 sx={{
-                  position: 'absolute',
-                  left: '50%',
-                  top: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  transition: 'all 0.12s',
-                  opacity: 0.95,
-                  background: 'rgba(0,0,0,0.45)',
-                  color: 'var(--accent, #1db954)'
+                  width: 120,
+                  height: 120,
+                  borderRadius: 1,
+                  overflow: 'hidden',
+                  flexShrink: 0,
+                  position: 'relative',
+                  cursor: 'pointer',
+                  '&:hover .play-overlay': { opacity: 1, transform: 'scale(1)' }
                 }}
-                onClick={(e) => { e.stopPropagation(); playFromCover(topResult); }}
               >
-                {playingId === topResult.id ? <GraphicEqIcon /> : <PlayArrow />}
-              </IconButton>
-            </Box>
+                <img src={topResult.cover} alt="cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <IconButton
+                  className="play-overlay"
+                  sx={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    transition: 'all 0.12s',
+                    opacity: 0.95,
+                    background: 'rgba(0,0,0,0.45)',
+                    color: 'var(--accent, #1db954)'
+                  }}
+                  onClick={(e) => { e.stopPropagation(); playFromCover(topResult); }}
+                >
+                  {playingId === topResult.id ? <AnimatedEq sx={{ fontSize: 26 }} /> : <PlayArrow />}
+                </IconButton>
+              </Box>
 
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography variant="body1" sx={{ fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {topResult.title}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'var(--subtext, #aaa)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {topResult.artist}
-              </Typography>
-            </Box>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography variant="h6" sx={{ fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {topResult.title}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'var(--subtext, #aaa)', mt: 0.5 }}>
+                  {topResult.artist}
+                </Typography>
+                {topResult.album ? (
+                  <Typography variant="caption" sx={{ color: 'var(--subtext, #999)', mt: 0.5 }}>
+                    {topResult.album}
+                  </Typography>
+                ) : null}
+                <Box sx={{ mt: 1, display: 'flex', gap: 2, alignItems: 'center' }}>
+                  {topResult.duration ? <Typography variant="caption" sx={{ color: 'var(--subtext,#999)' }}>{formatDuration(topResult.duration)}</Typography> : null}
+                  {topResult.views ? <Typography variant="caption" sx={{ color: 'var(--subtext,#999)' }}>{prettyViews(topResult.views)}</Typography> : null}
+                </Box>
+              </Box>
 
-            <Box>
-              <IconButton onClick={(e) => openMenu(e, topResult)} size="small" sx={{ color: 'var(--text, white)' }}>
-                <MoreVert />
-              </IconButton>
+              <Box>
+                <IconButton onClick={(e) => openMenu(e, topResult)} size="small" sx={{ color: 'var(--text, white)' }}>
+                  <MoreVert />
+                </IconButton>
+              </Box>
             </Box>
           </Box>
         )}
 
-        {otherResults.map((t, i) => {
+        {/* other results */}
+        {!loading && otherResults.map((t, i) => {
           const isPlaying = playingId === t.id;
           return (
             <Box
@@ -563,7 +626,7 @@ export default function SearchPage() {
                   }}
                   onClick={(e) => { e.stopPropagation(); playFromCover(t); }}
                 >
-                  {isPlaying ? <GraphicEqIcon /> : <PlayArrow />}
+                  {isPlaying ? <AnimatedEq sx={{ fontSize: 20 }} /> : <PlayArrow />}
                 </IconButton>
               </Box>
 
@@ -590,7 +653,7 @@ export default function SearchPage() {
           );
         })}
 
-        {results.length === 0 && !loading && (
+        {!loading && results.length === 0 && (
           <Box sx={{ textAlign: 'center', mt: 4, opacity: 0.6 }}>
             <Typography variant="body2">No results yet. Try searching for an artist.</Typography>
           </Box>
@@ -603,6 +666,52 @@ export default function SearchPage() {
         <MenuItem onClick={handleMenuAddNext}>Add next</MenuItem>
         <MenuItem onClick={handleMenuOpenInPlayer}>Open in player</MenuItem>
       </Menu>
+    </Box>
+  );
+}
+
+// small helpers
+function formatDuration(d) {
+  if (!d && d !== 0) return null;
+  const s = Number(d || 0);
+  const hh = Math.floor(s / 3600);
+  const mm = Math.floor((s % 3600) / 60);
+  const ss = Math.floor(s % 60);
+  if (hh) return `${hh}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+  return `${mm}:${String(ss).padStart(2, '0')}`;
+}
+function prettyViews(v) {
+  if (!v && v !== 0) return null;
+  const n = Number(v);
+  if (n >= 1e9) return `${(n / 1e9).toFixed(1)}B views`;
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M views`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(1)}K views`;
+  return `${n} views`;
+}
+
+// Animated equalizer icon component
+function AnimatedEq(props) {
+  return (
+    <Box
+      component="span"
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: props.sx?.fontSize ? `calc(${props.sx.fontSize}px)` : 24,
+        height: props.sx?.fontSize ? `calc(${props.sx.fontSize}px)` : 24,
+        '& svg': {
+          '@keyframes eq': {
+            '0%': { transform: 'scaleY(0.6)' },
+            '50%': { transform: 'scaleY(1.05)' },
+            '100%': { transform: 'scaleY(0.6)' },
+          },
+          transformOrigin: 'center bottom',
+          animation: 'eq 900ms linear infinite',
+        }
+      }}
+    >
+      <GraphicEqIcon {...props} />
     </Box>
   );
 }
