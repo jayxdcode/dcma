@@ -151,7 +151,11 @@
           function onload() {
             waitForSameOrigin(iframe, 5000).then((ready) => {
               if (ready) {
-                fetchAndInject(iframe).then(console.log('[iframe-patcher] patch done')).then(resolve);
+                fetchAndInject(iframe)
+                  .then(() => {
+                    console.log('[iframe-patcher] patch done')
+                  })
+                  .then(resolve);
               } else {
                 console.warn('iframe not same-origin after load; injection skipped');
                 resolve(false);

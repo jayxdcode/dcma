@@ -1,7 +1,7 @@
 // embed-patcher.js
 // patcher version 1.0.0
 
-(function() {
+function init() {
   'use strict';
   
   // Only run on the discord proxy origin
@@ -237,4 +237,9 @@
     window.__embedFixRewriteFonts = function() { try { fixAll(document); } catch (e) {} };
   } catch (e) {}
   
-})();
+};
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log('The DOM is fully loaded!');
+    init();
+});
