@@ -6,9 +6,9 @@ export function usePlayer(){ return useContext(PlayerContext); }
 
 // const BACKEND_BASE = import.meta.env.VITE_BACKEND_BASE || "";
 
-const isProxyOn = false;  // KEEP THIS FALSE
-const YT_API_SRC = isProxyOn ? `${BACKEND_BASE}/iframe_api` : "https://www.youtube.com/iframe_api";
-const SPONSORBLOCK_API = "https://sponsor.ajay.app/api/skipSegments";
+const isDiscordProxy = window.location.hostname.includes('discordsays.com');
+const YT_API_SRC = isDiscordProxy ? `/yt/iframe_api` : "https://www.youtube.com/iframe_api";
+const SPONSORBLOCK_API = isDiscordProxy ? "/sb/api/skipSegments" : "https://sponsor.ajay.app/api/skipSegments";
 
 function normalizeTrack(t) {
   if (!t || typeof t !== 'object') return t;

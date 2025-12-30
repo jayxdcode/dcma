@@ -2,7 +2,7 @@
 import hitori from '../../hitori.json';
 import { useModals } from '../components/ModalProvider';
 
-// Sorryyyyy, i cant lass this as User-Agent :/
+// Sorryyyyy, i cant use this as User-Agent :/
 const APP_VERSION = hitori.versionName;
 const APP_INFO = `Hitori v${APP_VERSION} (https://github.com/jayxdcode/dcma)`;
 
@@ -28,7 +28,7 @@ const BACKEND_URL = isDiscordProxy
   : new URL('/api', import.meta.env.VITE_BACKEND_BASE).href;
 console.log("[lyrics] Backend: ", BACKEND_URL);
 const LRCLIB_API = isDiscordProxy
-  ? '/lrclib'
+  ? '/lrclib/api'
   : 'https://lrclib.net/api/'
   
 // process.env may not be available in browser; attempt to read safely
