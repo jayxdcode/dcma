@@ -2,7 +2,7 @@
 // ES module client for Piped-based backend with base path /piped
 // Exports: search, suggestions, related, nextTracks, artistPage, albumPage, playlistPage, getStreams
 
-// const BASE = 'https://frontend-dcma.vercel.app/api/piped'; // <-- your app/server should
+const BASE = 'https://frontend-dcma.vercel.app/api/piped'; // <-- your app/server should
 // proxy /piped -> actual piped instance or an mitm router for dynamic
 
 const isDiscordProxy = window.location.hostname.includes('discordsays.com');
