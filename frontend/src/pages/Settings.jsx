@@ -17,7 +17,7 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
     if (typeof window.eruda !== 'undefined') return;
 
     const script = document.createElement('script');
-    script.src = isDiscordProxy ? "/src/eruda" : "//cdn.jsdelivr.net/npm/eruda";
+    script.src = isDiscordProxy ? "/src/eruda/eruda.js" : "//cdn.jsdelivr.net/npm/eruda";
     document.body.appendChild(script);
     script.onload = () => {
       window.eruda.init();
