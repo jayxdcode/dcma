@@ -4,8 +4,6 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 const PlayerContext = createContext(null);
 export function usePlayer(){ return useContext(PlayerContext); }
 
-// const BACKEND_BASE = import.meta.env.VITE_BACKEND_BASE || "";
-
 const isDiscordProxy = window.location.hostname.includes('discordsays.com');
 const YT_API_SRC = isDiscordProxy ? `/yt/iframe_api` : "https://www.youtube.com/iframe_api";
 const SPONSORBLOCK_API = isDiscordProxy ? "/sb/api/skipSegments" : "https://sponsor.ajay.app/api/skipSegments";
@@ -13,9 +11,7 @@ const SPONSORBLOCK_API = isDiscordProxy ? "/sb/api/skipSegments" : "https://spon
 function normalizeTrack(t) {
   if (!t || typeof t !== 'object') return t;
 
-  const raw = t.raw || t; // some items already have raw nested
-
-  // prefer obvious canonical keys, but fallback to many variants
+  const raw = t.raw || t; 
   const id = t.id || t.videoId || raw?.id || raw?.videoId || raw?.watchId || '';
   const title = t.title || raw?.title || raw?.name || raw?.videoTitle || '';
   const artist =
@@ -45,36 +41,69 @@ function normalizeTrack(t) {
     artist,
     cover,
     duration,
-    raw: raw // keep original raw for debugging / advanced use
+    raw: raw 
   };
 }
 
+/**
+ * Patched loadYouTubeApi for Discord Proxy
+ * Intercepts the script and replaces youtube domains with the local /yt proxy
+ */
 async function loadYouTubeApi() {
   try {
     if (window.YT && window.YT.Player) return window.YT;
-    return new Promise((resolve, reject) => {
+
+    return new Promise(async (resolve, reject) => {
+      // Prevent duplicate scripts
       if (document.getElementById('hitori-yt-api')) {
-        const check = setInterval(() => { if (window.YT && window.YT.Player) { clearInterval(check); resolve(window.YT); } }, 50);
+        const check = setInterval(() => { 
+          if (window.YT && window.YT.Player) { clearInterval(check); resolve(window.YT); } 
+        }, 50);
         setTimeout(()=> { clearInterval(check); reject(new Error('YT API timeout')); }, 15000);
         return;
       }
+
       const s = document.createElement('script');
       s.id = 'hitori-yt-api';
-      s.src = YT_API_SRC;
       s.async = true;
-      document.head.appendChild(s);
+
+      if (isDiscordProxy) {
+        try {
+          console.log("[Hitori] Patching YouTube Iframe API for Discord Proxy...");
+          const response = await fetch(YT_API_SRC);
+          const scriptContent = await response.text();
+          
+          // Replace standard and escaped YouTube URLs with your /yt proxy
+          const patchedContent = scriptContent.replace(/https:\\?\/\\?\/www\.youtube\.com/g, '/yt');
+          
+          const blob = new Blob([patchedContent], { type: 'application/javascript' });
+          s.src = URL.createObjectURL(blob);
+          
+          // Cleanup memory once loaded
+          s.onload = () => URL.revokeObjectURL(s.src);
+        } catch (err) {
+          console.warn("[Hitori] Proxy fetch failed, trying direct link:", err);
+          s.src = YT_API_SRC; 
+        }
+      } else {
+        s.src = YT_API_SRC;
+      }
+
       const prev = window.onYouTubeIframeAPIReady;
       window.onYouTubeIframeAPIReady = function() {
         if (prev) try { prev(); } catch(e) {}
         resolve(window.YT);
       };
+
+      document.head.appendChild(s);
+
       setTimeout(() => {
         if (window.YT && window.YT.Player) resolve(window.YT);
         else reject(new Error('YouTube Iframe API failed to load'));
       }, 15000);
     });
   } catch(e) {
-    console.error("An error occured while tring to load YT Iframe API:", e.message, e);
+    console.error("An error occurred while trying to load YT Iframe API:", e.message, e);
   }
 }
 
@@ -84,17 +113,14 @@ export function PlayerProvider({ children, initialQueue }) {
   const audioRef = useRef(null);
   const skipSegmentsRef = useRef([]);
   const skippingRef = useRef(false);
-  const currentVideoIdRef = useRef(null); // Prevents infinite reloads
+  const currentVideoIdRef = useRef(null); 
 
   const [useAudioEngine, setUseAudioEngine] = useState(false);
   const [queue, setQueueState] = useState(() => {
     try {
       const last = JSON.parse(localStorage.getItem('lastPlay') || 'null');
-      // inside useState init for queue:
       if (last && last.queue) {
-        try {
-          return (last.queue || []).map(normalizeTrack);
-        } catch(e){}
+        return (last.queue || []).map(normalizeTrack);
       }
     } catch(e){}
     return initialQueue || [];
@@ -146,8 +172,6 @@ export function PlayerProvider({ children, initialQueue }) {
                   setPlaying(true);
                   try {
                     const d = Math.floor(e.target.getDuration() || 0);
-                    // Use functional state update to avoid dependency on 'queue'
-                    // Only update if duration actually changes
                     if (d > 0) {
                         setQueueState(prevQ => {
                             if (prevQ[index] && prevQ[index].duration !== d) {
@@ -170,7 +194,7 @@ export function PlayerProvider({ children, initialQueue }) {
       } catch (err) { console.error('YT API load failed', err); }
     })();
     return () => { mounted = false; };
-  }, [containerRef.current]); // removed index/queue from here to allow ref creation once
+  }, [containerRef.current]);
 
   useEffect(() => {
     const tick = setInterval(() => {
@@ -189,21 +213,18 @@ export function PlayerProvider({ children, initialQueue }) {
       } catch(e){}
     }, 500);
     return () => clearInterval(tick);
-  }, [useAudioEngine, index]); // Removed 'queue' from dependency to prevent flicker
+  }, [useAudioEngine, index]);
 
   useEffect(() => {
     try { if (audioRef.current) audioRef.current.volume = volume; } catch(e){}
     try { if (playerRef.current && playerRef.current.setVolume) playerRef.current.setVolume(Math.round(volume * 100)); } catch(e){}
   }, [volume]);
 
-  // Main Load Logic
   useEffect(() => {
     const t = queue[index];
     if (!t) return;
-    console.log('[playerContext] DEBUG: ', t); // DELETE AFTER TEST
     const videoId = t.id;
     
-    // GUARD: Prevent infinite reloads if the ID hasn't changed
     if (currentVideoIdRef.current === videoId) return;
     currentVideoIdRef.current = videoId;
 
@@ -242,7 +263,7 @@ export function PlayerProvider({ children, initialQueue }) {
       fetchSponsorBlockSegments(videoId);
       try { localStorage.setItem('lastPlay', JSON.stringify({ title: t.title, artist: t.artist, album: t.album ?? null, cover: t.cover, id: t.id, queue })); } catch(e){}
     })();
-  }, [index, queue]); // Kept queue here, but the GUARD at top prevents the loop
+  }, [index, queue]);
 
   async function fetchSponsorBlockSegments(videoId) {
     skipSegmentsRef.current = [];
@@ -301,7 +322,11 @@ export function PlayerProvider({ children, initialQueue }) {
   const enqueue = (track, goNext=false) => {
     if (!track) return;
     const t = normalizeTrack(track);
-    goNext ? setQueueState(q => [...q].splice(1, 0, track)) : setQueueState(q => [...q, track]);
+    goNext ? setQueueState(q => {
+        const n = [...q];
+        n.splice(index + 1, 0, t);
+        return n;
+    }) : setQueueState(q => [...q, t]);
   };
 
   const setQueue = (newQueue, startIndex = 0, autoplay = true) => {
@@ -330,4 +355,3 @@ export function PlayerProvider({ children, initialQueue }) {
 
   return <PlayerContext.Provider value={value}>{children}</PlayerContext.Provider>;
 }
-
