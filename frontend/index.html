@@ -1,12 +1,89 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Hitori ⊙⁠﹏⁠⊙</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hitori ⊙⁠﹏⁠⊙</title>
+  <script>
+    // Minimal fix for auto load eruda
+    (function() {
+      if (typeof window.eruda !== 'undefined') return;
+      
+      const script = document.createElement('script');
+      script.src = isDiscordProxy ? "/src/eruda/eruda.js" : "//cdn.jsdelivr.net/npm/eruda";
+      document.body.appendChild(script);
+      script.onload = () => {
+        window.eruda.init();
+        console.log('[eruda] i\'m in, fellas');
+      };
+    })();
+  </script>
+  <script>
+    // inject-before-yt-api.js
+    (function() {
+      const isDiscordProxy = window.location.hostname.includes('discordsays.com');
+      if (!isDiscordProxy) {
+        console.log("[yt-api-patcher] skipped patching. reason: not in a discord context")
+        return;
+      }
+      
+      const HOST = location.origin + "/yt";
+      
+      // Ensure YTConfig.host exists before the API checks it
+      window.YTConfig = window.YTConfig || {};
+      window.YTConfig.host = HOST;
+      
+      // Patch creation of players once API registers YT.Player
+      function patchPlayer() {
+        if (!window.YT || !window.YT.Player) return;
+        if (window.YT.Player.__patched) return;
+        
+        const RealPlayer = window.YT.Player;
+        
+        function PatchedPlayer(el, opts) {
+          opts = opts || {};
+          // force host to our proxy
+          opts.host = HOST;
+          return new RealPlayer(el, opts);
+        }
+        // preserve prototype and static props
+        PatchedPlayer.prototype = RealPlayer.prototype;
+        Object.getOwnPropertyNames(RealPlayer).forEach(k => {
+          if (!(k in PatchedPlayer)) PatchedPlayer[k] = RealPlayer[k];
+        });
+        PatchedPlayer.__patched = true;
+        window.YT._RealPlayer = RealPlayer;
+        window.YT.Player = PatchedPlayer;
+      }
+      
+      // Hook into the usual ready callbacks and poll fallback
+      const orig1 = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function() {
+        if (typeof orig1 === "function") try { orig1(); } catch (e) {}
+        patchPlayer();
+      };
+      const orig2 = window.onYouTubePlayerAPIReady;
+      window.onYouTubePlayerAPIReady = function() {
+        if (typeof orig2 === "function") try { orig2(); } catch (e) {}
+        patchPlayer();
+      };
+      
+      // Poll until available (cleans up)
+      const t = setInterval(() => {
+        patchPlayer();
+        if (window.YT && window.YT.Player && window.YT.Player.__patched) {
+          console.log("[yt-api-patcher] patch done")
+          clearInterval(t);
+        }
+      }, 60);
+    })();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
