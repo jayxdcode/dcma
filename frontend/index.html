@@ -105,11 +105,11 @@
           if (!res.ok) throw new Error('script fetch failed: ' + res.status);
           const js = await res.text();
           
-          // create script element and append
+          // create script element and prepend
           const s = doc.createElement('script');
           s.type = 'text/javascript';
           s.text = js;
-          (doc.head || doc.documentElement).appendChild(s);
+          (doc.head || doc.documentElement).prepend(s);
           
           // optional: call the hook if the script exposes it
           try { iframe.contentWindow.__embedFixFixAll && iframe.contentWindow.__embedFixFixAll(); } catch (e) {}
