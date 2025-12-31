@@ -1,5 +1,5 @@
 // iframe debugger version 1
-(function() {
+function iframeDebug() {
     const iframe = document.querySelector('#hitori-yt-player');
     if (!iframe) {
         console.error("Iframe #hitori-yt-player not found.");
@@ -59,4 +59,7 @@
     };
 
     document.body.appendChild(btn);
-})();
+}
+
+window.iframeDebug = iframeDebug;
+if (typeof window.iframeDebug !== 'undefined') console.log('[debugger.js] iframeDebug available. run `window.iframeDebug()` to test.')
