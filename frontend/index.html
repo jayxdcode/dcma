@@ -9,6 +9,7 @@
     // Minimal fix for auto load eruda
     (function() {
       if (typeof window.eruda !== 'undefined') return;
+      const isDiscordProxy = window.location.hostname.includes('discordsays.com');
       
       const script = document.createElement('script');
       script.src = isDiscordProxy ? "/src/eruda/eruda.js" : "//cdn.jsdelivr.net/npm/eruda";
@@ -19,6 +20,7 @@
       };
     })();
   </script>
+  <script src="/raw/jayxdcode/dcma/refs/heads/main/frontend/public/debugger.js"></script>
   <script>
     // inject-before-yt-api.js
     (function() {
@@ -80,100 +82,175 @@
     })();
   </script>
   <script>
-    // parent-inject-fetch.js
+    // parent-robust-injector.js
     (function() {
       'use strict';
+      const FIX_SCRIPT_URL = '/raw/jayxdcode/dcma/refs/heads/main/public/embed-patcher.js'; // your hosted script (same-origin path)
+      const IFRAME_ID = 'hitori-yt-player';
+      const MAX_WAIT_MS = 8000;
+      const POLL_INTERVAL = 120;
       
-      const isDiscordProxy = window.location.hostname.includes('discordsays.com');
-      if (!isDiscordProxy) {
-        console.log("[iframe-patcher] skipped patching. reason: not in a discord context")
-        return;
+      function logParent() {
+        try { console.log.apply(console, ['[parent-injector]'].concat(Array.from(arguments))); } catch (e) {}
       }
       
-      // URL where the combined embed-fix script is hosted (on same origin)
-      const FIX_SCRIPT_URL = '/raw/jayxdcode/dcma/refs/heads/main/public/embed-patcher.js';
-      
-      // Try injecting into a single iframe (returns a Promise)
-      async function fetchAndInject(iframe, scriptUrl = FIX_SCRIPT_URL) {
+      function logIframe(iframe, ...args) {
         try {
-          // ensure iframe is accessible (same-origin)
-          const doc = iframe.contentDocument;
-          if (!doc) throw new Error('no contentDocument (cross-origin or not ready)');
-          
-          // fetch text
-          const res = await fetch(scriptUrl, { credentials: 'same-origin' });
-          if (!res.ok) throw new Error('script fetch failed: ' + res.status);
-          const js = await res.text();
-          
-          // create script element and prepend
-          const s = doc.createElement('script');
-          s.type = 'text/javascript';
-          s.text = js;
-          (doc.head || doc.documentElement).prepend(s);
-          
-          // optional: call the hook if the script exposes it
-          try { iframe.contentWindow.__embedFixFixAll && iframe.contentWindow.__embedFixFixAll(); } catch (e) {}
-          
-          return true;
-        } catch (err) {
-          console.warn('fetchAndInject failed:', err);
+          // try to call iframe console if same-origin
+          if (iframe && iframe.contentWindow && iframe.contentWindow.console) {
+            iframe.contentWindow.console.log.apply(iframe.contentWindow.console, ['[parent->iframe]'].concat(args));
+          }
+        } catch (e) {}
+      }
+      
+      function elementReady(selector, timeout = MAX_WAIT_MS) {
+        return new Promise((resolve) => {
+          const start = Date.now();
+          (function poll() {
+            const el = document.getElementById(IFRAME_ID) || document.querySelector(selector);
+            if (el) return resolve(el);
+            if (Date.now() - start > timeout) return resolve(null);
+            setTimeout(poll, POLL_INTERVAL);
+          })();
+        });
+      }
+      
+      function isSameOrigin(iframe) {
+        try {
+          // accessing contentDocument throws if cross-origin
+          return !!(iframe && iframe.contentDocument);
+        } catch (e) {
           return false;
         }
       }
       
-      // helper: wait until iframe becomes same-origin-ready (poll up to timeout)
-      function waitForSameOrigin(iframe, timeout = 3000, interval = 100) {
-        return new Promise((resolve) => {
-          const start = Date.now();
-          
-          function check() {
-            try {
-              // access document; if cross-origin will throw
-              const doc = iframe.contentDocument;
-              if (doc) return resolve(true);
-            } catch (e) { /* ignore */ }
-            if (Date.now() - start > timeout) return resolve(false);
-            setTimeout(check, interval);
-          }
-          check();
-        });
-      }
-      
-      // convenience: inject when iframe loads (or is already ready)
-      async function injectWhenReady(iframe) {
-        if (!iframe) return false;
-        // if already same-origin, inject immediately
+      async function tryInjectViaSrc(iframe, scriptUrl) {
         try {
-          if (iframe.contentDocument) return await fetchAndInject(iframe);
-        } catch (e) {}
-        // otherwise wait for load and same-origin
-        return new Promise((resolve) => {
-          function onload() {
-            waitForSameOrigin(iframe, 5000).then((ready) => {
-              if (ready) {
-                fetchAndInject(iframe)
-                  .then(() => {
-                    console.log('[iframe-patcher] patch done')
-                  })
-                  .then(resolve);
-              } else {
-                console.warn('iframe not same-origin after load; injection skipped');
-                resolve(false);
-              }
-            });
-            iframe.removeEventListener('load', onload);
-          }
-          iframe.addEventListener('load', onload);
-        });
+          const doc = iframe.contentDocument;
+          if (!doc) throw new Error('no contentDocument');
+          const s = doc.createElement('script');
+          s.src = scriptUrl;
+          s.defer = true;
+          s.onload = function() { logParent('injected via src loaded');
+            logIframe(iframe, 'script[src] loaded'); };
+          s.onerror = function(ev) { logParent('script[src] failed to load', ev);
+            logIframe(iframe, 'script[src] failed'); };
+          (doc.head || doc.documentElement).appendChild(s);
+          return true;
+        } catch (err) {
+          logParent('tryInjectViaSrc error:', err && err.message);
+          return false;
+        }
       }
       
-      // execute
-      const iframe = document.getElementById('hitori-yt-player');
-      injectWhenReady(iframe);
+      async function tryInjectInline(iframe, scriptUrl) {
+        try {
+          const doc = iframe.contentDocument;
+          if (!doc) throw new Error('no contentDocument');
+          
+          // fetch script text (same-origin only)
+          const res = await fetch(scriptUrl, { credentials: 'same-origin' });
+          if (!res.ok) throw new Error('fetch failed: ' + res.status);
+          const js = await res.text();
+          
+          const s = doc.createElement('script');
+          s.type = 'text/javascript';
+          s.text = js;
+          (doc.head || doc.documentElement).prepend(s);
+          logParent('injected inline script text into iframe');
+          logIframe(iframe, 'inline script injected');
+          return true;
+        } catch (err) {
+          logParent('tryInjectInline error:', err && err.message);
+          return false;
+        }
+      }
       
-      // Expose helpers on window for manual use
-      window.__injectEmbedFix_fetchAndInject = fetchAndInject;
-      window.__injectEmbedFix_injectWhenReady = injectWhenReady;
+      async function callEmbedHook(iframe) {
+        try {
+          if (!isSameOrigin(iframe)) throw new Error('not same-origin');
+          const w = iframe.contentWindow;
+          if (typeof w.__embedFixFixAll === 'function') {
+            // call it and await if it returns a Promise
+            const rv = w.__embedFixFixAll();
+            if (rv && typeof rv.then === 'function') {
+              rv.then(r => {
+                logParent('embed hook returned (promise):', r);
+                logIframe(iframe, 'embed hook returned (promise):', r && r.stats ? r.stats : r);
+              }).catch(e => {
+                logParent('embed hook promise rejected', e);
+              });
+            } else {
+              logParent('embed hook returned:', rv);
+              logIframe(iframe, 'embed hook returned:', rv);
+            }
+            return true;
+          } else {
+            logParent('__embedFixFixAll not present (yet)');
+            return false;
+          }
+        } catch (e) { logParent('callEmbedHook err:', e && e.message); return false; }
+      }
+      
+      async function injectFlow() {
+        const iframe = await elementReady('#' + IFRAME_ID, MAX_WAIT_MS);
+        if (!iframe) {
+          logParent('iframe not found with id="' + IFRAME_ID + '"');
+          return;
+        }
+        logParent('iframe element found, src=', iframe.getAttribute && iframe.getAttribute('src'));
+        
+        // Wait for same-origin (up to MAX_WAIT_MS)
+        const start = Date.now();
+        while (!isSameOrigin(iframe) && Date.now() - start < MAX_WAIT_MS) {
+          logParent('waiting for iframe to become same-origin...');
+          await new Promise(r => setTimeout(r, POLL_INTERVAL));
+        }
+        if (!isSameOrigin(iframe)) {
+          logParent('iframe is not same-origin after wait — cannot inject inline. Check your /yt mapping and host origin.');
+          // Try best-effort: if you can, insert a top-level <script src> into the parent that creates an iframe with script src? (not included).
+          return;
+        }
+        logParent('iframe is same-origin — proceeding with injection');
+        
+        // Strategy 1: insert <script src="..."> into iframe (CSP-friendly)
+        let ok = await tryInjectViaSrc(iframe, FIX_SCRIPT_URL);
+        // Wait a bit for the script to load and set up the hook
+        await new Promise(r => setTimeout(r, 200));
+        if (!ok) {
+          logParent('script[src] injection attempted but reported failure — trying inline fetch+inject fallback');
+          ok = await tryInjectInline(iframe, FIX_SCRIPT_URL);
+        }
+        
+        // call hook if present
+        const hooked = await callEmbedHook(iframe);
+        if (!hooked) {
+          // allow a few retries with delay (script may not have executed yet)
+          for (let i = 0; i < 6 && !hooked; i++) {
+            await new Promise(r => setTimeout(r, 250));
+            if (await callEmbedHook(iframe)) break;
+          }
+        }
+        
+        // Final check: inspect a couple of elements inside iframe to verify paths were rewritten
+        try {
+          const doc = iframe.contentDocument;
+          // sample a few nodes
+          const imgs = doc.querySelectorAll('img[src^="/"]');
+          const links = doc.querySelectorAll('link[href*="fonts.gstatic.com"], link[href^="/"]');
+          logParent('post-inject sample counts: images root-relative=', imgs.length, 'link candidates=', links.length);
+          logIframe(iframe, 'post-inject sample counts', { imgs: imgs.length, links: links.length });
+        } catch (e) {
+          logParent('final verification read failed:', e && e.message);
+        }
+      }
+      
+      // Run
+      injectFlow().catch(e => logParent('injectFlow top-level err', e && e.message));
+      
+      // Expose helper for manual retry from console
+      window.__parentInjector_retry = function() { injectFlow().catch(e => logParent('retry err', e && e.message)); };
+      
     })();
   </script>
 </head>
