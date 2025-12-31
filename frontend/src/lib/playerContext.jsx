@@ -28,25 +28,31 @@ export function PlayerProvider({ children, initialQueue }) {
   const skipSegmentsRef = useRef([]);
   const skippingRef = useRef(false);
   const currentVideoIdRef = useRef(null);
-  const isInitialLoad = useRef(true);
+  const isInitialLoad = useRef(true);        // used to prevent autoplay on initial restore
   const wasUserAction = useRef(false);
-  
+
+  const saveTimeoutRef = useRef(null);       // debounce saver
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [useAudioEngine, setUseAudioEngine] = useState(false);
   const [debugLogs, setDebugLogs] = useState([]); // Debugger state
-  
+
   const addLog = (msg) => {
     if (!isDiscordProxy) return;
     setDebugLogs(prev => [`${new Date().toLocaleTimeString()}: ${msg}`, ...prev].slice(0, 5));
   };
-  
+
+  // --------- Init queue from lastPlay.queue (if present) or initialQueue ----------
   const [queue, setQueueState] = useState(() => {
     try {
       const last = JSON.parse(localStorage.getItem('lastPlay') || 'null');
-      return (last?.queue || initialQueue || []).map(normalizeTrack);
-    } catch (e) { return (initialQueue || []).map(normalizeTrack); }
+      const savedQueue = Array.isArray(last?.queue) ? last.queue : (initialQueue || []);
+      return savedQueue.map(normalizeTrack);
+    } catch (e) {
+      return (initialQueue || []).map(normalizeTrack);
+    }
   });
-  
+
+  // --------- Init index using lastPlay.id (if present and in queue) ----------
   const [index, setIndexState] = useState(() => {
     try {
       const last = JSON.parse(localStorage.getItem('lastPlay') || 'null');
@@ -57,12 +63,12 @@ export function PlayerProvider({ children, initialQueue }) {
     } catch (e) {}
     return 0;
   });
-  
+
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
-  
+
   const setPlayerContainer = (destEl, customStyle = {}) => {
     if (!destEl || !containerRef.current) return;
     const el = containerRef.current;
@@ -79,7 +85,7 @@ export function PlayerProvider({ children, initialQueue }) {
     Object.assign(el.style, defaultCoverStyle, customStyle);
     if (el.parentNode !== destEl) destEl.appendChild(el);
   };
-  
+
   const sendCommand = (command, value, extra = {}) => {
     addLog(`Sending Command: ${command}`);
     if (useAudioEngine && audioRef.current) {
@@ -95,7 +101,7 @@ export function PlayerProvider({ children, initialQueue }) {
       }
       return;
     }
-    
+
     if (isDiscordProxy) {
       containerRef.current?.contentWindow?.postMessage(
         JSON.stringify({ command, value, ...extra }), "*"
@@ -110,7 +116,88 @@ export function PlayerProvider({ children, initialQueue }) {
       if (command === 'LOAD') p.loadVideoById?.({ videoId: value, startSeconds: extra.start || 0 });
     }
   };
-  
+
+  // ---------- Safe serializer (to store whole track safely) ----------
+  const safeSerialize = (obj) => {
+    if (!obj) return obj;
+    try {
+      // Try to stringify & parse to remove non-serializable bits
+      return JSON.parse(JSON.stringify(obj));
+    } catch (e) {
+      // Fallback: keep essential fields if full serialization fails
+      return {
+        id: obj?.id || '',
+        title: obj?.title || '',
+        artist: obj?.artist || '',
+        cover: obj?.cover || '',
+        duration: obj?.duration ?? 0
+      };
+    }
+  };
+
+  // ---------- Persistence: lastPlay is the track object with addons ----------
+  const buildPersistPayload = (payloadTime = null) => {
+    const curIdx = Math.max(0, Math.min(index, queue.length - 1));
+    const t = queue[curIdx] || null;
+    const serializedQueue = queue.map(q => safeSerialize(q));
+    if (t) {
+      // lastPlay is the track object itself, augmented with lastTime and queue
+      return {
+        ...safeSerialize(t),
+        lastTime: payloadTime ?? time ?? 0,
+        queue: serializedQueue
+      };
+    }
+    // If no current track, still write a payload with lastTime + queue
+    return {
+      lastTime: payloadTime ?? time ?? 0,
+      queue: serializedQueue
+    };
+  };
+
+  const persistLastPlay = (immediate = false, overrideTime = null) => {
+    // don't persist while still in initial restore phase (unless explicit immediate save)
+    if (isInitialLoad.current && !immediate) return;
+
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+      saveTimeoutRef.current = null;
+    }
+
+    const writeNow = () => {
+      try {
+        const payload = buildPersistPayload(overrideTime);
+        localStorage.setItem('lastPlay', JSON.stringify(payload));
+        addLog(`Persisted lastPlay: ${payload.id || '<no-id>'}@${payload.lastTime}`);
+      } catch (err) {
+        // fail silently
+      }
+    };
+
+    if (immediate) {
+      writeNow();
+    } else {
+      // debounce writes to avoid thrash on frequent time updates
+      saveTimeoutRef.current = setTimeout(writeNow, 1000);
+    }
+  };
+
+  // persist on unmount / page close
+  useEffect(() => {
+    const onBeforeUnload = () => persistLastPlay(true);
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', onBeforeUnload);
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    };
+  }, [queue, index, time]);
+
+  // Save whenever index, queue or (debounced) time changes:
+  useEffect(() => { persistLastPlay(false); }, [index, queue]);
+  useEffect(() => { persistLastPlay(false); }, [time]);
+  useEffect(() => { persistLastPlay(false); }, [volume]);
+
+  // ---------- Player init ----------
   useEffect(() => {
     const storageId = 'hitori-hidden-storage';
     let storage = document.getElementById(storageId);
@@ -120,16 +207,17 @@ export function PlayerProvider({ children, initialQueue }) {
       Object.assign(storage.style, { position: 'fixed', left: '-9999px', top: '-9999px' });
       document.body.appendChild(storage);
     }
-    
+
     if (!audioRef.current) {
       audioRef.current = new Audio();
       audioRef.current.onended = () => { wasUserAction.current = true;
         handleNext(); };
     }
-    
+
+    // Read lastPlay shape: now lastPlay is either an augmented track obj or older shape
     const lastData = JSON.parse(localStorage.getItem('lastPlay') || '{}');
-    const startSec = lastData.lastTime || 0;
-    
+    const startSec = lastData?.lastTime || 0;
+
     if (isDiscordProxy) {
       addLog("Initializing Discord Proxy Iframe...");
       const ifr = document.createElement('iframe');
@@ -156,8 +244,11 @@ export function PlayerProvider({ children, initialQueue }) {
           videoId: queue[index]?.id || '',
           playerVars: { controls: 0, playsinline: 1, rel: 0, start: startSec, autoplay: 0 },
           events: {
-            onReady: () => { setIsPlayerReady(true);
-              addLog("Native Player Ready"); },
+            onReady: () => {
+              setIsPlayerReady(true);
+              addLog("Native Player Ready");
+              // will respect isInitialLoad in later effects
+            },
             onStateChange: (e) => {
               if (e.data === 1) setPlaying(true);
               if (e.data === 2) setPlaying(false);
@@ -168,8 +259,9 @@ export function PlayerProvider({ children, initialQueue }) {
         });
       };
     }
-  }, []);
-  
+  }, []); // eslint-disable-line
+
+  // ---------- Message handler for proxy ----------
   useEffect(() => {
     const handleMessage = (e) => {
       try {
@@ -191,7 +283,48 @@ export function PlayerProvider({ children, initialQueue }) {
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, [index, queue]);
-  
+
+  // ---------- Autoplay behavior ----------
+  // When the player becomes ready, autoplay only if this is NOT the initial restore
+  useEffect(() => {
+    if (!isPlayerReady) return;
+
+    if (isInitialLoad.current) {
+      // finishing initial load: mark restore complete but DO NOT autoplay.
+      isInitialLoad.current = false;
+      addLog("Initial restore complete — autoplay suppressed.");
+      return;
+    }
+
+    // Not initial load -> auto-load and play current track
+    const vid = queue[index]?.id;
+    if (vid) {
+      addLog("Autoplay: loading and playing " + vid);
+      sendCommand('LOAD', vid, { start: time || 0 });
+      sendCommand('PLAY');
+      setPlaying(true);
+    }
+  }, [isPlayerReady]); // eslint-disable-line
+
+  // When index changes (user pressed next/prev or setIndex was called), load & autoplay,
+  // but suppress this behavior if it's the initial restoration.
+  useEffect(() => {
+    if (!isPlayerReady) return;
+    if (isInitialLoad.current) {
+      // this index change is likely from initial restore; suppress autoplay but clear the initial flag
+      isInitialLoad.current = false;
+      addLog("Index set during initial restore — autoplay suppressed.");
+      return;
+    }
+    const vid = queue[index]?.id;
+    if (!vid) return;
+    addLog("Index changed -> loading & autoplay " + vid);
+    sendCommand('LOAD', vid, { start: 0 });
+    sendCommand('PLAY');
+    setPlaying(true);
+  }, [index, isPlayerReady]); // eslint-disable-line
+
+  // ---------- Player controls ----------
   const play = () => { wasUserAction.current = true;
     sendCommand('PLAY');
     setPlaying(true); };
@@ -199,21 +332,38 @@ export function PlayerProvider({ children, initialQueue }) {
     setPlaying(false); };
   const toggle = () => playing ? pause() : play();
   const handleNext = () => { wasUserAction.current = true;
-    setIndexState(i => (i + 1) % Math.max(1, queue.length)); };
+    setIndexState(i => {
+      const next = (i + 1) % Math.max(1, queue.length);
+      return next;
+    });
+  };
   const handlePrev = () => { wasUserAction.current = true;
     setIndexState(i => (i - 1 + queue.length) % Math.max(1, queue.length)); };
-  const seek = (s) => sendCommand('SEEK', s);
+  const seek = (s) => {
+    sendCommand('SEEK', s);
+    setTime(s);
+    // also persist immediately because user sought
+    persistLastPlay(true, s);
+  };
   const setPlayerVolume = (v) => { setVolume(v);
-    sendCommand('SET_VOLUME', v); };
-  
+    sendCommand('SET_VOLUME', v);
+    persistLastPlay(false);
+  };
+
   const value = {
     queue,
     setQueue: (q, i = 0) => { wasUserAction.current = true;
       setQueueState(q.map(normalizeTrack));
-      setIndexState(i); },
+      setIndexState(i);
+      // immediate persist because user explicitly changed the queue
+      setTimeout(() => persistLastPlay(true), 0);
+    },
     index,
     setIndex: (i) => { wasUserAction.current = true;
-      setIndexState(i); },
+      setIndexState(i);
+      // immediate persist because user explicitly changed track
+      setTimeout(() => persistLastPlay(true), 0);
+    },
     track: queue[index],
     playing,
     play,
@@ -229,7 +379,7 @@ export function PlayerProvider({ children, initialQueue }) {
     isPlayerReady,
     setPlayerContainer
   };
-  
+
   return (
     <PlayerContext.Provider value={value}>
       {children}
