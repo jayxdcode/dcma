@@ -84,15 +84,6 @@
     (function() {
       // 1. Assign to window for manual console access
       window.iframeDebug = iframeDebug;
-      
-      // 2. RUN IMMEDIATELY
-      // We use a small timeout or check DOMContentLoaded to ensure the iframe exists
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', iframeDebug);
-      } else {
-        iframeDebug();
-      }
-      
       console.log('[debugger.js] Debugger initialized.');
     })();
   </script>
