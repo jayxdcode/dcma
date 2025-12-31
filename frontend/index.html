@@ -39,7 +39,7 @@
           }
 
           const isDiscordProxy = window.location.hostname.includes('discordsays.com');
-          const erudaSrc = isDiscordProxy ? "/src/eruda/eruda.js" : "//cdn.jsdelivr.net/npm/eruda";
+          const erudaSrc = isDiscordProxy ? location.origin + "/src/eruda/eruda.js" : "//cdn.jsdelivr.net/npm/eruda";
 
           const load = () => {
             try {
