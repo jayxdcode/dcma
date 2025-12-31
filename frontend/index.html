@@ -5,90 +5,60 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Hitori ⊙⁠﹏⁠⊙</title>
-
-  <!-- Unified script: all functionality in one block with comment separators -->
+  
   <script>
-    (function () {
+    (function() {
       'use strict';
-
-      /* ========================================================================
-         CONFIG
-         - edit these if you need different paths/origins
-         ======================================================================== */
-      const FIX_SCRIPT_URL = location.origin + '/raw/jayxdcode/dcma/main/public/embed-patcher.js';
+      
       const IFRAME_ID = 'hitori-yt-player';
-      const YT_PATCHER_WAIT_MS = 6000;
-      const YT_PATCHER_POLL_MS = 100;
-
+      
       /* ========================================================================
          HELPERS
          ======================================================================== */
       function _log(...a) { try { console.log.apply(console, ['[hitori]'].concat(a)); } catch (e) {} }
+      
       function _warn(...a) { try { console.warn.apply(console, ['[hitori]'].concat(a)); } catch (e) {} }
-      function _now() { return Date.now(); }
-
+      
       /* ========================================================================
-         ERUDA AUTOLOAD
-         - loads eruda from CDN or local depending on discord proxy detection
+         ERUDA AUTOLOAD (Main Page)
          ======================================================================== */
-      (function ERUDA_AUTOLOAD() {
-        try {
-          if (typeof window.eruda !== 'undefined') {
-            _log('eruda already present, skipping autoload');
-            return;
-          }
-
-          const isDiscordProxy = window.location.hostname.includes('discordsays.com');
-          const erudaSrc = isDiscordProxy ? (location.origin + "/src/eruda/eruda.js") : "//cdn.jsdelivr.net/npm/eruda";
-
-          const load = () => {
-            try {
-              const s = document.createElement('script');
-              s.src = erudaSrc;
-              s.onload = () => {
-                try {
-                  if (window.eruda && typeof window.eruda.init === 'function') {
-                    window.eruda.init();
-                    _log("eruda loaded and initialized");
-                  } else {
-                    _log("eruda loaded (init not found)");
-                  }
-                } catch (e) {
-                  _warn("eruda onload handler threw", e && e.message);
-                }
-              };
-              s.onerror = (ev) => _warn('eruda failed to load', ev);
-              // prefer head but fallback to body if not available yet
-              (document.head || document.body || document.documentElement).appendChild(s);
-            } catch (err) {
-              _warn('eruda loader error:', err && err.message);
-            }
-          };
-
-          // If DOM not ready, schedule a short defer so we can append safely
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', load, { once: true });
-          } else {
-            load();
-          }
-        } catch (e) {
-          _warn('ERUDA_AUTOLOAD threw:', e && e.message);
+      const isDiscordProxy = window.location.hostname.includes('discordsays.com');
+      const erudaSrc = isDiscordProxy ? (location.origin + "/src/eruda/eruda.js") : "//cdn.jsdelivr.net/npm/eruda";
+      
+      function loadErudaAt(targetDoc, callback) {
+        if (targetDoc.defaultView.eruda) {
+          if (callback) callback();
+          return;
         }
-      })();
-
+        const s = targetDoc.createElement('script');
+        s.src = erudaSrc;
+        s.onload = () => {
+          if (targetDoc.defaultView.eruda) {
+            targetDoc.defaultView.eruda.init();
+            if (callback) callback();
+          }
+        };
+        (targetDoc.head || targetDoc.documentElement).appendChild(s);
+      }
+      
+      // Initialize Eruda on the parent page
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => loadErudaAt(document), { once: true });
+      } else {
+        loadErudaAt(document);
+      }
+      
       /* ========================================================================
-         IFRAME DEBUGGER (iframeDebug)
-         - toggles a full-viewport view of #hitori-yt-player for debugging
+         IFRAME DEBUGGER + IFRAME ERUDA
          ======================================================================== */
       (function IFRAME_DEBUGGER_DEFINE() {
         function iframeDebug() {
           const iframe = document.querySelector('#' + IFRAME_ID);
           if (!iframe) {
-            console.error("Iframe #" + IFRAME_ID + " not found.");
+            _warn("Iframe #" + IFRAME_ID + " not found.");
             return;
           }
-
-          // Create the Toggle Button
+          
           const btn = document.createElement('button');
           btn.innerHTML = 'DEBUG MODE: OFF';
           btn.style.cssText = `
@@ -106,227 +76,61 @@
             font-weight: bold;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
           `;
-
+          
           let isVisible = false;
-          // Store original inline styles so revert is faithful
           const originalStyles = iframe.getAttribute('style') || '';
-
+          
           btn.onclick = () => {
             if (!isVisible) {
-              // Take over the whole view
+              // Expand Iframe
               iframe.style.setProperty('position', 'fixed', 'important');
               iframe.style.setProperty('top', '0', 'important');
               iframe.style.setProperty('left', '0', 'important');
               iframe.style.setProperty('width', '100vw', 'important');
               iframe.style.setProperty('height', '100vh', 'important');
               iframe.style.setProperty('z-index', '2147483646', 'important');
-              iframe.style.setProperty('pointer-events', 'auto', 'important');
               iframe.style.setProperty('display', 'block', 'important');
-
+              iframe.style.setProperty('pointer-events', 'auto', 'important');
+              
               btn.innerHTML = 'DEBUG MODE: ON';
               btn.style.background = '#ed4245';
-
-              if (typeof injectEruda === 'function') {
-                try { injectEruda(); } catch (e) { /* ignore */ }
+              
+              // Inject Eruda into the Iframe specifically for debugging
+              try {
+                if (iframe.contentDocument) {
+                  loadErudaAt(iframe.contentDocument, () => {
+                    _log("Eruda initialized inside iframe");
+                  });
+                }
+              } catch (e) {
+                _warn("Could not inject Eruda into iframe (likely CORS/Security):", e.message);
               }
             } else {
-              // revert inline style to original (cleaner than resetting cssText)
+              // Revert Styles
               if (originalStyles) iframe.setAttribute('style', originalStyles);
               else iframe.removeAttribute('style');
-
+              
               btn.innerHTML = 'DEBUG MODE: OFF';
               btn.style.background = '#2c2f33';
             }
             isVisible = !isVisible;
           };
-
-          // append the button after body exists
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => document.body.appendChild(btn), { once: true });
-          } else {
-            document.body.appendChild(btn);
-          }
+          
+          document.body.appendChild(btn);
         }
-
-        // expose to window for manual access
+        
         window.iframeDebug = iframeDebug;
-        setTimeout(() => { _log('iframeDebug available as window.iframeDebug'); }, 5000);
+        // Auto-show debug button after a short delay
+        setTimeout(() => {
+          if (document.body) iframeDebug();
+          _log('iframeDebug ready');
+        }, 2000);
       })();
-
+      
       /* ========================================================================
-         YT IFRAME API PATCHER (inject-before-yt-api)
-         - sets YTConfig.host for discord proxy and patches YT.Player constructor
-         - runs immediately (no DOM dependency)
+         DONE
          ======================================================================== */
-      (function YT_API_PATCHER() {
-        try {
-          const isDiscordProxy = window.location.hostname.includes('discordsays.com');
-          if (!isDiscordProxy) {
-            _log("[yt-api-patcher] skipped patching. reason: not in a discord context");
-            return;
-          }
-
-          const HOST = location.origin + "/yt";
-
-          // Ensure YTConfig.host exists before the API checks it
-          window.YTConfig = window.YTConfig || {};
-          window.YTConfig.host = HOST;
-
-          // Patch creation of players once API registers YT.Player
-          function patchPlayer() {
-            try {
-              if (!window.YT || !window.YT.Player) return;
-              if (window.YT.Player.__patched) return;
-
-              const RealPlayer = window.YT.Player;
-
-              function PatchedPlayer(el, opts) {
-                opts = opts || {};
-                // force host to our proxy
-                opts.host = HOST;
-                return new RealPlayer(el, opts);
-              }
-              // preserve prototype and static props
-              PatchedPlayer.prototype = RealPlayer.prototype;
-              Object.getOwnPropertyNames(RealPlayer).forEach(k => {
-                if (!(k in PatchedPlayer)) PatchedPlayer[k] = RealPlayer[k];
-              });
-              PatchedPlayer.__patched = true;
-              window.YT._RealPlayer = RealPlayer;
-              window.YT.Player = PatchedPlayer;
-              _log('[yt-api-patcher] patch done');
-            } catch (e) {
-              _warn('[yt-api-patcher] patchPlayer threw', e && e.message);
-            }
-          }
-
-          // Hook into the usual ready callbacks and poll fallback
-          const orig1 = window.onYouTubeIframeAPIReady;
-          window.onYouTubeIframeAPIReady = function () {
-            if (typeof orig1 === "function") try { orig1(); } catch (e) {}
-            patchPlayer();
-          };
-          const orig2 = window.onYouTubePlayerAPIReady;
-          window.onYouTubePlayerAPIReady = function () {
-            if (typeof orig2 === "function") try { orig2(); } catch (e) {}
-            patchPlayer();
-          };
-
-          // Poll until available (cleans up)
-          const t = setInterval(() => {
-            patchPlayer();
-            try {
-              if (window.YT && window.YT.Player && window.YT.Player.__patched) {
-                clearInterval(t);
-              }
-            } catch (e) { /* ignore */ }
-          }, 60);
-        } catch (e) {
-          _warn('[YT_API_PATCHER] threw:', e && e.message);
-        }
-      })();
-
-      /* ========================================================================
-         PARENT-INJECT (inject embed-patcher into iframe AFTER yt patcher finished)
-         - waits for iframe.window.YT.Player.__patched and then injects a <script src="...">
-         - uses same-origin insertion logic (per your request: ignore cors)
-         ======================================================================== */
-      (function PARENT_INJECT_WAIT_FOR_YTPATCHER() {
-        // utility: get iframe element
-        function getIframe() {
-          return document.getElementById(IFRAME_ID) || null;
-        }
-
-        // Poll until YT.Player.__patched becomes truthy inside iframe, or timeout
-        function waitForYTPatcher(iframe, timeoutMs) {
-          return new Promise((resolve) => {
-            const start = _now();
-            (function poll() {
-              try {
-                const win = window; // iframe.contentWindow;
-                if (win && win.YT && win.YT.Player && win.YT.Player.__patched) {
-                  return resolve(true);
-                }
-              } catch (e) {
-                // swallow - per instructions ignore CORS problems in logic
-              }
-              if (_now() - start >= timeoutMs) return resolve(false);
-              setTimeout(poll, YT_PATCHER_POLL_MS);
-            })();
-          });
-        }
-
-        // Inject a script tag (src) into the iframe's document (prepend to head or documentElement)
-        function injectScriptSrc(iframe, src) {
-          try {
-            const doc = iframe.contentDocument;
-            if (!doc) throw new Error('iframe.contentDocument not available');
-            // guard to avoid duplicate injections
-            if (iframe.__embed_patcher_injected) {
-              _log('embed-patcher already injected; skipping');
-              return true;
-            }
-            const s = doc.createElement('script');
-            s.type = 'text/javascript';
-            s.src = src;
-            s.async = false; // keep execution order predictable
-            s.onload = () => _log('embed-patcher loaded inside iframe');
-            s.onerror = (ev) => _warn('embed-patcher failed to load inside iframe', ev);
-            (doc.head || doc.documentElement).prepend(s);
-            iframe.__embed_patcher_injected = true;
-            _log('injection attempted (script element appended).');
-            return true;
-          } catch (err) {
-            _warn('injectScriptSrc failed:', err && err.message);
-            return false;
-          }
-        }
-
-        // main flow (attempt once on script run; expose retry)
-        (async function main() {
-          try {
-            const iframe = getIframe();
-            if (!iframe) {
-              _log('iframe #' + IFRAME_ID + ' not found on page (parent injector will not run now)');
-              return;
-            }
-            _log('found iframe id=' + IFRAME_ID, 'src=', iframe.getAttribute && iframe.getAttribute('src'));
-
-            _log('waiting for iframe YT.Player.__patched (timeout ' + YT_PATCHER_WAIT_MS + 'ms)...');
-            const patched = await waitForYTPatcher(iframe, YT_PATCHER_WAIT_MS);
-
-            if (!patched) {
-              _warn('YT.Player.__patched NOT detected inside iframe within timeout — not injecting.');
-              return;
-            }
-
-            _log('YT.Player.__patched detected inside iframe — injecting embed-patcher via <script src>');
-            const ok = injectScriptSrc(iframe, FIX_SCRIPT_URL);
-            if (!ok) _warn('injection attempt returned false.');
-            else _log('injection flow finished (check iframe console for further logs).');
-          } catch (e) {
-            _warn('[PARENT_INJECT] main threw', e && e.message);
-          }
-        })();
-
-        // helper to manually retry from console
-        window.__parentInjectHitori_retry = function () {
-          (async () => {
-            try {
-              const iframe = getIframe();
-              if (!iframe) return _log('retry: iframe not found');
-              const patched = await waitForYTPatcher(iframe, YT_PATCHER_WAIT_MS);
-              if (!patched) return _warn('retry: YT.Player.__patched still not present');
-              injectScriptSrc(iframe, FIX_SCRIPT_URL);
-            } catch (e) { _warn('manual retry threw', e && e.message); }
-          })();
-        };
-      })();
-
-      /* ========================================================================
-         DONE INITIALIZING
-         ======================================================================== */
-      _log('unified hitori script initialized');
+      window.onload = () => { _log('Hitori script cleaned and initialized'); }
     })();
   </script>
 </head>
