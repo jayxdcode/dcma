@@ -243,7 +243,7 @@
             const start = _now();
             (function poll() {
               try {
-                const win = iframe.contentWindow;
+                const win = window; // iframe.contentWindow;
                 if (win && win.YT && win.YT.Player && win.YT.Player.__patched) {
                   return resolve(true);
                 }
