@@ -17,7 +17,7 @@
 	(function() {
 		if (typeof window.eruda !== 'undefined') return;
 		var script = document.createElement('script');
-		script.src = "/src/eruda/eruda.js";
+		script.src = window.location.origin + "/src/eruda/eruda.js";
 		document.body.appendChild(script);
 		script.onload = function() { eruda.init() };
 	})();
