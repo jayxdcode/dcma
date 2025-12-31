@@ -7,8 +7,18 @@ export default function handler(req, res) {
     <html>
       <head>
         <style>
-          body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; }
-          #player { width: 100%; height: 100%; }
+          body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: #000; 
+          }
+          #player { 
+            width: 100%; 
+            height: 100%; 
+          }
         </style>
       </head>
       <body>
@@ -19,29 +29,40 @@ export default function handler(req, res) {
           var firstScriptTag = document.getElementsByTagName('script')[0];
           firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-          const targetOrigin = "${origin || '*'}";
           var player;
 
           function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-              height: '100%', width: '100%',
+              height: '100%', 
+              width: '100%',
               videoId: "${v || ''}", 
               host: 'https://www.youtube-nocookie.com',
               playerVars: { 
-                playsinline: 1, rel: 0, controls: 0, disablekb: 1,
+                playsinline: 1, 
+                rel: 0, 
+                controls: 0, 
+                disablekb: 1,
                 start: ${parseInt(start) || 0},
-                autoplay: 0, // Explicitly off for initial load
-                origin: window.location.protocol + '//' + window.location.host
+                autoplay: 0,
+                enablejsapi: 1,
+                origin: window.location.origin // The discord proxy domain
               },
               events: {
-                onReady: () => window.parent.postMessage(JSON.stringify({ type: 'READY' }), targetOrigin),
+                onReady: () => {
+                  // Send to BOTH parent and top just in case
+                  const msg = JSON.stringify({ type: 'READY' });
+                  window.parent.postMessage(msg, "*");
+                  window.top.postMessage(msg, "*");
+                },
                 onStateChange: (e) => {
-                  window.parent.postMessage(JSON.stringify({
+                  const msg = JSON.stringify({
                     type: 'STATE_CHANGE',
                     state: e.data,
                     duration: player.getDuration(),
                     currentTime: player.getCurrentTime()
-                  }), targetOrigin);
+                  });
+                  window.parent.postMessage(msg, "*");
+                  window.top.postMessage(msg, "*");
                 }
               }
             });
@@ -57,24 +78,26 @@ export default function handler(req, res) {
                 case 'SEEK': player.seekTo(data.value, true); break;
                 case 'SET_VOLUME': player.setVolume(Math.round(data.value * 100)); break;
                 case 'LOAD': 
-                  player.loadVideoById({
-                    videoId: data.value,
-                    startSeconds: data.start || 0
+                  player.loadVideoById({ 
+                    videoId: data.value, 
+                    startSeconds: data.start || 0 
                   }); 
-                  // Programmatic play to ensure unmuted audio after user interaction
                   player.playVideo(); 
                   break;
               }
             } catch (e) {}
           });
 
+          // Heartbeat
           setInterval(() => {
             if (player && player.getCurrentTime) {
-              window.parent.postMessage(JSON.stringify({
+              const msg = JSON.stringify({
                 type: 'TIME_UPDATE',
                 currentTime: player.getCurrentTime(),
                 duration: player.getDuration()
-              }), targetOrigin);
+              });
+              window.parent.postMessage(msg, "*");
+              window.top.postMessage(msg, "*");
             }
           }, 500);
         </script>
