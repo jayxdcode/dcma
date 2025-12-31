@@ -82,9 +82,9 @@
     }
     
     (function() {
-      // 1. Assign to window for manual console access
+      // Assign to window for manual console access
       window.iframeDebug = iframeDebug;
-      console.log('[debugger.js] Debugger initialized.');
+      setTimeout(() => { console.log('[debugger.js] Debugger initialized.'); }, 5000);
     })();
   </script>
   <script>
@@ -149,16 +149,15 @@
   </script>
   <script>
     // parent-inject-single-hitori-v1.js
-    // Targets only #hitori-yt-player, waits for YT.Player.__patched then fetches remote JS and injects as inline text.
+    // Targets only #hitori-yt-player, waits for YT.Player.__patched and injects embed patcher script via src.
     
     (function() {
       'use strict';
       
-      const FIX_SCRIPT_URL = '/raw/jayxdcode/dcma/main/public/embed-patcher.js'; // replace with your remote URL
+      const FIX_SCRIPT_URL = location.origin + '/raw/jayxdcode/dcma/main/public/embed-patcher.js'; // replace with your remote URL
       const IFRAME_ID = 'hitori-yt-player';
       const WAIT_FOR_PATCHER_MS = 6000; // wait up to this for YT.Player.__patched inside iframe
       const POLL_INTERVAL = 120;
-      const FETCH_TIMEOUT_MS = 8000; // timeout for fetching remote script
       
       function log() { try { console.log.apply(console, ['[parent->hitori]'].concat(Array.from(arguments))); } catch (e) {} }
       
@@ -181,35 +180,19 @@
         });
       }
       
-      // fetch with timeout
-      function fetchWithTimeout(url, timeoutMs) {
-        return new Promise((resolve, reject) => {
-          const timer = setTimeout(() => reject(new Error('fetch timeout')), timeoutMs);
-          fetch(url, { mode: 'cors', credentials: 'omit' })
-            .then(res => {
-              clearTimeout(timer);
-              if (!res.ok) return reject(new Error('fetch failed: ' + res.status));
-              return res.text();
-            })
-            .then(text => resolve(text))
-            .catch(err => { clearTimeout(timer);
-              reject(err); });
-        });
-      }
-      
-      // Inject inline JS text into iframe (prepend to head or documentElement)
-      function injectInlineScriptTextToIframe(iframe, jsText) {
+      // Inject script into iframe (prepend to head or documentElement)
+      function injectScript(iframe, srcLink) {
         try {
           const doc = iframe.contentDocument;
           if (!doc) throw new Error('iframe.contentDocument not available');
           const s = doc.createElement('script');
           s.type = 'text/javascript';
-          s.text = jsText;
+          s.src = srcLink;
           (doc.head || doc.documentElement).prepend(s);
           log('injected script text into iframe');
           return true;
         } catch (err) {
-          log('injectInlineScriptTextToIframe failed:', err && err.message);
+          log('injectScript failed:', err && err.message);
           return false;
         }
       }
@@ -261,28 +244,14 @@
         
         log('YT.Player.__patched present inside iframe?', patched);
         
-        // Now try to fetch remote patcher JS (no same-origin requirement for fetch)
-        let jsText = null;
-        try {
-          log('fetching remote patcher from', FIX_SCRIPT_URL);
-          jsText = await fetchWithTimeout(FIX_SCRIPT_URL, FETCH_TIMEOUT_MS);
-          log('fetched patcher, size', jsText.length);
-        } catch (err) {
-          log('failed to fetch patcher:', err && err.message);
-          // still try later to call hook or attempt nothing
-        }
-        
-        // If iframe is same-origin accessible, inject the fetched script text
         let injected = false;
         try {
           // try to access iframe.document to ensure we can write into it
           const canAccess = !!iframe.contentDocument;
           if (!canAccess) {
-            log('iframe.contentDocument inaccessible (cross-origin?) — cannot inject inline script');
-          } else if (jsText) {
-            injected = injectInlineScriptTextToIframe(iframe, jsText);
+            log('iframe.contentDocument inaccessible (cross-origin?) — cannot inject script');
           } else {
-            log('no jsText to inject (fetch failed)');
+            injected = injectScript(iframe, FIX_SCRIPT_URL);
           }
         } catch (e) {
           log('injection attempt threw:', e && e.message);
