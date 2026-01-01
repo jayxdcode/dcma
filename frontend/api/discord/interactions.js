@@ -65,7 +65,7 @@ function buildEmbedUrl(videoId, extras = {}) {
   // add any other allowed params as needed
   const paramStr = params.toString();
   // NOTE: uses the videoId as subdomain per your spec
-  return `https://${encodeURIComponent(videoId)}.discordsays.com/api/embed/${encodeURIComponent(videoId)}${paramStr ? ('?' + paramStr) : ''}`;
+  return `https://${APP_ID}.discordsays.com/api/embed/${videoId}${paramStr ? ('?' + paramStr) : ''}`;
 }
 
 /** Exported handler **/
