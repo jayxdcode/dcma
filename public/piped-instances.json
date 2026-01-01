@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-01T07:45:21.592Z",
+  "generated_at": "2026-01-01T08:35:02.459Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -16,18 +16,18 @@
           "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 168,
-          "body_sample": "[\"erika kirk\",\"erika\",\"erika german song\",\"erika kirk interview\",\"erika kirk speech\",\"erika kirk entrance\",\"erika diane\",\"erika song\",\"erika kirk jd vance\",\"erika kirk nicki minaj\",\"erika kirk memes\",\"erika i don't know\",\"erika isac\",\"erika remix\"]"
+          "time_ms": 166,
+          "body_sample": "[\"erika kirk\",\"erika\",\"erika german song\",\"erika kirk interview\",\"erika kirk speech\",\"erika kirk entrance\",\"erika diane\",\"erika song\",\"erika kirk nicki minaj\",\"erika kirk jd vance\",\"erika kirk memes\",\"erika i don't know\",\"erika isac\",\"erika remix\"]"
         },
         {
           "kind": "suggest",
-          "term": "imagine dragons",
+          "term": "iris out",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
           "ok": true,
           "status": 200,
           "time_ms": 174,
-          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons live\",\"imagine dragons thunder\",\"imagine dragons karaoke\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons lyrics\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons bad liar\",\"imagine dragons "
+          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out kenshi yonezu\",\"iris out live\",\"iris out reaction\",\"iris out 1 hour\",\"iris out 紅白\",\"iris out piano\",\"iris out cover\",\"iris out karaoke\",\"iris out english\",\"iris out lyrics\",\"iris out instrumental\",\"iris out chainsaw man\"]"
         },
         {
           "kind": "suggest",
@@ -36,21 +36,21 @@
           "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 172,
+          "time_ms": 179,
           "body_sample": "[\"never gonna give you up\",\"never gonna give you up karaoke\",\"never gonna give you up rick astley\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up meme\",\"never gonna give you up piano\",\"never gonna give you up remix\",\"never gonna give you up guitar\",\"never gonna give you up "
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "ado",
+          "term": "imagine dragons",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 697,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=NB94LKrLEt4\",\"type\":\"stream\",\"title\":\"Odoru Ponpokorin\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/NB94LKrLEt4/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDJW3jZ5KiMRb7hHlsnXVw99pxbMQ&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/UCln9P"
+          "time_ms": 564,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LzInU71ljJQ\",\"type\":\"stream\",\"title\":\"Imagine Dragons Playlist 2024 - Best songs - Top 10 GREATEST HITS SONGS - Best of Imagine Dragons\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LzInU71ljJQ/hqdefault.jpg?host=i.ytimg.com&rs=AOn4CLAV2y0lPZiIQTBQMgOYizzoWvrQgg&sqp=-oaymwEcCOADEI4CSFXy"
         },
         {
           "kind": "search",
@@ -60,19 +60,19 @@
           "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 481,
+          "time_ms": 414,
           "body_sample": "{\"items\":[{\"url\":\"/watch?v=Ta-jK-tbZEg\",\"type\":\"stream\",\"title\":\"Erika (EDM/Techno)\",\"thumbnail\":\"https://proxy.piped.private.coffee/kYWk-yGau_3cR-rZkPU3HBpmEceUN2kBSmkl7EoLSf0ebUlyVGgpXKB-xv6trnCHjnlen1J4-rZ_a3AN=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Erich and Matzler\",\"uploaderUrl\":null,\"up"
         },
         {
           "kind": "search",
-          "term": "rick astley",
+          "term": "ado",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 413,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3lNNudXg7f4Qf7PiE9tvCAkHTjJ0w&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel/U"
+          "time_ms": 417,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Qp3b-RXtz4w\",\"type\":\"stream\",\"title\":\"うっせぇわ - Usseewa\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/Qp3b-RXtz4w/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3m2xp2MZo1no5Uz3KZn442P6gd7tw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/UC5DHwv9N4OQ9AWtK"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 171,
-        "avg_search_ms": 530,
-        "combined_latency_ms": 701
+        "avg_suggestion_ms": 173,
+        "avg_search_ms": 465,
+        "combined_latency_ms": 638
       },
-      "checked_at": "2026-01-01T07:45:16.495Z",
+      "checked_at": "2026-01-01T08:34:58.416Z",
       "version": "2025.0.0",
       "isLatest": true
     }
