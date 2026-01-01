@@ -1,6 +1,8 @@
 // api/embed.js
 export default function handler(req, res) {
-  const { v, origin, start } = req.query;
+  const { v, origin, start, test } = req.query;
+  const isDiscordProxy = req.get('host').includes('discordsays.com');
+  const apiSrc = (isDiscordProxy || test === '1') ? '/yt/iframe_api' : 'https://www.youtube.com/iframe_api';
 
   const html = `
     <!DOCTYPE html>
@@ -22,10 +24,12 @@ export default function handler(req, res) {
         </style>
       </head>
       <body>
+        <div id="stat-msg" style="display: flex; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; font-size: 3em; z-index: 9999; pointer-events: none;">Standby mode. Waiting for Iframe API initialization...</div>
+
         <div id="player"></div>
         <script>
           var tag = document.createElement('script');
-          tag.src = 'https://www.youtube.com/iframe_api';
+          tag.src = '${apiSrc}';
           var firstScriptTag = document.getElementsByTagName('script')[0];
           firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
@@ -49,6 +53,8 @@ export default function handler(req, res) {
               },
               events: {
                 onReady: () => {
+                  const stat = document.querySelector('#stat-msg'); e.textContent = 'Iframe API inialized. This message will disappear in 3 sec.';
+                  setTimeout(() => {document.body.removeChild(stat)}, 3000);
                   // Send to BOTH parent and top just in case
                   const msg = JSON.stringify({ type: 'READY' });
                   window.parent.postMessage(msg, "*");
