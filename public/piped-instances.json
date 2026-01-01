@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-01T14:24:28.323Z",
+  "generated_at": "2026-01-01T14:46:15.185Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -16,63 +16,63 @@
           "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 161,
+          "time_ms": 212,
           "body_sample": "[\"adopt me\",\"adore you\",\"adom kyei duah live today\",\"adolescence\",\"ado\",\"adom tv live\",\"adopt me trading\",\"adopt me house build\",\"adoration live\",\"adomas vyšniauskas\",\"adore you miley cyrus\",\"adoration ministry enugu nigeria live\",\"adorn miguel\",\"adore you fred again\"]"
         },
         {
           "kind": "suggest",
-          "term": "союз советский социалистических республик",
+          "term": "iris out",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 259,
-          "body_sample": "[\"cccp national anthem 1977\",\"советский гимн 1944\",\"soviet anthem belarus\"]"
+          "time_ms": 214,
+          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out kenshi yonezu\",\"iris out live\",\"iris out reaction\",\"iris out 紅白\",\"iris out 1 hour\",\"iris out piano\",\"iris out english lyrics\",\"iris out karaoke\",\"iris out english\",\"iris out lyrics\",\"iris out instrumental\",\"iris out reze cover\"]"
         },
         {
           "kind": "suggest",
-          "term": "erika",
+          "term": "rick astley",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 161,
-          "body_sample": "[\"erika kirk\",\"erika\",\"erika german song\",\"erika kirk interview\",\"erika kirk speech\",\"erika kirk entrance\",\"erika diane\",\"erika song\",\"erika kirk jd vance\",\"erika kirk nicki minaj\",\"erika kirk memes\",\"erika i don't know\",\"erika isac\",\"erika remix\"]"
+          "time_ms": 218,
+          "body_sample": "[\"rick astley\",\"rick astley never gonna give you up\",\"rick astley glastonbury 2023\",\"rick astley new year's eve\",\"rick astley live\",\"rick astley the smiths\",\"rick astley karaoke\",\"rick astley never gonna give you up lyrics\",\"rick astley foo fighters\",\"rick astley together forever\",\"rick astley songs\",\"rick astley glast"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "imagine dragons",
+          "term": "rick astley",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 629,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LzInU71ljJQ\",\"type\":\"stream\",\"title\":\"Imagine Dragons Playlist 2024 - Best songs - Top 10 GREATEST HITS SONGS - Best of Imagine Dragons\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LzInU71ljJQ/hqdefault.jpg?host=i.ytimg.com&rs=AOn4CLAV2y0lPZiIQTBQMgOYizzoWvrQgg&sqp=-oaymwEcCOADEI4CSFXy"
-        },
-        {
-          "kind": "search",
-          "term": "iris out",
-          "filter": "music_songs",
-          "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_songs",
-          "ok": true,
-          "status": 200,
-          "time_ms": 570,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Cb0JZhdmjtg\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/VGf2lFXKQdSyrz2g3Czj66doPtUxvJBrWDK6UFeOj8zRqS-tgs_D8FG5-8pYTX-Uh9FxZBDJIXtN1nKF=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-"
+          "time_ms": 792,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDRxusbm2_TGTnDWEIhBTYW2cUQkw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\""
         },
         {
           "kind": "search",
           "term": "erika",
-          "filter": "music_videos",
+          "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 462,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=WGw4mn2-ILc\",\"type\":\"stream\",\"title\":\"\\\"Erika\\\" A German WW2 marching song\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/WGw4mn2-ILc/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3lIGnsH9TVSUWCxejmdJwpg9IzFbg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"FederalBruv\",\"uploaderUrl"
+          "time_ms": 528,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LghDWolJgP4\",\"type\":\"stream\",\"title\":\"OK\",\"thumbnail\":\"https://proxy.piped.private.coffee/dqhghX-z0CvVH4Re8YhQtoqw4md2BxOLsne4InfYyPrbZmXY-blgrTWPFEmInqAatRCPhH6msx7IpucEIw=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Erika Isac\",\"uploaderUrl\":\"/channel/UCBUZRN0KFO67LPNVkn"
+        },
+        {
+          "kind": "search",
+          "term": "ado",
+          "filter": "music_videos",
+          "path": "/search",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_videos",
+          "ok": true,
+          "status": 200,
+          "time_ms": 583,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=ujyJRxAKpVE\",\"type\":\"stream\",\"title\":\"Ado - Usseewa / THE FIRST TAKE\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/ujyJRxAKpVE/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3mAuq-1KORpGc26I8b1xaK6IhwkLw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"THE FIRST TAKE\",\"uploaderUrl\":n"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 194,
-        "avg_search_ms": 554,
-        "combined_latency_ms": 748
+        "avg_suggestion_ms": 215,
+        "avg_search_ms": 634,
+        "combined_latency_ms": 849
       },
-      "checked_at": "2026-01-01T14:24:24.259Z",
+      "checked_at": "2026-01-01T14:46:10.460Z",
       "version": "2025.0.0",
       "isLatest": true
     }
