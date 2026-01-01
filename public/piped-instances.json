@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-31T23:42:46.451Z",
+  "generated_at": "2026-01-01T02:10:45.799Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -16,8 +16,18 @@
           "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 220,
-          "body_sample": "[\"rick astley\",\"rick astley never gonna give you up\",\"rick astley glastonbury 2023\",\"rick astley live\",\"rick astley together forever\",\"rick astley the smiths\",\"rick astley new year's eve\",\"rick astley never gonna give you up lyrics\",\"rick astley foo fighters\",\"rick astley songs\",\"rick astley cry for help\",\"rick astley "
+          "time_ms": 161,
+          "body_sample": "[\"rick astley\",\"rick astley never gonna give you up\",\"rick astley glastonbury 2023\",\"rick astley live\",\"rick astley the smiths\",\"rick astley new year's eve\",\"rick astley together forever\",\"rick astley songs\",\"rick astley karaoke\",\"rick astley foo fighters\",\"rick astley never gonna give you up lyrics\",\"rick astley cry f"
+        },
+        {
+          "kind": "suggest",
+          "term": "Never Gonna Give You Up",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 154,
+          "body_sample": "[\"never gonna give you up\",\"never gonna give you up karaoke\",\"never gonna give you up rick astley\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up piano\",\"never gonna give you up meme\",\"never gonna give you up remix\",\"never gonna give you up no ads\",\"never gonna give you up "
         },
         {
           "kind": "suggest",
@@ -26,53 +36,43 @@
           "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 216,
-          "body_sample": "[\"erika kirk\",\"erika\",\"erika german song\",\"erika kirk interview\",\"erika kirk speech\",\"erika diane\",\"erika song\",\"erika kirk nicki minaj\",\"erika kirk entrance\",\"erika kirk jd vance\",\"erika i don't know\",\"erika isac\",\"erika remix\",\"erika kirk memes\"]"
-        },
-        {
-          "kind": "suggest",
-          "term": "imagine dragons",
-          "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
-          "ok": true,
-          "status": 200,
-          "time_ms": 217,
-          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons live\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons lyrics\",\"imagine dragons karaoke\",\"imagine dragons bad liar\",\"imagine dragons "
+          "time_ms": 155,
+          "body_sample": "[\"erika kirk\",\"erika\",\"erika german song\",\"erika kirk interview\",\"erika kirk speech\",\"erika diane\",\"erika song\",\"erika kirk entrance\",\"erika kirk nicki minaj\",\"erika kirk jd vance\",\"erika kirk memes\",\"erika i don't know\",\"erika isac\",\"erika remix\"]"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "ado",
+          "term": "iris out",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 782,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=NB94LKrLEt4\",\"type\":\"stream\",\"title\":\"Odoru Ponpokorin\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/NB94LKrLEt4/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDJW3jZ5KiMRb7hHlsnXVw99pxbMQ&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/UCln9P"
+          "time_ms": 507,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmZD-TU96q4\",\"type\":\"stream\",\"title\":\"Kenshi Yonezu - IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmZD-TU96q4/hq720.jpg?host=i.ytimg.com&rs=AOn4CLAjXMjvAckioBpWT-ksz16_e8ugtA&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\":\"Kenshi Yonezu  米津玄師\",\"uploa"
         },
         {
           "kind": "search",
-          "term": "Never Gonna Give You Up",
+          "term": "erika",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 561,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=lYBUbBu4W08\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/eC9DfRcYSk4FE-fvDCJSu_4xsKdVMKxwmFTYFZwP8OqB7R4TKxAjKoR-Kp1lXeRi2WddPFYulSte4eW-=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel"
+          "time_ms": 463,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LghDWolJgP4\",\"type\":\"stream\",\"title\":\"OK\",\"thumbnail\":\"https://proxy.piped.private.coffee/dqhghX-z0CvVH4Re8YhQtoqw4md2BxOLsne4InfYyPrbZmXY-blgrTWPFEmInqAatRCPhH6msx7IpucEIw=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Erika Isac\",\"uploaderUrl\":\"/channel/UCBUZRN0KFO67LPNVkn"
         },
         {
           "kind": "search",
-          "term": "imagine dragons",
+          "term": "ado",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 497,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LzInU71ljJQ\",\"type\":\"stream\",\"title\":\"Imagine Dragons Playlist 2024 - Best songs - Top 10 GREATEST HITS SONGS - Best of Imagine Dragons\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LzInU71ljJQ/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3nkoP-UfTKTRwJw-zFyoU0-uCVMSw&sqp=-oaymwEWCJADEOEBIAQq"
+          "time_ms": 402,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Qp3b-RXtz4w\",\"type\":\"stream\",\"title\":\"うっせぇわ - Usseewa\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/Qp3b-RXtz4w/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3m2xp2MZo1no5Uz3KZn442P6gd7tw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/UC5DHwv9N4OQ9AWtK"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 218,
-        "avg_search_ms": 613,
-        "combined_latency_ms": 831
+        "avg_suggestion_ms": 157,
+        "avg_search_ms": 457,
+        "combined_latency_ms": 614
       },
-      "checked_at": "2025-12-31T23:42:41.753Z",
+      "checked_at": "2026-01-01T02:10:41.919Z",
       "version": "2025.0.0",
       "isLatest": true
     }
