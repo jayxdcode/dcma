@@ -1,17 +1,9 @@
-// /api/embed.js
-// Plain Node serverless handler. Drop into /api/embed.js
-// Usage:
-//  GET /api/embed/VIDEOID?start=10&endless=true&autoplay=1
-//  or GET /api/embed?v=VIDEOID&...
-//
-// Notes:
-//  - autoplay param (truthy) will append 'RD' to the embedded video id (per your spec).
-//  - endless=true enables loop and sets playlist to the original video id.
-//  - Allowed forwarded player params are whitelisted below.
+// /api/embed.js - ESM Version
+// Usage: GET /api/embed/VIDEOID?start=10&endless=true&autoplay=1
 
 const ALLOWED_PARAMS = [
-  'autoplay','controls','rel','start','end','playsinline','mute',
-  'modestbranding','iv_load_policy','loop','playlist','enablejsapi'
+  'autoplay', 'controls', 'rel', 'start', 'end', 'playsinline', 'mute',
+  'modestbranding', 'iv_load_policy', 'loop', 'playlist', 'enablejsapi'
 ];
 
 function detectProtocol(req) {
@@ -23,59 +15,52 @@ function detectProtocol(req) {
 }
 
 function escapeHtml(s = '') {
-  return String(s).replace(/[&<>"']/g, (m) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]);
+  return String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
 }
+
 function escapeJs(s = '') {
   return String(s).replace(/['\\]/g, (m) => m === "'" ? "\\'" : "\\\\");
 }
 
-module.exports = async function (req, res) {
+export default async function handler(req, res) {
   try {
-    // Determine video id from path /api/embed/{id} or query v=...
-    // req.url includes path + query. Use protocol+host to build URL object.
     const host = req.headers.host || 'localhost';
     const protocol = detectProtocol(req);
+    
+    // In ESM, we construct the URL similarly
     const fullUrl = new URL(req.url || '', `${protocol}://${host}`);
     const pathname = fullUrl.pathname || '';
 
-    // Attempt to parse video id from path segments after '/api/embed/'
     let videoIdFromPath = '';
     const parts = pathname.split('/').filter(Boolean);
-    // find 'api' then 'embed' then next segment (common layouts)
     const embedIndex = parts.indexOf('embed');
     if (embedIndex !== -1 && parts.length > embedIndex + 1) {
       videoIdFromPath = decodeURIComponent(parts[embedIndex + 1] || '');
     }
 
-    // query
     const qs = fullUrl.searchParams;
     const qv = (k) => qs.has(k) ? qs.get(k) : undefined;
 
     const videoId = videoIdFromPath || qv('v') || qv('videoId') || qv('id') || '';
 
-    // decide API src (proxy vs youtube)
     const isDiscordProxy = (req.headers.host || '').includes('discordsays.com');
     const apiSrc = (isDiscordProxy || qv('test') === '1') ? '/yt/iframe_api' : 'https://www.youtube.com/iframe_api';
 
-    // build src params with whitelist
     const srcParams = new URLSearchParams();
     for (const k of ALLOWED_PARAMS) {
       if (qs.has(k)) srcParams.set(k, qs.get(k));
     }
 
-    // default safe params
     if (!srcParams.has('playsinline')) srcParams.set('playsinline', '1');
     if (!srcParams.has('rel')) srcParams.set('rel', '0');
     if (!srcParams.has('controls')) srcParams.set('controls', '0');
 
-    // endless handling
     const endless = (qv('endless') === '1' || qv('endless') === 'true');
     if (endless) {
       srcParams.set('loop', '1');
       if (!srcParams.has('playlist') && videoId) srcParams.set('playlist', videoId);
     }
 
-    // autoplay behavior: append RD to embed id when autoplay param is truthy
     const autoplayFlag = (() => {
       if (qs.has('autoplay')) {
         const v = qs.get('autoplay');
@@ -87,11 +72,9 @@ module.exports = async function (req, res) {
     let embedId = videoId ? String(videoId) : '';
     if (autoplayFlag && embedId) embedId = embedId + 'RD';
 
-    // iframe src
     const iframeSrc = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(embedId)}?${srcParams.toString()}`;
 
-    // prepare playerVars to pass into YT.Player init (some numeric conversion)
-    const numericKeys = ['start','end','autoplay','controls','rel','playsinline','loop','mute','iv_load_policy'];
+    const numericKeys = ['start', 'end', 'autoplay', 'controls', 'rel', 'playsinline', 'loop', 'mute', 'iv_load_policy'];
     const playerVars = {};
     for (const k of numericKeys) {
       if (srcParams.has(k)) {
@@ -104,7 +87,6 @@ module.exports = async function (req, res) {
     if (playerVars.rel === undefined) playerVars.rel = 0;
     if (playerVars.controls === undefined) playerVars.controls = 0;
 
-    // Build HTML
     const html = `<!doctype html>
 <html>
   <head>
@@ -127,7 +109,6 @@ module.exports = async function (req, res) {
   <body>
     <div id="player-wrap">
       <div id="stat-msg">Standby mode. Waiting for Iframe API initialization...</div>
-
       <iframe
         id="player-iframe"
         src="${iframeSrc}"
@@ -137,7 +118,6 @@ module.exports = async function (req, res) {
         title="YouTube video player"
       ></iframe>
     </div>
-
     <script>
       (function loadApi(){
         if (window.YT && window.YT.Player) { onYouTubeIframeAPIReady(); return; }
@@ -246,4 +226,4 @@ module.exports = async function (req, res) {
     res.statusCode = 500;
     res.end(JSON.stringify({ ok: false, error: String(err && err.message ? err.message : err) }));
   }
-};
+}

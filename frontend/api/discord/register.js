@@ -1,23 +1,25 @@
-// /api/discord/register.js
+// /api/discord/register.js - ESM Version
 // Usage (quick):
 //  GET  /api/discord/register           -> help
 //  POST /api/discord/register           -> register globally
 //  POST /api/discord/register?guild=GID -> register to a specific guild for instant testing
-//
-// Body (JSON) optional; we use query param `guild` to register to a guild quickly.
-//
-// Env required: VITE_DISCORD_CLIENT_ID, DISCORD_TOKEN
 
 const CLIENT_ID = process.env.VITE_DISCORD_CLIENT_ID;
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
+/**
+ * Modern helper: Uses global fetch if available (Node 18+), 
+ * otherwise attempts to dynamic import node-fetch.
+ */
 async function doFetch(url, opts) {
   if (typeof fetch !== 'undefined') return fetch(url, opts);
-  const nf = require('node-fetch');
+  
+  // In ESM, you must use dynamic import() instead of require()
+  const { default: nf } = await import('node-fetch');
   return nf(url, opts);
 }
 
-module.exports = async function(req, res) {
+export default async function handler(req, res) {
   if (!CLIENT_ID || !DISCORD_TOKEN) {
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ ok: false, error: 'Missing VITE_DISCORD_CLIENT_ID or DISCORD_TOKEN env var' }));
@@ -40,11 +42,10 @@ module.exports = async function(req, res) {
     return;
   }
   
-  // build the commands payload (adjust or add commands here)
   const commands = [
     {
       name: "id",
-      type: 1, // chat input
+      type: 1,
       description: "Load an embed for a given YouTube-like video id",
       options: [
         { name: "videoid", description: "Video ID", type: 3, required: true },
@@ -53,21 +54,12 @@ module.exports = async function(req, res) {
         { name: "params", description: "Extra player params as query string (e.g. start=10&controls=1)", type: 3, required: false }
       ]
     },
-    // simple testing commands:
-    {
-      name: "play",
-      type: 1,
-      description: "Play command (test)"
-    },
-    {
-      name: "pause",
-      type: 1,
-      description: "Pause command (test)"
-    }
+    { name: "play", type: 1, description: "Play command (test)" },
+    { name: "pause", type: 1, description: "Pause command (test)" }
   ];
   
-  // Check for guild query param to register to a guild (instant); otherwise global
-  const urlObj = new URL(req.url, `https://${req.headers.host}`);
+  const host = req.headers.host || 'localhost';
+  const urlObj = new URL(req.url, `https://${host}`);
   const guildId = urlObj.searchParams.get('guild');
   
   const endpoint = guildId ?
@@ -75,7 +67,6 @@ module.exports = async function(req, res) {
     `https://discord.com/api/v10/applications/${CLIENT_ID}/commands`;
   
   try {
-    // Register commands one-by-one (allows partial success and clearer errors).
     const results = [];
     for (const cmd of commands) {
       const r = await doFetch(endpoint, {
@@ -97,6 +88,6 @@ module.exports = async function(req, res) {
   } catch (err) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.statusCode = 500;
-    res.end(JSON.stringify({ ok: false, error: String(err && err.message ? err.message : err) }));
+    res.end(JSON.stringify({ ok: false, error: String(err?.message ?? err) }));
   }
-};
+}

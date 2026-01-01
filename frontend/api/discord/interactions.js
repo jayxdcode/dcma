@@ -1,6 +1,5 @@
-// /api/discord/interactions.js
-// Discord interaction endpoint. Configure your Discord App -> Interactions endpoint URL to this path.
-// Env required: DISCORD_PUBLIC_KEY, VITE_DISCORD_CLIENT_ID (optional), DISCORD_TOKEN (optional if you want to do followups).
+// /api/discord/interactions.js - ESM Version
+import nacl from 'tweetnacl'; // Ensure 'npm install tweetnacl' is run
 
 const PUBLIC_KEY = process.env.DISCORD_PUBLIC_KEY;
 const CLIENT_ID = process.env.VITE_DISCORD_CLIENT_ID || '';
@@ -23,26 +22,25 @@ function getRawBody(req) {
   });
 }
 
+/**
+ * Modern helper: Uses global fetch if available (Node 18+),
+ * otherwise attempts to dynamic import node-fetch.
+ */
 async function doFetch(url, opts) {
   if (typeof fetch !== 'undefined') return fetch(url, opts);
-  const nf = require('node-fetch');
+  const { default: nf } = await import('node-fetch');
   return nf(url, opts);
 }
 
-// signature verification using tweetnacl
+// signature verification using tweetnacl (now using the imported nacl)
 function verifySignature(publicKey, signature, timestamp, body) {
-  try {
-    const nacl = require('tweetnacl');
-    const pubKeyBuf = Buffer.from(publicKey, 'hex');
-    const sigBuf = Buffer.from(signature, 'hex');
-    const msgBuf = Buffer.concat([Buffer.from(timestamp, 'utf8'), Buffer.from(body, 'utf8')]);
-    return nacl.sign.detached.verify(new Uint8Array(msgBuf), new Uint8Array(sigBuf), new Uint8Array(pubKeyBuf));
-  } catch (e) {
-    throw new Error('tweetnacl not available. npm install tweetnacl');
-  }
+  const pubKeyBuf = Buffer.from(publicKey, 'hex');
+  const sigBuf = Buffer.from(signature, 'hex');
+  const msgBuf = Buffer.concat([Buffer.from(timestamp, 'utf8'), Buffer.from(body, 'utf8')]);
+  return nacl.sign.detached.verify(new Uint8Array(msgBuf), new Uint8Array(sigBuf), new Uint8Array(pubKeyBuf));
 }
 
-module.exports = async function (req, res) {
+export default async function handler(req, res) {
   // Accept only POST
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -51,7 +49,7 @@ module.exports = async function (req, res) {
     return;
   }
 
-  const raw = await getRawBody(req).catch((e) => {
+  const raw = await getRawBody(req).catch(() => {
     res.statusCode = 400; res.end('bad request'); return null;
   });
   if (raw === null) return;
@@ -64,7 +62,7 @@ module.exports = async function (req, res) {
   }
 
   const sig = req.headers['x-signature-ed25519'] || req.headers['x-signature'];
-  const ts = req.headers['x-signature-timestamp'] || req.headers['x-signature-timestamp'];
+  const ts = req.headers['x-signature-timestamp'];
 
   if (!sig || !ts) {
     res.statusCode = 401;
@@ -81,7 +79,7 @@ module.exports = async function (req, res) {
     }
   } catch (err) {
     res.statusCode = 500;
-    res.end('signature verification error: ' + String(err && err.message ? err.message : err));
+    res.end('signature verification error: ' + String(err?.message ?? err));
     return;
   }
 
@@ -100,55 +98,44 @@ module.exports = async function (req, res) {
   // Application command (slash)
   if (body.type === 2 && body.data) {
     const name = body.data.name;
-    // Build base URL for embed link (detect host and protocol)
     const proto = detectProtocol(req);
     const host = req.headers.host || 'localhost';
     const baseUrl = `${proto}://${host}`;
 
     if (name === 'id') {
-      // extract options
       const opts = (body.data.options || []).reduce((acc, o) => {
         acc[o.name] = o.value; return acc;
       }, {});
       const videoID = opts.videoid || opts.videoId || opts.id;
+      
       if (!videoID) {
-        // respond with error
-        const content = 'Missing videoID option.';
         res.setHeader('Content-Type','application/json; charset=utf-8');
-        res.end(JSON.stringify({ type: 4, data: { content } }));
+        res.end(JSON.stringify({ type: 4, data: { content: 'Missing videoID option.' } }));
         return;
       }
 
-      // construct embed URL
       let embedVideoId = String(videoID);
       if (opts.autoplay === true || opts.autoplay === 'true') embedVideoId = embedVideoId + 'RD';
+      
       const qs = new URLSearchParams();
       if (opts.endless === true || opts.endless === 'true') qs.set('endless','true');
+      
       if (opts.params) {
-        // user provided extra param string; append as-is
         const extra = String(opts.params || '').replace(/^\?/, '');
         if (extra) {
-          // append each kv from extra into qs
           const sp = new URLSearchParams(extra);
           for (const [k,v] of sp) qs.set(k,v);
         }
       }
 
-      const embedUrl = `${baseUrl}/api/embed/${encodeURIComponent(embedVideoId)}${qs.toString() ? ('?' + qs.toString()) : ''}`;
-
-      // Immediate reply (channel message with source). You can make ephemeral by adding flags: 64
-      const responseData = {
-        content: `Embed URL: ${embedUrl}`,
-        // optional: make ephemeral so only the invoking user sees it:
-        // flags: 64
-      };
+      const queryStr = qs.toString() ? ('?' + qs.toString()) : '';
+      const embedUrl = `${baseUrl}/api/embed/${encodeURIComponent(embedVideoId)}${queryStr}`;
 
       res.setHeader('Content-Type','application/json; charset=utf-8');
-      res.end(JSON.stringify({ type: 4, data: responseData }));
+      res.end(JSON.stringify({ type: 4, data: { content: `Embed URL: ${embedUrl}` } }));
       return;
     }
 
-    // simple play/pause commands for testing
     if (name === 'play' || name === 'pause') {
       const content = `Received command: ${name.toUpperCase()}. (No persistent server — create followups or register other commands.)`;
       res.setHeader('Content-Type','application/json; charset=utf-8');
@@ -156,13 +143,11 @@ module.exports = async function (req, res) {
       return;
     }
 
-    // Unknown command
     res.setHeader('Content-Type','application/json; charset=utf-8');
     res.end(JSON.stringify({ type: 4, data: { content: `Unhandled command: ${name}` } }));
     return;
   }
 
-  // fallback
   res.statusCode = 400;
   res.end('unsupported interaction');
-};
+}
