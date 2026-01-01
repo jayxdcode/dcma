@@ -1,17 +1,21 @@
-// /api/discord/interactions.js - ESM Version
-import nacl from 'tweetnacl'; // Ensure 'npm install tweetnacl' is run
+// /api/discord/interactions.js
+// ESM serverless handler for Discord Interactions
+// - Uses LAUNCH_ACTIVITY (type 12) for activity launches
+// - Defers (type 5) for other commands, then posts followups via webhook
+//
+// Required env:
+//   DISCORD_PUBLIC_KEY
+//   VITE_DISCORD_CLIENT_ID   (APP_ID)
+//   DISCORD_TOKEN            (optional for other operations)
+//
+// npm: install tweetnacl
+//   npm i tweetnacl
 
+import nacl from 'tweetnacl';
+
+/** helpers **/
 const PUBLIC_KEY = process.env.DISCORD_PUBLIC_KEY;
-const CLIENT_ID = process.env.VITE_DISCORD_CLIENT_ID || '';
-const DISCORD_TOKEN = process.env.DISCORD_TOKEN || null;
-
-function detectProtocol(req) {
-  let protocol = 'http';
-  const xf = req.headers['x-forwarded-proto'];
-  if (xf) protocol = String(xf).split(',')[0];
-  else if (req.socket && req.socket.encrypted) protocol = 'https';
-  return protocol;
-}
+const APP_ID = process.env.VITE_DISCORD_CLIENT_ID;
 
 function getRawBody(req) {
   return new Promise((resolve, reject) => {
@@ -22,132 +26,169 @@ function getRawBody(req) {
   });
 }
 
-/**
- * Modern helper: Uses global fetch if available (Node 18+),
- * otherwise attempts to dynamic import node-fetch.
- */
-async function doFetch(url, opts) {
-  if (typeof fetch !== 'undefined') return fetch(url, opts);
-  const { default: nf } = await import('node-fetch');
-  return nf(url, opts);
+function verifySig(req, rawBody) {
+  const sig = req.headers['x-signature-ed25519'];
+  const ts = req.headers['x-signature-timestamp'];
+  if (!sig || !ts || !PUBLIC_KEY) return false;
+  
+  try {
+    const msg = Buffer.concat([Buffer.from(ts, 'utf8'), Buffer.from(rawBody, 'utf8')]);
+    return nacl.sign.detached.verify(
+      new Uint8Array(msg),
+      Uint8Array.from(Buffer.from(sig, 'hex')),
+      Uint8Array.from(Buffer.from(PUBLIC_KEY, 'hex'))
+    );
+  } catch (e) {
+    return false;
+  }
 }
 
-// signature verification using tweetnacl (now using the imported nacl)
-function verifySignature(publicKey, signature, timestamp, body) {
-  const pubKeyBuf = Buffer.from(publicKey, 'hex');
-  const sigBuf = Buffer.from(signature, 'hex');
-  const msgBuf = Buffer.concat([Buffer.from(timestamp, 'utf8'), Buffer.from(body, 'utf8')]);
-  return nacl.sign.detached.verify(new Uint8Array(msgBuf), new Uint8Array(sigBuf), new Uint8Array(pubKeyBuf));
+async function postFollowup(appId, token, body) {
+  // POST to interaction webhook to create followup (no auth header needed)
+  const url = `https://discord.com/api/v10/webhooks/${appId}/${token}`;
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  return r;
 }
 
+/** Build embed URL using your pattern:
+    https://<videoId>.discordsays.com/api/embed/<videoId>?params
+**/
+function buildEmbedUrl(videoId, extras = {}) {
+  const params = new URLSearchParams();
+  if (extras.start) params.set('start', String(extras.start));
+  if (extras.end) params.set('end', String(extras.end));
+  if (extras.endless) params.set('endless', '1');
+  // add any other allowed params as needed
+  const paramStr = params.toString();
+  // NOTE: uses the videoId as subdomain per your spec
+  return `https://${encodeURIComponent(videoId)}.discordsays.com/api/embed/${encodeURIComponent(videoId)}${paramStr ? ('?' + paramStr) : ''}`;
+}
+
+/** Exported handler **/
 export default async function handler(req, res) {
-  // Accept only POST
+  // Only POST interactions
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     res.statusCode = 405;
-    res.end('Method not allowed');
+    res.end('Method Not Allowed');
     return;
   }
-
-  const raw = await getRawBody(req).catch(() => {
-    res.statusCode = 400; res.end('bad request'); return null;
-  });
-  if (raw === null) return;
-
-  // verify signature
-  if (!PUBLIC_KEY) {
-    res.statusCode = 500;
-    res.end('Server misconfigured: missing DISCORD_PUBLIC_KEY env var');
-    return;
-  }
-
-  const sig = req.headers['x-signature-ed25519'] || req.headers['x-signature'];
-  const ts = req.headers['x-signature-timestamp'];
-
-  if (!sig || !ts) {
-    res.statusCode = 401;
-    res.end('missing signature headers');
-    return;
-  }
-
+  
+  // read raw body (signature verification requires raw body)
+  let rawBody;
   try {
-    const ok = verifySignature(PUBLIC_KEY, sig, ts, raw);
-    if (!ok) {
-      res.statusCode = 401;
-      res.end('invalid request signature');
-      return;
-    }
+    rawBody = await getRawBody(req);
   } catch (err) {
-    res.statusCode = 500;
-    res.end('signature verification error: ' + String(err?.message ?? err));
+    res.statusCode = 400;
+    res.end('Bad request');
     return;
   }
-
-  let body;
-  try { body = JSON.parse(raw); } catch (e) {
-    res.statusCode = 400; res.end('invalid json'); return;
+  
+  // verify signature
+  if (!verifySig(req, rawBody)) {
+    res.statusCode = 401;
+    res.end('Invalid request signature');
+    return;
   }
-
-  // Handle Discord PING (type 1)
+  
+  let body;
+  try {
+    body = JSON.parse(rawBody);
+  } catch (err) {
+    res.statusCode = 400;
+    res.end('Invalid JSON');
+    return;
+  }
+  
+  // PING (Type 1)
   if (body.type === 1) {
-    res.setHeader('Content-Type','application/json; charset=utf-8');
+    res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ type: 1 }));
     return;
   }
-
-  // Application command (slash)
+  
+  // Application command (Type 2)
   if (body.type === 2 && body.data) {
     const name = body.data.name;
-    const proto = detectProtocol(req);
-    const host = req.headers.host || 'localhost';
-    const baseUrl = `${proto}://${host}`;
-
-    if (name === 'id') {
-      const opts = (body.data.options || []).reduce((acc, o) => {
-        acc[o.name] = o.value; return acc;
-      }, {});
-      const videoID = opts.videoid || opts.videoId || opts.id;
-      
-      if (!videoID) {
-        res.setHeader('Content-Type','application/json; charset=utf-8');
-        res.end(JSON.stringify({ type: 4, data: { content: 'Missing videoID option.' } }));
+    const token = body.token; // for followups
+    const interactionId = body.id;
+    const options = (body.data.options || []).reduce((acc, o) => (acc[o.name] = o.value, acc), {});
+    const proto = (req.headers['x-forwarded-proto']?.split(',')[0]) || (req.socket?.encrypted ? 'https' : 'http');
+    
+    // If user asked to launch the Activity, reply with type 12 immediately:
+    // LAUNCH_ACTIVITY (type 12) – will launch the Activity associated with this application.
+    // This must be returned within 3s.
+    if (name === 'activity') {
+      // optional: you can include a small data object if you later need it;
+      // docs show LaunchActivity is represented by type 12 (no extra required).
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ type: 12 })); // LAUNCH_ACTIVITY
+      return;
+    }
+    
+    // For other commands, we use Defer + followup (type 5), to avoid timing out
+    // Send immediate defer response (user sees 'Bot is thinking...')
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ type: 5 })); // DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE
+    
+    // Now perform the slower work and POST a followup via webhook
+    // (the followup uses APP_ID + interaction token)
+    try {
+      if (name === 'id') {
+        // expected option: videoid (string), optional: start,end,endless,autoplay
+        const videoId = options.videoid || options.videoId || options.id;
+        if (!videoId) {
+          await postFollowup(APP_ID, token, { content: 'Missing `videoid` option.' });
+          return;
+        }
+        
+        // handle autoplay -> append RD to embed id per your spec (if provided)
+        let embedId = String(videoId);
+        const autoplay = options.autoplay === true || options.autoplay === 'true';
+        if (autoplay) embedId += 'RD';
+        
+        const extras = {};
+        if (options.start) extras.start = options.start;
+        if (options.end) extras.end = options.end;
+        if (options.endless === true || options.endless === 'true') extras.endless = true;
+        
+        const embedUrl = buildEmbedUrl(embedId, extras);
+        
+        // reply followup
+        await postFollowup(APP_ID, token, {
+          content: `🔗 Open embed: ${embedUrl}`
+        });
         return;
       }
-
-      let embedVideoId = String(videoID);
-      if (opts.autoplay === true || opts.autoplay === 'true') embedVideoId = embedVideoId + 'RD';
       
-      const qs = new URLSearchParams();
-      if (opts.endless === true || opts.endless === 'true') qs.set('endless','true');
-      
-      if (opts.params) {
-        const extra = String(opts.params || '').replace(/^\?/, '');
-        if (extra) {
-          const sp = new URLSearchParams(extra);
-          for (const [k,v] of sp) qs.set(k,v);
-        }
+      if (name === 'play' || name === 'pause') {
+        // these are quick control commands — we just return a followup that indicates the bot received the command.
+        await postFollowup(APP_ID, token, {
+          content: `Command received: **${name.toUpperCase()}**`
+        });
+        return;
       }
-
-      const queryStr = qs.toString() ? ('?' + qs.toString()) : '';
-      const embedUrl = `${baseUrl}/api/embed/${encodeURIComponent(embedVideoId)}${queryStr}`;
-
-      res.setHeader('Content-Type','application/json; charset=utf-8');
-      res.end(JSON.stringify({ type: 4, data: { content: `Embed URL: ${embedUrl}` } }));
+      
+      // unknown command – reply followup with helpful message
+      await postFollowup(APP_ID, token, {
+        content: `Unhandled command: ${name}`
+      });
+      return;
+      
+    } catch (err) {
+      // followup failed — nothing more we can do in this invocation
+      try {
+        await postFollowup(APP_ID, token, { content: `Error handling command: ${String(err && err.message ? err.message : err)}` });
+      } catch (_) { /* swallow */ }
       return;
     }
-
-    if (name === 'play' || name === 'pause') {
-      const content = `Received command: ${name.toUpperCase()}. (No persistent server — create followups or register other commands.)`;
-      res.setHeader('Content-Type','application/json; charset=utf-8');
-      res.end(JSON.stringify({ type: 4, data: { content } }));
-      return;
-    }
-
-    res.setHeader('Content-Type','application/json; charset=utf-8');
-    res.end(JSON.stringify({ type: 4, data: { content: `Unhandled command: ${name}` } }));
-    return;
   }
-
+  
+  // everything else
   res.statusCode = 400;
-  res.end('unsupported interaction');
+  res.end('Unsupported interaction');
 }
