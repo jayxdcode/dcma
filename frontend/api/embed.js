@@ -1,7 +1,7 @@
 // api/embed.js
 export default function handler(req, res) {
   const { v, origin, start, test } = req.query;
-  const isDiscordProxy = req.host.includes('discordsays.com');
+  const isDiscordProxy = (req.headers.host).includes('discordsays.com');
   const apiSrc = (isDiscordProxy || test === '1') ? '/yt/iframe_api' : 'https://www.youtube.com/iframe_api';
 
   const html = `
