@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-05T17:27:24.800Z",
+  "generated_at": "2026-01-05T17:49:22.193Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -11,23 +11,23 @@
       "suggestions": [
         {
           "kind": "suggest",
-          "term": "erika",
+          "term": "rick astley",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 170,
-          "body_sample": "[\"erika kirk\",\"erika german song\",\"erika diane\",\"erika kirk speech\",\"erika song\",\"erika kirk interview\",\"erika kirk jd vance\",\"erika i don't know\",\"erika costell\",\"erika isac\",\"erika remix\",\"erika kirk candace owens\",\"erika piano\",\"erika kirk nicki minaj\"]"
+          "time_ms": 178,
+          "body_sample": "[\"rick astley never gonna give you up\",\"rick astley\",\"rick astley the smiths\",\"rick astley glastonbury 2023\",\"rick astley together forever\",\"rick astley foo fighters\",\"rick astley songs\",\"rick astley never gonna give you up lyrics\",\"rick astley cry for help\",\"rick astley take me to your heart\",\"rick astley pink pony cl"
         },
         {
           "kind": "suggest",
-          "term": "Never Gonna Give You Up",
+          "term": "iris out",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 174,
-          "body_sample": "[\"never gonna give you up\",\"never gonna give you up rick astley\",\"never gonna give you up karaoke\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up piano\",\"never gonna give you up slowed\",\"never gonna give you up remix\",\"never gonna give you up meme\",\"never gonna give you up "
+          "time_ms": 160,
+          "body_sample": "[\"iris out\",\"iris out live\",\"iris out kenshi yonezu\",\"iris out english cover\",\"iris out reaction\",\"iris out cover\",\"iris out piano\",\"iris out lyrics\",\"iris out english lyrics\",\"iris out 1 hour\",\"iris out live performance\",\"iris out chainsaw man\",\"iris out english\",\"iris out dance\"]"
         },
         {
           "kind": "suggest",
@@ -43,36 +43,36 @@
       "searches": [
         {
           "kind": "search",
-          "term": "ado",
+          "term": "rick astley",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 846,
-          "body_sample": "{\"items\":[{\"url\":\"/channel/UCln9P4Qm3-EAY4aiEPmRwEA\",\"type\":\"channel\",\"name\":\"Ado\",\"thumbnail\":\"https://proxy.piped.private.coffee/BKpE74RwbPJ8zLaad9Y2XoX7SmIEsoma1KB8dNzwtWwiOqgTNnYI_guEP1iAaTBrdk4nHakx=s176-c-k-c0x00ffffff-no-rw-mo?host=yt3.googleusercontent.com\",\"description\":\"元気です。\",\"subscribers\":8760000,\"videos\":-"
+          "time_ms": 629,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDRxusbm2_TGTnDWEIhBTYW2cUQkw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\""
         },
         {
           "kind": "search",
-          "term": "Never Gonna Give You Up",
+          "term": "iris out",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 830,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=lYBUbBu4W08\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/eC9DfRcYSk4FE-fvDCJSu_4xsKdVMKxwmFTYFZwP8OqB7R4TKxAjKoR-Kp1lXeRi2WddPFYulSte4eW-=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel"
+          "time_ms": 582,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Cb0JZhdmjtg\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/VGf2lFXKQdSyrz2g3Czj66doPtUxvJBrWDK6UFeOj8zRqS-tgs_D8FG5-8pYTX-Uh9FxZBDJIXtN1nKF=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-"
         },
         {
           "kind": "search",
-          "term": "erika",
+          "term": "ado",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 533,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=e5tEoIrXK6o\",\"type\":\"stream\",\"title\":\"Erika [German soldier love song][+English translation]\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/e5tEoIrXK6o/hqdefault.jpg?host=i.ytimg.com&rs=AMzJL3mUqdRhjLfEwmWXiUIKnAkXfOsQ3w&sqp=-oaymwEWCMACELQBIAQqCghQEJADGFogjgJIWg\",\"uploaderName\":\"Dr. Lud"
+          "time_ms": 506,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=ujyJRxAKpVE\",\"type\":\"stream\",\"title\":\"Ado - うっせぇわ / THE FIRST TAKE\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/ujyJRxAKpVE/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3mAuq-1KORpGc26I8b1xaK6IhwkLw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"THE FIRST TAKE\",\"uploaderUrl\":nul"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 169,
-        "avg_search_ms": 736,
-        "combined_latency_ms": 905
+        "avg_suggestion_ms": 167,
+        "avg_search_ms": 572,
+        "combined_latency_ms": 739
       },
-      "checked_at": "2026-01-05T17:27:17.749Z",
+      "checked_at": "2026-01-05T17:49:15.136Z",
       "version": "2025.0.0",
       "isLatest": true
     }
