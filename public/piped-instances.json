@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-06T18:38:33.314Z",
+  "generated_at": "2026-01-06T19:21:20.530Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -16,8 +16,18 @@
           "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 164,
+          "time_ms": 220,
           "body_sample": "[\"adopt me\",\"adolescence\",\"adore you\",\"ado\",\"adopt me house build\",\"adopt me trading\",\"adom tv live\",\"adore you miley cyrus\",\"adoration live\",\"adom fm 106.3 live\",\"adopt me channel\",\"adolf hitler\",\"ado reaction\",\"adolescence critics choice awards\"]"
+        },
+        {
+          "kind": "suggest",
+          "term": "Never Gonna Give You Up",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 221,
+          "body_sample": "[\"never gonna give you up\",\"never gonna give you up rick astley\",\"never gonna give you up karaoke\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up piano\",\"never gonna give you up live\",\"never gonna give you up remix\",\"never gonna give you up meme\",\"never gonna give you up vo"
         },
         {
           "kind": "suggest",
@@ -26,53 +36,43 @@
           "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 159,
+          "time_ms": 233,
           "body_sample": "[\"iris out\",\"iris out live\",\"iris out kenshi yonezu\",\"iris out english cover\",\"iris out piano\",\"iris out reaction\",\"iris out lyrics\",\"iris out karaoke\",\"iris out 1 hour\",\"iris out english\",\"iris out cover\",\"iris out dance\",\"iris out reze version\",\"iris out english lyrics\"]"
-        },
-        {
-          "kind": "suggest",
-          "term": "imagine dragons",
-          "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
-          "ok": true,
-          "status": 200,
-          "time_ms": 177,
-          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons radioactive\",\"imagine dragons live\",\"imagine dragons playlist\",\"imagine dragons lyrics\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons bad liar\",\"imagine dragons whatever it takes\",\"imagin"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "Never Gonna Give You Up",
+          "term": "rick astley",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 642,
+          "time_ms": 866,
           "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDRxusbm2_TGTnDWEIhBTYW2cUQkw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\""
         },
         {
           "kind": "search",
-          "term": "rick astley",
+          "term": "Never Gonna Give You Up",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 496,
+          "time_ms": 621,
           "body_sample": "{\"items\":[{\"url\":\"/watch?v=lYBUbBu4W08\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/eC9DfRcYSk4FE-fvDCJSu_4xsKdVMKxwmFTYFZwP8OqB7R4TKxAjKoR-Kp1lXeRi2WddPFYulSte4eW-=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel"
         },
         {
           "kind": "search",
-          "term": "erika",
+          "term": "iris out",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 552,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=e5tEoIrXK6o\",\"type\":\"stream\",\"title\":\"Erika [German soldier love song][+English translation]\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/e5tEoIrXK6o/hqdefault.jpg?host=i.ytimg.com&rs=AMzJL3mUqdRhjLfEwmWXiUIKnAkXfOsQ3w&sqp=-oaymwEWCMACELQBIAQqCghQEJADGFogjgJIWg\",\"uploaderName\":\"Dr. Lud"
+          "time_ms": 507,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmZD-TU96q4\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmZD-TU96q4/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3k5RltzYfug575ZJLL7LqgbEi3pEg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-aW"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 167,
-        "avg_search_ms": 563,
-        "combined_latency_ms": 730
+        "avg_suggestion_ms": 225,
+        "avg_search_ms": 665,
+        "combined_latency_ms": 890
       },
-      "checked_at": "2026-01-06T18:38:26.245Z",
+      "checked_at": "2026-01-06T19:21:13.246Z",
       "version": "2025.0.0",
       "isLatest": true
     }
