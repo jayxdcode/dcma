@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-08T15:32:02.853Z",
+  "generated_at": "2026-01-08T16:36:45.385Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -11,23 +11,13 @@
       "suggestions": [
         {
           "kind": "suggest",
-          "term": "imagine dragons",
+          "term": "ado",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 191,
-          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons radioactive\",\"imagine dragons live\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons lyrics\",\"imagine dragons enemy\",\"imagine dragons bad liar\",\"imagine dragons whatever it takes\",\"imagin"
-        },
-        {
-          "kind": "suggest",
-          "term": "iris out",
-          "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
-          "ok": true,
-          "status": 200,
-          "time_ms": 192,
-          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out kenshi yonezu\",\"iris out live\",\"iris out piano\",\"iris out reaction\",\"iris out lyrics\",\"iris out karaoke\",\"iris out cover\",\"iris out 1 hour\",\"iris out opening\",\"iris out guitar\",\"iris out chainsaw man\",\"iris out bass\"]"
+          "time_ms": 202,
+          "body_sample": "[\"adopt me\",\"adore you\",\"adolescence\",\"ado\",\"adom tv live\",\"adore you miley cyrus\",\"adopt me trading\",\"adopt me house build\",\"adom fm 106.3 live\",\"ado air 20 ultra\",\"adolf hitler\",\"adopt me channel\",\"adoration live\",\"adolescence critics choice awards\"]"
         },
         {
           "kind": "suggest",
@@ -36,43 +26,53 @@
           "url": "https://api.piped.private.coffee/suggestions?query=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 271,
+          "time_ms": 294,
           "body_sample": "[\"cccp national anthem 1977\",\"советский гимн 1944\",\"soviet anthem belarus\"]"
+        },
+        {
+          "kind": "suggest",
+          "term": "iris out",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 209,
+          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out kenshi yonezu\",\"iris out live\",\"iris out piano\",\"iris out reaction\",\"iris out lyrics\",\"iris out karaoke\",\"iris out cover\",\"iris out 1 hour\",\"iris out opening\",\"iris out guitar\",\"iris out chainsaw man\",\"iris out bass\"]"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "erika",
+          "term": "Never Gonna Give You Up",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=erika&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 563,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=4A1MlEwWOmQ\",\"type\":\"stream\",\"title\":\"Erika - Army Choir Cover\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/4A1MlEwWOmQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLBxI7XsJZ0sa8ojtNRC7vvr-u4TVw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\":\"The Valor Choir\",\"uploaderU"
+          "time_ms": 661,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDRxusbm2_TGTnDWEIhBTYW2cUQkw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\""
+        },
+        {
+          "kind": "search",
+          "term": "erika",
+          "filter": "music_songs",
+          "path": "/search",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
+          "ok": true,
+          "status": 200,
+          "time_ms": 580,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Ta-jK-tbZEg\",\"type\":\"stream\",\"title\":\"Erika (EDM/Techno)\",\"thumbnail\":\"https://proxy.piped.private.coffee/kYWk-yGau_3cR-rZkPU3HBpmEceUN2kBSmkl7EoLSf0ebUlyVGgpXKB-xv6trnCHjnlen1J4-rZ_a3AN=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Erich and Matzler\",\"uploaderUrl\":null,\"up"
         },
         {
           "kind": "search",
           "term": "ado",
-          "filter": "music_songs",
-          "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_songs",
-          "ok": true,
-          "status": 200,
-          "time_ms": 557,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=NB94LKrLEt4\",\"type\":\"stream\",\"title\":\"おどるポンポコリン - Odoru Ponpokorin\",\"thumbnail\":\"https://proxy.piped.private.coffee/g7luv0CqyFqDZjgrhi7pAtKj_OWMk_DW_yofSjYbMIi26HY-wc1fnYjbu5V2G12aOci8F0x4aACIngDowQ=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/"
-        },
-        {
-          "kind": "search",
-          "term": "союз советский социалистических республик",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 554,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=erKjfJJUblM\",\"type\":\"stream\",\"title\":\"Гимн Союза Советских Социалистических Республик (1977)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/erKjfJJUblM/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3mKJIhQR6lQhVjktv5Ky8nRX44SFg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Музыка "
+          "time_ms": 545,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Qp3b-RXtz4w\",\"type\":\"stream\",\"title\":\"うっせぇわ - Usseewa\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/Qp3b-RXtz4w/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3m2xp2MZo1no5Uz3KZn442P6gd7tw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/UC5DHwv9N4OQ9AWtK"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 218,
-        "avg_search_ms": 558,
-        "combined_latency_ms": 776
+        "avg_suggestion_ms": 235,
+        "avg_search_ms": 595,
+        "combined_latency_ms": 830
       },
-      "checked_at": "2026-01-08T15:31:58.230Z",
+      "checked_at": "2026-01-08T16:36:40.696Z",
       "version": "2025.0.0",
       "isLatest": true
     }
