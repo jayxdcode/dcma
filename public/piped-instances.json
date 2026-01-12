@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-12T05:05:36.270Z",
+  "generated_at": "2026-01-12T05:53:50.660Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -11,13 +11,13 @@
       "suggestions": [
         {
           "kind": "suggest",
-          "term": "iris out",
+          "term": "Never Gonna Give You Up",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 155,
-          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out live\",\"iris out reaction\",\"iris out 1 hour\",\"iris out kenshi yonezu\",\"iris out piano\",\"iris out cover\",\"iris out lyrics\",\"iris out piano tutorial\",\"iris out guitar\",\"iris out karaoke\",\"iris out fortnite\",\"iris out remix\"]"
+          "time_ms": 154,
+          "body_sample": "[\"never gonna give you up\",\"never gonna give you up rick astley\",\"never gonna give you up karaoke\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up piano\",\"never gonna give you up remix\",\"never gonna give you up live\",\"never gonna give you up meme\",\"never gonna give you up vo"
         },
         {
           "kind": "suggest",
@@ -26,31 +26,31 @@
           "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 166,
+          "time_ms": 151,
           "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons live\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons lyrics\",\"imagine dragons on top of the world\",\"imagine dragons bad liar\",\"imag"
         },
         {
           "kind": "suggest",
-          "term": "ado",
+          "term": "iris out",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 150,
-          "body_sample": "[\"adopt me\",\"adore you\",\"adolescence\",\"adopt me house build\",\"adopt me trading\",\"ado\",\"adom tv live\",\"adore you miley cyrus\",\"adolf hitler\",\"adopt me grinding\",\"adolescence reaction\",\"adoration live\",\"adolf silva rampage crash\",\"adonai nathaniel bassey\"]"
+          "time_ms": 159,
+          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out live\",\"iris out reaction\",\"iris out 1 hour\",\"iris out kenshi yonezu\",\"iris out piano\",\"iris out cover\",\"iris out lyrics\",\"iris out piano tutorial\",\"iris out guitar\",\"iris out karaoke\",\"iris out fortnite\",\"iris out remix\"]"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "Never Gonna Give You Up",
+          "term": "erika",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 513,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDRxusbm2_TGTnDWEIhBTYW2cUQkw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\""
+          "time_ms": 492,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=h_FNt31NVLI\",\"type\":\"stream\",\"title\":\"Erika - German soldier song\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/h_FNt31NVLI/hq720.jpg?host=i.ytimg.com&rs=AOn4CLAoZNcQ3KuQu6Z8VPCBTqGYnt5y_w&sqp=-oaymwE2CNAFEJQDSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhpIGkoaTAP\",\"uploaderNam"
         },
         {
           "kind": "search",
@@ -60,19 +60,19 @@
           "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 445,
+          "time_ms": 450,
           "body_sample": "{\"items\":[{\"url\":\"/watch?v=Kx7B-XvmFtE\",\"type\":\"stream\",\"title\":\"Believer\",\"thumbnail\":\"https://proxy.piped.private.coffee/weYQWfEwWNPOuAm34geXN1LkSYPlsJay78NnQgHC3PKsyZcdvBHIsMtqoFh3rioA4XgMdHMQd3h6vH6mbA=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Imagine Dragons\",\"uploaderUrl\":\"/channel/UC0aXrjV"
         },
         {
           "kind": "search",
-          "term": "rick astley",
+          "term": "ado",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 430,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3lNNudXg7f4Qf7PiE9tvCAkHTjJ0w&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel/U"
+          "time_ms": 386,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=ujyJRxAKpVE\",\"type\":\"stream\",\"title\":\"Ado - うっせぇわ / THE FIRST TAKE\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/ujyJRxAKpVE/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3mAuq-1KORpGc26I8b1xaK6IhwkLw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"THE FIRST TAKE\",\"uploaderUrl\":nul"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 157,
-        "avg_search_ms": 463,
-        "combined_latency_ms": 620
+        "avg_suggestion_ms": 155,
+        "avg_search_ms": 443,
+        "combined_latency_ms": 598
       },
-      "checked_at": "2026-01-12T05:05:29.735Z",
+      "checked_at": "2026-01-12T05:53:44.137Z",
       "version": "2025.0.0",
       "isLatest": true
     }
