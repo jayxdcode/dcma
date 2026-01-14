@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-14T06:40:59.995Z",
+  "generated_at": "2026-01-14T07:30:24.871Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -11,46 +11,46 @@
       "suggestions": [
         {
           "kind": "suggest",
+          "term": "iris out",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 208,
+          "body_sample": "[\"iris out\",\"iris out reaction\",\"iris out kenshi yonezu\",\"iris out english cover\",\"iris out 1 hour\",\"iris out live\",\"iris out piano\",\"iris out cover\",\"iris out english\",\"iris out lyrics\",\"iris out guitar tab\",\"iris out remix\",\"iris out chainsaw man\",\"iris out reze version\"]"
+        },
+        {
+          "kind": "suggest",
+          "term": "erika",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 203,
+          "body_sample": "[\"erika kirk\",\"erika german song\",\"erika kirk speech\",\"erika diane\",\"erika song\",\"erika kirk interview\",\"erika kirk jd vance\",\"erika i don't know\",\"erika isac\",\"erika remix\",\"erika jayne\",\"erika costell\",\"erika piano\",\"erika kirk entrance\"]"
+        },
+        {
+          "kind": "suggest",
           "term": "imagine dragons",
           "path": "/suggestions",
           "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 179,
+          "time_ms": 215,
           "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons live\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons lyrics\",\"imagine dragons bad liar\",\"imagine dragons whatever it takes\",\"imagin"
-        },
-        {
-          "kind": "suggest",
-          "term": "ado",
-          "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
-          "ok": true,
-          "status": 200,
-          "time_ms": 178,
-          "body_sample": "[\"adopt me\",\"adolescence\",\"adore you\",\"adolescence golden globe\",\"ado\",\"adolescence reaction\",\"adom tv live\",\"adopt me trading\",\"adopt me house build\",\"adolescence trailer\",\"adore you miley cyrus\",\"adolescence scene\",\"adom fm 106.3 live\",\"adonai\"]"
-        },
-        {
-          "kind": "suggest",
-          "term": "rick astley",
-          "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
-          "ok": true,
-          "status": 200,
-          "time_ms": 174,
-          "body_sample": "[\"rick astley never gonna give you up\",\"rick astley\",\"rick astley glastonbury 2023\",\"rick astley the smiths\",\"rick astley together forever\",\"rick astley cry for help\",\"rick astley songs\",\"rick astley foo fighters\",\"rick astley never gonna give you up lyrics\",\"rick astley take me to your heart\",\"rick astley pink pony cl"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "Never Gonna Give You Up",
+          "term": "iris out",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 535,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDRxusbm2_TGTnDWEIhBTYW2cUQkw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\""
+          "time_ms": 648,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmZD-TU96q4\",\"type\":\"stream\",\"title\":\"Kenshi Yonezu - IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmZD-TU96q4/hq720.jpg?host=i.ytimg.com&rs=AOn4CLAjXMjvAckioBpWT-ksz16_e8ugtA&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\":\"Kenshi Yonezu  米津玄師\",\"uploa"
         },
         {
           "kind": "search",
@@ -60,19 +60,19 @@
           "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 509,
+          "time_ms": 544,
           "body_sample": "{\"items\":[{\"url\":\"/watch?v=lYBUbBu4W08\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/eC9DfRcYSk4FE-fvDCJSu_4xsKdVMKxwmFTYFZwP8OqB7R4TKxAjKoR-Kp1lXeRi2WddPFYulSte4eW-=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel"
         },
         {
           "kind": "search",
-          "term": "iris out",
+          "term": "Never Gonna Give You Up",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=music_videos",
           "ok": true,
           "status": 200,
           "time_ms": 468,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmZD-TU96q4\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmZD-TU96q4/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3k5RltzYfug575ZJLL7LqgbEi3pEg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-aW"
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3lNNudXg7f4Qf7PiE9tvCAkHTjJ0w&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel/U"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 177,
-        "avg_search_ms": 504,
-        "combined_latency_ms": 681
+        "avg_suggestion_ms": 209,
+        "avg_search_ms": 553,
+        "combined_latency_ms": 762
       },
-      "checked_at": "2026-01-14T06:40:53.033Z",
+      "checked_at": "2026-01-14T07:30:17.924Z",
       "version": "2025.0.0",
       "isLatest": true
     }
