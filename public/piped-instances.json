@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-15T12:55:42.800Z",
+  "generated_at": "2026-01-15T13:43:51.736Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2025.0.0",
   "instances": [
@@ -11,68 +11,68 @@
       "suggestions": [
         {
           "kind": "suggest",
-          "term": "iris out",
-          "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
-          "ok": true,
-          "status": 200,
-          "time_ms": 221,
-          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out 1 hour\",\"iris out kenshi yonezu\",\"iris out reaction\",\"iris out piano\",\"iris out lyrics\",\"iris out english\",\"iris out slowed\",\"iris out cover\",\"iris out instrumental\",\"iris out chainsaw man\",\"iris out dance\",\"iris out karaoke\"]"
-        },
-        {
-          "kind": "suggest",
           "term": "imagine dragons",
           "path": "/suggestions",
           "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 211,
+          "time_ms": 176,
           "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons radioactive\",\"imagine dragons live\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons lyrics\",\"imagine dragons bad liar\",\"imagine dragons demons live\",\"imagine drag"
         },
         {
           "kind": "suggest",
-          "term": "ado",
+          "term": "Never Gonna Give You Up",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 215,
-          "body_sample": "[\"adopt me\",\"adolescence\",\"adore you\",\"ado\",\"adom tv live\",\"adopt me trading\",\"adore you miley cyrus\",\"adolescence scene\",\"adolescence reaction\",\"adopt me house build\",\"adom fm 106.3 live\",\"adolf hitler\",\"adoration live\",\"adonay youtube\"]"
+          "time_ms": 170,
+          "body_sample": "[\"never gonna give you up\",\"never gonna give you up rick astley\",\"never gonna give you up karaoke\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up live\",\"never gonna give you up reaction\",\"never gonna give you up piano\",\"never gonna give you up remix\",\"never gonna give you u"
+        },
+        {
+          "kind": "suggest",
+          "term": "iris out",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 174,
+          "body_sample": "[\"iris out\",\"iris out english cover\",\"iris out kenshi yonezu\",\"iris out 1 hour\",\"iris out reaction\",\"iris out piano\",\"iris out lyrics\",\"iris out english\",\"iris out cover\",\"iris out instrumental\",\"iris out slowed\",\"iris out chainsaw man\",\"iris out dance\",\"iris out karaoke\"]"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "ado",
+          "term": "erika",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 778,
-          "body_sample": "{\"items\":[{\"url\":\"/channel/UCln9P4Qm3-EAY4aiEPmRwEA\",\"type\":\"channel\",\"name\":\"Ado\",\"thumbnail\":\"https://proxy.piped.private.coffee/BKpE74RwbPJ8zLaad9Y2XoX7SmIEsoma1KB8dNzwtWwiOqgTNnYI_guEP1iAaTBrdk4nHakx=s176-c-k-c0x00ffffff-no-rw-mo?host=yt3.googleusercontent.com\",\"description\":\"元気です。\",\"subscribers\":8830000,\"videos\":-"
+          "time_ms": 544,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=4A1MlEwWOmQ\",\"type\":\"stream\",\"title\":\"Erika - Army Choir Cover\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/4A1MlEwWOmQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLBxI7XsJZ0sa8ojtNRC7vvr-u4TVw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\":\"The Valor Choir\",\"uploaderU"
         },
         {
           "kind": "search",
-          "term": "Never Gonna Give You Up",
+          "term": "imagine dragons",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 634,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=lYBUbBu4W08\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/eC9DfRcYSk4FE-fvDCJSu_4xsKdVMKxwmFTYFZwP8OqB7R4TKxAjKoR-Kp1lXeRi2WddPFYulSte4eW-=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel"
+          "time_ms": 497,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Kx7B-XvmFtE\",\"type\":\"stream\",\"title\":\"Believer\",\"thumbnail\":\"https://proxy.piped.private.coffee/weYQWfEwWNPOuAm34geXN1LkSYPlsJay78NnQgHC3PKsyZcdvBHIsMtqoFh3rioA4XgMdHMQd3h6vH6mbA=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Imagine Dragons\",\"uploaderUrl\":\"/channel/UC0aXrjV"
         },
         {
           "kind": "search",
-          "term": "rick astley",
+          "term": "ado",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 531,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3lNNudXg7f4Qf7PiE9tvCAkHTjJ0w&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel/U"
+          "time_ms": 461,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=ujyJRxAKpVE\",\"type\":\"stream\",\"title\":\"Ado - うっせぇわ / THE FIRST TAKE\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/ujyJRxAKpVE/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3mAuq-1KORpGc26I8b1xaK6IhwkLw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"THE FIRST TAKE\",\"uploaderUrl\":nul"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 216,
-        "avg_search_ms": 648,
-        "combined_latency_ms": 864
+        "avg_suggestion_ms": 173,
+        "avg_search_ms": 501,
+        "combined_latency_ms": 674
       },
-      "checked_at": "2026-01-15T12:55:35.693Z",
+      "checked_at": "2026-01-15T13:43:45.022Z",
       "version": "2025.0.0",
       "isLatest": true
     }
