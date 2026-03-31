@@ -23,7 +23,7 @@
          ERUDA AUTOLOAD (Main Page)
          ======================================================================== */
       const isDiscordProxy = window.location.hostname.includes('discordsays.com');
-      const erudaSrc = isDiscordProxy ? (location.origin + "/src/eruda/eruda.js") : "//cdn.jsdelivr.net/npm/eruda";
+      const erudaSrc = isDiscordProxy ? (location.origin + "/src/eruda/eruda.js") : "https://cdn.jsdelivr.net/npm/eruda";
       
       function loadErudaAt(targetDoc, callback) {
         if (targetDoc.defaultView.eruda) {
