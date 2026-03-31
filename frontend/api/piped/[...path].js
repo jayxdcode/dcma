@@ -57,7 +57,7 @@ async function fetchInstances() {
         // fall back to wiki parsing
       }
     }
-    
+
     // fallback: parse TeamPiped markdown
     const txt = await fetchTextWithUA(RAW_WIKI_URL);
     const lines = txt.split('\n');
@@ -82,7 +82,7 @@ async function fetchInstances() {
         });
       }
     }
-    
+
     // permissive fallback: find http(s) urls in file
     if (!instances.length) {
       const urlRegex = /https?:\/\/[^\s)'"<]+/ig;
@@ -104,7 +104,7 @@ async function fetchInstances() {
         });
       }
     }
-    
+
     // fallback env var
     if (!instances.length && process.env.PIPED_FALLBACK) {
       instances.push({
@@ -115,7 +115,7 @@ async function fetchInstances() {
         raw: process.env.PIPED_FALLBACK
       });
     }
-    
+
     _instancesCache = instances;
     _instancesAt = Date.now();
     return instances;
@@ -150,7 +150,7 @@ async function readRequestBody(req) {
 async function doUpstreamRequest(targetUrl, req, forwardedHeaders, bodyBuf) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
-  
+
   try {
     const upstream = await fetch(targetUrl, {
       method: req.method,
@@ -176,7 +176,7 @@ export default async function handler(req, res) {
     res.status(204).end();
     return;
   }
-  
+
   try {
     const instances = await fetchInstances();
     if (!Array.isArray(instances) || instances.length === 0) {
@@ -184,13 +184,13 @@ export default async function handler(req, res) {
       res.status(502).json({ error: 'no piped instances discovered' });
       return;
     }
-    
+
     // parse requested index
     const parsed = new URL(req.url, `https://${req.headers.host}`);
     const searchParams = parsed.searchParams;
     const insRaw = searchParams.get('ins');
     let startIdx = (Number.isFinite(Number(insRaw)) ? Math.max(0, Math.min(instances.length - 1, Number(insRaw))) : 0);
-    
+
     // compute suffix (everything after /api/piped)
     const incomingPath = parsed.pathname || '';
     const prefix = '/api/piped';
@@ -200,13 +200,13 @@ export default async function handler(req, res) {
     } else {
       if (searchParams.has('path')) suffix = searchParams.get('path').replace(/^\/+/, '');
     }
-    
+
     // remove ins & path before forwarding
     searchParams.delete('ins');
     searchParams.delete('path');
-    
+
     const forwardedQs = searchParams.toString();
-    
+
     // build forwarded headers (filter hop-by-hop)
     const forwardedHeaders = {};
     const hopByHop = new Set(['connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization', 'te', 'trailers', 'transfer-encoding', 'upgrade', 'host']);
@@ -217,13 +217,13 @@ export default async function handler(req, res) {
       forwardedHeaders[k] = v;
     }
     forwardedHeaders['x-forwarded-by'] = 'vercel-piped-mitm';
-    
+
     // read body once
     let bodyBuf;
     if (!['GET', 'HEAD'].includes(req.method)) {
       bodyBuf = await readRequestBody(req);
     }
-    
+
     // attempt instances in sequence starting at startIdx, wrapping around
     const maxAttempts = instances.length;
     let lastError = null;
@@ -231,10 +231,10 @@ export default async function handler(req, res) {
       const idx = (startIdx + attempt) % instances.length;
       const selected = instances[idx];
       if (!selected || !selected.api_url) continue;
-      
+
       const targetBase = selected.api_url || selected.raw;
       const targetUrl = forwardedQs ? `${safeJoin(targetBase, suffix)}?${forwardedQs}` : safeJoin(targetBase, suffix);
-      
+
       try {
         const result = await doUpstreamRequest(targetUrl, req, forwardedHeaders, bodyBuf);
         if (!result.ok) {
@@ -249,24 +249,33 @@ export default async function handler(req, res) {
           console.warn('upstream server error, trying next instance:', upstream.status);
           continue;
         }
-        
+
         // forward status and headers
         res.status(upstream.status);
         upstream.headers.forEach((value, key) => {
           const lk = key.toLowerCase();
-          if (['transfer-encoding', 'connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization', 'upgrade'].includes(lk)) return;
+          
+          // --- THE FIX IS HERE ---
+          // Strip out encoding and length headers so the client doesn't choke on decompressed buffers
+          if ([
+            'transfer-encoding', 'connection', 'keep-alive', 
+            'proxy-authenticate', 'proxy-authorization', 'upgrade',
+            'content-encoding', 'content-length' 
+          ].includes(lk)) return;
+          
           if (lk === 'set-cookie') return;
           res.setHeader(key, value);
         });
+        
         // CORS
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Range, X-Requested-With');
-        
+
         // stream / buffer upstream body into response
         const arrBuf = await upstream.arrayBuffer();
         const buf = Buffer.from(arrBuf);
-        res.setHeader('Content-Length', String(buf.length));
+        res.setHeader('Content-Length', String(buf.length)); // Recalculate length based on the raw decompressed buffer
         res.end(buf);
         return; // success — done
       } catch (err) {
@@ -275,7 +284,7 @@ export default async function handler(req, res) {
         // try next instance
       }
     }
-    
+
     // if we reach here, all attempts failed
     console.error('All upstream instances failed', lastError?.message || lastError);
     res.setHeader('Access-Control-Allow-Origin', '*');
