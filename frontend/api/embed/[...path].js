@@ -73,8 +73,7 @@ export default async function handler(req, res) {
     // Also allow query params v=, videoId=, id= as fallback
     const videoId = videoIdFromPath || qv('v') || qv('videoId') || qv('id') || '';
     
-    const isDiscordProxy = (req.headers.host || '').includes('discordsays.com');
-    const apiSrc = (isDiscordProxy || qv('test') === '1') ? '/yt/iframe_api' : 'https://www.youtube.com/iframe_api';
+    const apiSrc = 'https://www.youtube.com/iframe_api';
     
     // Build src params from whitelist
     const srcParams = new URLSearchParams();

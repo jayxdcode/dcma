@@ -1,5 +1,9 @@
 # dcma
-Discord Music Activity (uses Discord Embedded App SDK)
+~~Discord Music Activity (uses Discord Embedded App SDK)~~
+
+> Notice: Since I can't use yt-dlp (lack of a reliable backend access), i'm discontinuing the development toward Discord Activities. However, it doesn't mean as a total disappearance of the web app — I'll just remove discord-related code and that's it.
+
+> *P.S.: I need to replace the README soon lol.*
 
 
 ## Deploy

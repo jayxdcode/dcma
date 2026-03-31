@@ -1,8 +1,7 @@
 // api/embed.js
 export default function handler(req, res) {
   const { v, origin, start, test } = req.query;
-  const isDiscordProxy = (req.headers.host).includes('discordsays.com');
-  const apiSrc = (isDiscordProxy || test === '1') ? '/yt/iframe_api' : 'https://www.youtube.com/iframe_api';
+  const apiSrc = 'https://www.youtube.com/iframe_api';
   
   const html = `
     <!DOCTYPE html>
@@ -49,7 +48,7 @@ export default function handler(req, res) {
                 start: ${parseInt(start) || 0},
                 autoplay: 0,
                 enablejsapi: 1,
-                origin: window.location.origin // The discord proxy domain
+                origin: window.location.origin  // proxy domain
               },
               events: {
                 onReady: () => {

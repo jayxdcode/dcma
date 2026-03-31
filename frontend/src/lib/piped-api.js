@@ -2,8 +2,7 @@
 // ES module client for Piped-based backend with base path /piped
 // Exports: search, suggestions, related, nextTracks, artistPage, albumPage, playlistPage, getStreams
 
-const isDiscordProxy = window.location.hostname.includes('discordsays.com');
-const BASE = isDiscordProxy ? '/api/piped' : 'https://frontend-dcma.vercel.app/api/piped'; // <-- your app/server should
+const BASE = 'https://frontend-dcma.vercel.app/api/piped'; // <-- your app/server should
 // proxy /piped -> actual piped instance or an mitm router for dynamic
 
 /** Safely join base + path without producing double or missing slashes */
@@ -32,25 +31,6 @@ function buildUrl(path, params = {}) {
 	if (entries.length === 0) return url;
 	const sp = new URLSearchParams(entries);
 	return url.includes('?') ? `${url}&${sp.toString()}` : `${url}?${sp.toString()}`;
-}
-
-/**
- * getYoutubeThumbnail (synchronous - safest fallback)
- *
- * Returns a safe, always-present thumbnail path (default.jpg) when using the Discord proxy.
- * This avoids any HTTP checks/HEAD requests and keeps the function synchronous.
- *
- * @param {string} videoId
- * @param {string} defaultURL - URL returned if proxy is false or videoId missing
- * @returns {string}
- */
-function getYoutubeThumbnail(videoId, defaultURL = '') {
-	if (!videoId) return defaultURL || '';
-	// If not using the proxy that serves proxied thumbnails, return the defaultURL
-	if (!isDiscordProxy) return defaultURL || '';
-	// The safest thumbnail filename that exists for (virtually) all YouTube videos is "default.jpg".
-	// Use the proxied path pattern
-	return `/yt-img/vi/${videoId}/hqdefault.jpg`;
 }
 
 /** Generic request helper. opts: { method, body, headers, params } */
@@ -98,7 +78,7 @@ function normalizeVideoItem(item) {
 		id: id,
 		title: item?.title || item?.name || item?.titleText || item?.caption || '',
 		url: item?.url || item?.watchUrl || (item?.videoId ? `/watch?v=${item.videoId}` : ''),
-		cover: getYoutubeThumbnail(id, thumb),
+		cover: thumb,
 		duration: item?.duration ?? item?.lengthSeconds ?? null,
 		artist: item?.uploader || item?.channel || item?.uploaderName || item?.author || null,
 		artistUrl: item?.uploaderUrl || item?.channelUrl || null,

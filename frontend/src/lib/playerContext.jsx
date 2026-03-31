@@ -3,9 +3,8 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 const PlayerContext = createContext(null);
 export function usePlayer() { return useContext(PlayerContext); }
 
-const isDiscordProxy = window.location.hostname.includes('discordsays.com');
 const YT_API_SRC = "https://www.youtube.com/iframe_api";
-const SPONSORBLOCK_API = isDiscordProxy ? "/sb/api/skipSegments" : "https://sponsor.ajay.app/api/skipSegments";
+const SPONSORBLOCK_API = "https://sponsor.ajay.app/api/skipSegments";
 
 function normalizeTrack(t) {
   if (!t || typeof t !== 'object') return t;
@@ -28,19 +27,18 @@ export function PlayerProvider({ children, initialQueue }) {
   const skipSegmentsRef = useRef([]);
   const skippingRef = useRef(false);
   const currentVideoIdRef = useRef(null);
-  const isInitialLoad = useRef(true);        // used to prevent autoplay on initial restore
+  const isInitialLoad = useRef(true); // used to prevent autoplay on initial restore
   const wasUserAction = useRef(false);
-
-  const saveTimeoutRef = useRef(null);       // debounce saver
+  
+  const saveTimeoutRef = useRef(null); // debounce saver
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [useAudioEngine, setUseAudioEngine] = useState(false);
   const [debugLogs, setDebugLogs] = useState([]); // Debugger state
-
+  
   const addLog = (msg) => {
-    if (!isDiscordProxy) return;
     setDebugLogs(prev => [`${new Date().toLocaleTimeString()}: ${msg}`, ...prev].slice(0, 5));
   };
-
+  
   // --------- Init queue from lastPlay.queue (if present) or initialQueue ----------
   const [queue, setQueueState] = useState(() => {
     try {
@@ -51,7 +49,7 @@ export function PlayerProvider({ children, initialQueue }) {
       return (initialQueue || []).map(normalizeTrack);
     }
   });
-
+  
   // --------- Init index using lastPlay.id (if present and in queue) ----------
   const [index, setIndexState] = useState(() => {
     try {
@@ -63,12 +61,12 @@ export function PlayerProvider({ children, initialQueue }) {
     } catch (e) {}
     return 0;
   });
-
+  
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
-
+  
   const setPlayerContainer = (destEl, customStyle = {}) => {
     if (!destEl || !containerRef.current) return;
     const el = containerRef.current;
@@ -85,7 +83,7 @@ export function PlayerProvider({ children, initialQueue }) {
     Object.assign(el.style, defaultCoverStyle, customStyle);
     if (el.parentNode !== destEl) destEl.appendChild(el);
   };
-
+  
   const sendCommand = (command, value, extra = {}) => {
     addLog(`Sending Command: ${command}`);
     if (useAudioEngine && audioRef.current) {
@@ -101,22 +99,17 @@ export function PlayerProvider({ children, initialQueue }) {
       }
       return;
     }
-
-    if (isDiscordProxy) {
-      containerRef.current?.contentWindow?.postMessage(
-        JSON.stringify({ command, value, ...extra }), "*"
-      );
-    } else {
-      const p = playerRef.current;
-      if (!p) return;
-      if (command === 'PLAY') p.playVideo?.();
-      if (command === 'PAUSE') p.pauseVideo?.();
-      if (command === 'SEEK') p.seekTo?.(value, true);
-      if (command === 'SET_VOLUME') p.setVolume?.(Math.round(value * 100));
-      if (command === 'LOAD') p.loadVideoById?.({ videoId: value, startSeconds: extra.start || 0 });
-    }
+    
+    const p = playerRef.current;
+    if (!p) return;
+    if (command === 'PLAY') p.playVideo?.();
+    if (command === 'PAUSE') p.pauseVideo?.();
+    if (command === 'SEEK') p.seekTo?.(value, true);
+    if (command === 'SET_VOLUME') p.setVolume?.(Math.round(value * 100));
+    if (command === 'LOAD') p.loadVideoById?.({ videoId: value, startSeconds: extra.start || 0 });
+    
   };
-
+  
   // ---------- Safe serializer (to store whole track safely) ----------
   const safeSerialize = (obj) => {
     if (!obj) return obj;
@@ -134,7 +127,7 @@ export function PlayerProvider({ children, initialQueue }) {
       };
     }
   };
-
+  
   // ---------- Persistence: lastPlay is the track object with addons ----------
   const buildPersistPayload = (payloadTime = null) => {
     const curIdx = Math.max(0, Math.min(index, queue.length - 1));
@@ -154,16 +147,16 @@ export function PlayerProvider({ children, initialQueue }) {
       queue: serializedQueue
     };
   };
-
+  
   const persistLastPlay = (immediate = false, overrideTime = null) => {
     // don't persist while still in initial restore phase (unless explicit immediate save)
     if (isInitialLoad.current && !immediate) return;
-
+    
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
       saveTimeoutRef.current = null;
     }
-
+    
     const writeNow = () => {
       try {
         const payload = buildPersistPayload(overrideTime);
@@ -173,7 +166,7 @@ export function PlayerProvider({ children, initialQueue }) {
         // fail silently
       }
     };
-
+    
     if (immediate) {
       writeNow();
     } else {
@@ -181,7 +174,7 @@ export function PlayerProvider({ children, initialQueue }) {
       saveTimeoutRef.current = setTimeout(writeNow, 1000);
     }
   };
-
+  
   // persist on unmount / page close
   useEffect(() => {
     const onBeforeUnload = () => persistLastPlay(true);
@@ -191,12 +184,12 @@ export function PlayerProvider({ children, initialQueue }) {
       if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     };
   }, [queue, index, time]);
-
+  
   // Save whenever index, queue or (debounced) time changes:
   useEffect(() => { persistLastPlay(false); }, [index, queue]);
   useEffect(() => { persistLastPlay(false); }, [time]);
   useEffect(() => { persistLastPlay(false); }, [volume]);
-
+  
   // ---------- Player init ----------
   useEffect(() => {
     const storageId = 'hitori-hidden-storage';
@@ -207,60 +200,52 @@ export function PlayerProvider({ children, initialQueue }) {
       Object.assign(storage.style, { position: 'fixed', left: '-9999px', top: '-9999px' });
       document.body.appendChild(storage);
     }
-
+    
     if (!audioRef.current) {
       audioRef.current = new Audio();
-      audioRef.current.onended = () => { wasUserAction.current = true;
-        handleNext(); };
+      audioRef.current.onended = () => {
+        wasUserAction.current = true;
+        handleNext();
+      };
     }
-
+    
     // Read lastPlay shape: now lastPlay is either an augmented track obj or older shape
     const lastData = JSON.parse(localStorage.getItem('lastPlay') || '{}');
     const startSec = lastData?.lastTime || 0;
-
-    if (isDiscordProxy) {
-      addLog("Initializing Discord Proxy Iframe...");
-      const ifr = document.createElement('iframe');
-      ifr.id = 'hitori-player-core';
-      ifr.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; encrypted-media');
-      ifr.setAttribute('allowfullscreen', 'true');
-      const initialVid = queue[index]?.id || '';
-      ifr.src = `/api/embed?v=${initialVid}&start=${startSec}&origin=${encodeURIComponent(window.location.origin)}`;
-      ifr.style.border = 'none';
-      storage.appendChild(ifr);
-      containerRef.current = ifr;
-    } else {
-      addLog("Initializing Native YouTube API...");
-      const script = document.createElement('script');
-      script.src = YT_API_SRC;
-      document.head.appendChild(script);
-      window.onYouTubeIframeAPIReady = () => {
-        const ytDiv = document.createElement('div');
-        storage.appendChild(ytDiv);
-        containerRef.current = ytDiv;
-        playerRef.current = new window.YT.Player(ytDiv, {
-          height: '100%',
-          width: '100%',
-          videoId: queue[index]?.id || '',
-          playerVars: { controls: 0, playsinline: 1, rel: 0, start: startSec, autoplay: 0 },
-          events: {
-            onReady: () => {
-              setIsPlayerReady(true);
-              addLog("Native Player Ready");
-              // will respect isInitialLoad in later effects
-            },
-            onStateChange: (e) => {
-              if (e.data === 1) setPlaying(true);
-              if (e.data === 2) setPlaying(false);
-              if (e.data === 0) { wasUserAction.current = true;
-                handleNext(); }
+    
+    addLog("Initializing Native YouTube API...");
+    const script = document.createElement('script');
+    script.src = YT_API_SRC;
+    document.head.appendChild(script);
+    window.onYouTubeIframeAPIReady = () => {
+      const ytDiv = document.createElement('div');
+      storage.appendChild(ytDiv);
+      containerRef.current = ytDiv;
+      playerRef.current = new window.YT.Player(ytDiv, {
+        height: '100%',
+        width: '100%',
+        videoId: queue[index]?.id || '',
+        playerVars: { controls: 0, playsinline: 1, rel: 0, start: startSec, autoplay: 0 },
+        events: {
+          onReady: () => {
+            setIsPlayerReady(true);
+            addLog("Native Player Ready");
+            // will respect isInitialLoad in later effects
+          },
+          onStateChange: (e) => {
+            if (e.data === 1) setPlaying(true);
+            if (e.data === 2) setPlaying(false);
+            if (e.data === 0) {
+              wasUserAction.current = true;
+              handleNext();
             }
           }
-        });
-      };
-    }
+        }
+      });
+    };
+    
   }, []); // eslint-disable-line
-
+  
   // ---------- Message handler for proxy ----------
   useEffect(() => {
     const handleMessage = (e) => {
@@ -273,8 +258,10 @@ export function PlayerProvider({ children, initialQueue }) {
         if (data.type === 'STATE_CHANGE' || data.type === 'TIME_UPDATE') {
           if (data.state === 1) setPlaying(true);
           if (data.state === 2) setPlaying(false);
-          if (data.state === 0) { wasUserAction.current = true;
-            handleNext(); }
+          if (data.state === 0) {
+            wasUserAction.current = true;
+            handleNext();
+          }
           setTime(Math.floor(data.currentTime || 0));
           setDuration(Math.floor(data.duration || 0));
         }
@@ -283,19 +270,19 @@ export function PlayerProvider({ children, initialQueue }) {
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
   }, [index, queue]);
-
+  
   // ---------- Autoplay behavior ----------
   // When the player becomes ready, autoplay only if this is NOT the initial restore
   useEffect(() => {
     if (!isPlayerReady) return;
-
+    
     if (isInitialLoad.current) {
       // finishing initial load: mark restore complete but DO NOT autoplay.
       isInitialLoad.current = false;
       addLog("Initial restore complete — autoplay suppressed.");
       return;
     }
-
+    
     // Not initial load -> auto-load and play current track
     const vid = queue[index]?.id;
     if (vid) {
@@ -305,7 +292,7 @@ export function PlayerProvider({ children, initialQueue }) {
       setPlaying(true);
     }
   }, [isPlayerReady]); // eslint-disable-line
-
+  
   // When index changes (user pressed next/prev or setIndex was called), load & autoplay,
   // but suppress this behavior if it's the initial restoration.
   useEffect(() => {
@@ -323,43 +310,53 @@ export function PlayerProvider({ children, initialQueue }) {
     sendCommand('PLAY');
     setPlaying(true);
   }, [index, isPlayerReady]); // eslint-disable-line
-
+  
   // ---------- Player controls ----------
-  const play = () => { wasUserAction.current = true;
+  const play = () => {
+    wasUserAction.current = true;
     sendCommand('PLAY');
-    setPlaying(true); };
-  const pause = () => { sendCommand('PAUSE');
-    setPlaying(false); };
+    setPlaying(true);
+  };
+  const pause = () => {
+    sendCommand('PAUSE');
+    setPlaying(false);
+  };
   const toggle = () => playing ? pause() : play();
-  const handleNext = () => { wasUserAction.current = true;
+  const handleNext = () => {
+    wasUserAction.current = true;
     setIndexState(i => {
       const next = (i + 1) % Math.max(1, queue.length);
       return next;
     });
   };
-  const handlePrev = () => { wasUserAction.current = true;
-    setIndexState(i => (i - 1 + queue.length) % Math.max(1, queue.length)); };
+  const handlePrev = () => {
+    wasUserAction.current = true;
+    setIndexState(i => (i - 1 + queue.length) % Math.max(1, queue.length));
+  };
   const seek = (s) => {
     sendCommand('SEEK', s);
     setTime(s);
     // also persist immediately because user sought
     persistLastPlay(true, s);
   };
-  const setPlayerVolume = (v) => { setVolume(v);
+  const setPlayerVolume = (v) => {
+    setVolume(v);
     sendCommand('SET_VOLUME', v);
     persistLastPlay(false);
   };
-
+  
   const value = {
     queue,
-    setQueue: (q, i = 0) => { wasUserAction.current = true;
+    setQueue: (q, i = 0) => {
+      wasUserAction.current = true;
       setQueueState(q.map(normalizeTrack));
       setIndexState(i);
       // immediate persist because user explicitly changed the queue
       setTimeout(() => persistLastPlay(true), 0);
     },
     index,
-    setIndex: (i) => { wasUserAction.current = true;
+    setIndex: (i) => {
+      wasUserAction.current = true;
       setIndexState(i);
       // immediate persist because user explicitly changed track
       setTimeout(() => persistLastPlay(true), 0);
@@ -379,21 +376,19 @@ export function PlayerProvider({ children, initialQueue }) {
     isPlayerReady,
     setPlayerContainer
   };
-
+  
   return (
     <PlayerContext.Provider value={value}>
       {children}
-      {isDiscordProxy && (
-        <div style={{
-          position: 'fixed', bottom: '10px', right: '10px', zIndex: 9999,
-          background: 'rgba(0,0,0,0.8)', color: '#0f0', padding: '10px',
-          fontSize: '10px', fontFamily: 'monospace', borderRadius: '5px',
-          pointerEvents: 'none', maxWidth: '200px'
-        }}>
-          <div style={{ borderBottom: '1px solid #0f0', marginBottom: '5px' }}>Hitori Debugger</div>
-          {debugLogs.map((log, i) => <div key={i}>{log}</div>)}
-        </div>
-      )}
+      <div id="htr-logs" class="hidden" style={{
+        position: 'fixed', bottom: '10px', right: '10px', zIndex: 9999,
+        background: 'rgba(0,0,0,0.8)', color: '#0f0', padding: '10px',
+        fontSize: '10px', fontFamily: 'monospace', borderRadius: '5px',
+        pointerEvents: 'none', maxWidth: '200px'
+      }}>
+        <div style={{ borderBottom: '1px solid #0f0', marginBottom: '5px' }}>Hitori Debugger</div>
+        {debugLogs.map((log, i) => <div key={i}>{log}</div>)}
+      </div>
     </PlayerContext.Provider>
   );
 }

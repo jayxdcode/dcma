@@ -1,249 +1,318 @@
 // src/components/TopBar.jsx
 import React, { useEffect, useState } from 'react';
 import {
-  Typography,
-  Avatar,
-  Box,
-  IconButton,
-  Popover,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Tooltip,
-  Link,
-  Divider,
-  Stack,
+	Typography,
+	Avatar,
+	Box,
+	IconButton,
+	Popover,
+	Card,
+	CardContent,
+	CardActions,
+	Button,
+	Tooltip,
+	Link,
+	Divider,
+	Stack,
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import InfoIcon from '@mui/icons-material/Info';
-import { useDiscord, getBotIconUrl, getBotDirectoryLink } from '../lib/discordSdk'; // adjust path if needed
-import { useModals } from './ModalProvider'
+import { useModals } from './ModalProvider';
+import htrImgUrl from '../../assets/htr.png';
 
-// ---------- Helpers ----------
-function extractGuildFromSdk(sdk, readyPayload) {
-  if (!sdk && !readyPayload) return null;
-  const candidates = [readyPayload, sdk?.context, sdk?._lastReadyPayload, sdk?.lastPayload, sdk?.readyPayload];
-  for (const c of candidates) {
-    if (!c) continue;
-    if (c.guild && c.guild.id) return c.guild;
-    if (c.guild_id || c.guildId) {
-      return {
-        id: c.guild_id || c.guildId,
-        icon: c.guild_icon || c.icon || c.guildIcon,
-        name: c.guild_name || c.guildName || c.name,
-      };
-    }
-  }
-  return null;
+// ---------- Helpers ------------
+window.toggleLogs = () => {
+	const logs = document.querySelector('#htr-logs');
+	logs.classList.toggle('hidden');
 }
 
-function buildGuildIconUrl(guild, size = 64) {
-  if (!guild || !guild.id || !guild.icon) return null;
-  const ext = String(guild.icon).startsWith('a_') ? 'gif' : 'png';
-  return `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${ext}?size=${size}`;
+async function getRepoDescription(owner, repo) {
+	const url = `https://api.github.com/repos/${owner}/${repo}`;
+
+	try {
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: {
+				Accept: 'application/vnd.github+json',
+				'X-GitHub-Api-Version': '2022-11-28',
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(`Error: ${response.status} - ${response.statusText}`);
+		}
+
+		const data = await response.json();
+		return data.description || '';
+	} catch (error) {
+		console.error('Failed to fetch repository data:', error);
+		return '';
+	}
 }
 
-function buildInviteUrl(clientId, permissions = 0, scopes = ['bot', 'applications.commands']) {
-  if (!clientId) return null;
-  const scopeParam = encodeURIComponent(scopes.join(' '));
-  return `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=${permissions}&scope=${scopeParam}`;
+async function copyToClipboard(text) {
+	try {
+		await navigator.clipboard.writeText(text);
+		return true;
+	} catch (err) {
+		console.error('Clipboard copy failed:', err);
+		return false;
+	}
 }
 
-// ---------- BotCard (shown inside Popover) ----------
-function BotCard({ sdk, readyPayload, guild, onClose }) {
-  const clientId = sdk?.clientId;
-  const botIconId = readyPayload?.config?.application_icon;
-  const botName = readyPayload?.config?.application_name || 'Bot';
-  const botSummary = readyPayload?.config?.description || readyPayload?.config?.summary || '';
-  const botIconUrl = getBotIconUrl(clientId, botIconId);
-  
-  const dirLink = getBotDirectoryLink ? getBotDirectoryLink(clientId) : null;
-  const inviteLink = buildInviteUrl(clientId);
-  
-  const { showAlert } = useModals();
-  
-  async function handleOpenInvite() {
-    if (!inviteLink) return;
-    const w = window.open(inviteLink, '_blank', 'noopener,noreferrer');
-    // If window.open blocked or returned null, copy link to clipboard as fallback
-    if (!w) {
-      try {
-        await navigator.clipboard.writeText(inviteLink);
-        showAlert('Invite link copied to clipboard.');
-      } catch {
-        showAlert('Could not open invite link and failed to copy to clipboard.');
-      }
-    } else {
-      // focus opened window where possible and close popover
-      try { w.focus(); } catch (e) {}
-      onClose?.();
-    }
-  }
-  
-  async function handleCopyInvite() {
-    if (!inviteLink) return;
-    try {
-      await navigator.clipboard.writeText(inviteLink);
-      // small inline feedback (you can replace this with a Snackbar)
-      showAlert('Invite link copied to clipboard.');
-    } catch (err) {
-      console.error('copy failed', err);
-      showAlert('Failed to copy link — please copy it manually:\n' + inviteLink);
-    }
-  }
-  
-  return (
-    <Card sx={{ width: 320, p: 0 }}>
-      <CardContent>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Avatar src={botIconUrl} alt={botName} sx={{ width: 64, height: 64, borderRadius: '12px' }} />
-          <Box>
-            <Typography variant="subtitle1" fontWeight={700}>{botName}</Typography>
-            {botSummary ? (
-              <Typography variant="body2" sx={{ opacity: 0.85 }}>{botSummary}</Typography>
-            ) : (
-              <Typography variant="body2" color="text.secondary">No description available.</Typography>
-            )}
-            <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-              {dirLink && (
-                <Link href={dirLink} target="_blank" rel="noreferrer" underline="none" color="inherit">
-                  <Button size="small" startIcon={<OpenInNewIcon fontSize="small" />}>View App Profile</Button>
-                </Link>
-              )}
-            </Stack>
-          </Box>
-        </Stack>
+// ---------- AppCard (shown inside Popover) ----------
+function AppCard({
+	appName,
+	appIconUrl,
+	repoOwner,
+	repoName,
+	repoUrl,
+	issueUrl,
+	onClose,
+}) {
+	const { showAlert } = useModals();
+	const [repoSummary, setRepoSummary] = useState('');
 
-        <Divider sx={{ my: 1.5 }} />
+	useEffect(() => {
+		let alive = true;
 
-        {guild ? (
-          <Box sx={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Avatar src={buildGuildIconUrl(guild, 64)} sx={{ width: 40, height: 40 }} />
-              <Box>
-                <Typography variant="subtitle2" fontWeight={600}>{guild.name || 'Server'}</Typography>
-                <Typography variant="caption" color="text.secondary">Server ID: {guild.id}</Typography>
-              </Box>
-            </Box>
-          </Box>
-        ) : (
-          <Typography variant="body2" color="text.secondary">
-            No server context available.
-          </Typography>
-        )}
-      </CardContent>
+		async function loadSummary() {
+			const summary = await getRepoDescription(repoOwner, repoName);
+			if (alive) setRepoSummary(summary);
+		}
 
-      <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-        <Box>
-          <Tooltip title="Open invite (will open a new tab) or fallback to copying">
-            <Button size="small" variant="contained" onClick={handleOpenInvite}>Add to Server</Button>
-          </Tooltip>
-        </Box>
+		loadSummary();
 
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Tooltip title="Copy invite link">
-            <IconButton size="small" onClick={handleCopyInvite}><ContentCopyIcon fontSize="small" /></IconButton>
-          </Tooltip>
-          <Tooltip title="More bot info">
-            <IconButton size="small" disabled={!dirLink} href={dirLink} component={dirLink ? 'a' : 'button'} target="_blank" rel="noreferrer">
-              <InfoIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </CardActions>
-    </Card>
-  );
+		return () => {
+			alive = false;
+		};
+	}, [repoOwner, repoName]);
+
+	async function handleOpenRepo() {
+		const w = window.open(repoUrl, '_blank', 'noopener,noreferrer');
+
+		if (!w) {
+			const copied = await copyToClipboard(repoUrl);
+			showAlert(
+				copied
+					? 'Repo link copied to clipboard.'
+					: 'Could not open repo link and failed to copy it.'
+			);
+		} else {
+			try {
+				w.focus();
+			} catch (e) {}
+			onClose?.();
+		}
+	}
+
+	async function handleCopyRepo() {
+		const copied = await copyToClipboard(repoUrl);
+		showAlert(
+			copied
+				? 'Repository link copied to clipboard.'
+				: 'Failed to copy repo link.'
+		);
+	}
+
+	async function handleOpenIssue() {
+		const w = window.open(issueUrl, '_blank', 'noopener,noreferrer');
+
+		if (!w) {
+			const copied = await copyToClipboard(issueUrl);
+			showAlert(
+				copied
+					? 'Issue link copied to clipboard.'
+					: 'Could not open issue page and failed to copy it.'
+			);
+		} else {
+			try {
+				w.focus();
+			} catch (e) {}
+			onClose?.();
+		}
+	}
+
+	return (
+		<Card sx={{ width: 320, p: 0 }}>
+			<CardContent>
+				<Stack direction="row" spacing={2} alignItems="center">
+					<Avatar
+						src={appIconUrl}
+						alt={appName}
+						sx={{ width: 64, height: 64, borderRadius: '12px' }}
+					/>
+					<Box>
+						<Typography variant="subtitle1" fontWeight={700}>
+							{appName}
+						</Typography>
+
+						{repoSummary ? (
+							<Typography variant="body2" sx={{ opacity: 0.85 }}>
+								{repoSummary}
+							</Typography>
+						) : (
+							<Typography variant="body2" color="text.secondary">
+								No description available.
+							</Typography>
+						)}
+
+						<Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap' }}>
+							<Link
+								href={repoUrl}
+								target="_blank"
+								rel="noreferrer"
+								underline="none"
+								color="inherit"
+							>
+								<Button size="small" startIcon={<OpenInNewIcon fontSize="small" />}>
+									View Repo
+								</Button>
+							</Link>
+						</Stack>
+					</Box>
+				</Stack>
+
+				<Divider sx={{ my: 1.5 }} />
+
+				<Typography variant="body2" color="text.secondary">
+					Have a feature in mind or found a bug?
+				</Typography>
+			</CardContent>
+
+			<CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+				<Box>
+					<Tooltip title="Open an issue">
+						<Button size="small" variant="contained" onClick={handleOpenIssue}>
+							Open an issue
+						</Button>
+					</Tooltip>
+				</Box>
+
+				<Box sx={{ display: 'flex', gap: 1 }}>
+					<Tooltip title="Copy repo link">
+						<IconButton size="small" onClick={handleCopyRepo}>
+							<ContentCopyIcon fontSize="small" />
+						</IconButton>
+					</Tooltip>
+
+					<Tooltip title="Repo info">
+						<IconButton
+							size="small"
+							disabled={!repoUrl}
+							href={repoUrl}
+							component={repoUrl ? 'a' : 'button'}
+							target="_blank"
+							rel="noreferrer"
+						>
+							<InfoIcon fontSize="small" />
+						</IconButton>
+					</Tooltip>
+				</Box>
+			</CardActions>
+		</Card>
+	);
 }
 
 // ---------- TopBar ----------
-export default function TopBar({ guildIconUrl: propGuildIconUrl }) {
-  const { sdk, readyPayload } = useDiscord(); // provided by DiscordProvider at app root
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [iconUrl, setIconUrl] = useState(propGuildIconUrl || '/assets/default-guild.png');
-  
-  useEffect(() => {
-    // Priority:
-    // 1) If the app/bot has an application_icon (new icon setting) -> use bot/app icon
-    // 2) If propGuildIconUrl provided -> use that
-    // 3) If SDK guild icon available -> use guild icon
-    // 4) Fallback -> default image
-    const appIconId = readyPayload?.config?.application_icon;
-    const clientId = sdk?.clientId;
-    if (appIconId && clientId) {
-      try {
-        const botAppIconUrl = getBotIconUrl(clientId, appIconId);
-        setIconUrl(botAppIconUrl);
-        return;
-      } catch (e) {
-        // continue to fallbacks
-        console.warn('failed to build app icon url', e);
-      }
-    }
-    
-    if (propGuildIconUrl) {
-      setIconUrl(propGuildIconUrl);
-      return;
-    }
-    
-    const guild = extractGuildFromSdk(sdk, readyPayload);
-    const guildIcon = buildGuildIconUrl(guild, 128);
-    setIconUrl(guildIcon || '/assets/default-guild.png');
-  }, [sdk, readyPayload, propGuildIconUrl]);
-  
-  const handleOpen = (e) => setAnchorEl(e.currentTarget);
-  const handleClose = () => setAnchorEl(null);
-  const open = Boolean(anchorEl);
-  const id = open ? 'bot-popover' : undefined;
-  
-  const guild = extractGuildFromSdk(sdk, readyPayload);
-  
-  return (
-    <div className="app-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-      <div className="h-stack" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{
-          width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          borderRadius: 8, background: 'linear-gradient(135deg, var(--accent), var(--accent-2))'
-        }}>
-          <GraphicEqIcon sx={{ color: '#000', fontSize: 20 }} />
-        </div>
-        <Typography variant="h6" fontWeight={700} sx={{ letterSpacing: -0.5 }}>Hitori</Typography>
-      </div>
+export default function TopBar({
+	appName: propAppName,
+	appIconUrl: propAppIconUrl,
+	repoOwner = 'jayxdcode',
+	repoName = 'dcma',
+	repoUrl = 'https://github.com/jayxdcode/dcma',
+}) {
+	const [anchorEl, setAnchorEl] = useState(null);
+	const [iconUrl, setIconUrl] = useState(propAppIconUrl || htrImgUrl);
 
-      {/* Right side: clickable avatar (shows bot/app icon when available) */}
-      <Box>
-        <Tooltip title="Bot / App profile">
-          <IconButton aria-describedby={id} onClick={handleOpen} size="small" sx={{ p: 0 }}>
-            <Avatar
-              src={iconUrl}
-              alt="Bot / Guild avatar"
-              sx={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                bgcolor: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.06)'
-              }}
-            />
-          </IconButton>
-        </Tooltip>
+	const appName =
+		propAppName ||
+		(typeof document !== 'undefined' ? document.title : 'App');
 
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          disableRestoreFocus
-        >
-          <Box sx={{ p: 1 }}>
-            <BotCard sdk={sdk} readyPayload={readyPayload} guild={guild} onClose={handleClose} />
-          </Box>
-        </Popover>
-      </Box>
-    </div>
-  );
+	const issueUrl = `${repoUrl.replace(/\/$/, '')}/issues/new`;
+
+	useEffect(() => {
+		setIconUrl(propAppIconUrl || htrImgUrl);
+	}, [propAppIconUrl]);
+
+	const handleOpen = (e) => setAnchorEl(e.currentTarget);
+	const handleClose = () => setAnchorEl(null);
+	const open = Boolean(anchorEl);
+	const id = open ? 'app-popover' : undefined;
+
+	return (
+		<div
+			className="app-header"
+			style={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'space-between',
+				gap: 12,
+			}}
+		>
+			<div
+				className="h-stack"
+				style={{ display: 'flex', alignItems: 'center', gap: 12 }}
+			>
+				<div
+					style={{
+						width: 36,
+						height: 36,
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						borderRadius: 8,
+						background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
+					}}
+				>
+					<GraphicEqIcon sx={{ color: '#000', fontSize: 20 }} />
+				</div>
+				<Typography variant="h6" fontWeight={700} sx={{ letterSpacing: -0.5 }}>
+					{appName}
+				</Typography>
+			</div>
+
+			<Box>
+				<Tooltip title="Repo profile">
+					<IconButton aria-describedby={id} onClick={handleOpen} size="small" sx={{ p: 0 }}>
+						<Avatar
+							src={iconUrl}
+							alt={appName}
+							sx={{
+								width: 36,
+								height: 36,
+								borderRadius: '50%',
+								bgcolor: 'rgba(255,255,255,0.04)',
+								border: '1px solid rgba(255,255,255,0.06)',
+							}}
+						/>
+					</IconButton>
+				</Tooltip>
+
+				<Popover
+					id={id}
+					open={open}
+					anchorEl={anchorEl}
+					onClose={handleClose}
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+					transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+					disableRestoreFocus
+				>
+					<Box sx={{ p: 1 }}>
+						<AppCard
+							appName={appName}
+							appIconUrl={iconUrl}
+							repoOwner={repoOwner}
+							repoName={repoName}
+							repoUrl={repoUrl}
+							issueUrl={issueUrl}
+							onClose={handleClose}
+						/>
+					</Box>
+				</Popover>
+			</Box>
+		</div>
+	);
 }

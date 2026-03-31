@@ -4,7 +4,6 @@ import { useModals } from '../components/ModalProvider';
 
 export default function Settings({ selectedPresetKey, setThemeByKey, presets }) {
   const presetKeys = presets ? Object.keys(presets) : [];
-  const isDiscordProxy = window.location.hostname.includes('discordsays.com');
   const { showConfirm, showAlert } = useModals();
 
   // Local state to track the switch UI
@@ -17,7 +16,7 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
     if (typeof window.eruda !== 'undefined') return;
 
     const script = document.createElement('script');
-    script.src = isDiscordProxy ? "/src/eruda/eruda.js" : "//cdn.jsdelivr.net/npm/eruda";
+    script.src = "https://cdn.jsdelivr.net/npm/eruda";
     document.body.appendChild(script);
     script.onload = () => {
       window.eruda.init();

@@ -21,15 +21,9 @@ function joinPaths(...parts) {
   }
 }
 
-const isDiscordProxy = window.location.hostname.includes('discordsays.com');
-if (isDiscordProxy) console.log("[lyrics] discordsays.com proxy detected! App is running :)")
-const BACKEND_URL = isDiscordProxy
-  ? '/api/v1'
-  : new URL('/api', import.meta.env.VITE_BACKEND_BASE).href;
+const BACKEND_URL = new URL('/api', import.meta.env.VITE_BACKEND_BASE).href;
 console.log("[lyrics] Backend: ", BACKEND_URL);
-const LRCLIB_API = isDiscordProxy
-  ? '/lrclib/api'
-  : 'https://lrclib.net/api/'
+const LRCLIB_API = 'https://lrclib.net/api/';
   
 // process.env may not be available in browser; attempt to read safely
 const BACKEND_API_KEY =
@@ -161,7 +155,7 @@ export async function loadLyrics(
 
   try {
     const q = encodeURIComponent([title, artist, album].join(' '));
-    const searchUrl = joinPaths(LRCLIB_API, `/search?q=${q}`); // mapped url (discord blocks anything but requests in the same domain)
+    const searchUrl = joinPaths(LRCLIB_API, `/search?q=${q}`);
     console.debug('[lyrics] searching lrclib at:', searchUrl);
 
     const r = await fetch(searchUrl, {

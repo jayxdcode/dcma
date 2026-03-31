@@ -97,3 +97,6 @@ body {
   position: absolute; left: -9999px; width: 1px; height: 1px; pointer-events: none;
 }
 
+.hidden {
+  display: none;
+}
