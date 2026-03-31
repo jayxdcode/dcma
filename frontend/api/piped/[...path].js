@@ -170,9 +170,11 @@ async function doUpstreamRequest(targetUrl, req, forwardedHeaders, bodyBuf) {
 export default async function handler(req, res) {
   // CORS preflight
   if (req.method === 'OPTIONS') {
+    res.setHeader('Allow', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Range, X-Requested-With');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Range, X-Requested-With, X-Vercel-Cache, X-Vercel-Id');
+    res.setHeader('Vary', 'Origin');
     res.status(204).end();
     return;
   }
@@ -268,9 +270,11 @@ export default async function handler(req, res) {
         });
         
         // CORS
+        res.setHeader('Allow', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS')
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Range, X-Requested-With');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Range, X-Requested-With, X-Vercel-Cache, X-Vercel-Id.');
+        res.setHeader('Vary', 'Origin');
 
         // stream / buffer upstream body into response
         const arrBuf = await upstream.arrayBuffer();
@@ -288,6 +292,7 @@ export default async function handler(req, res) {
     // if we reach here, all attempts failed
     console.error('All upstream instances failed', lastError?.message || lastError);
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Vary', 'Origin');
     res.status(502).json({ error: 'all_upstream_failed', message: String(lastError?.message || lastError) });
   } catch (err) {
     console.error('proxy error', err);
