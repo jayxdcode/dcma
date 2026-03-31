@@ -219,9 +219,11 @@ export function PlayerProvider({ children, initialQueue }) {
     document.head.appendChild(script);
     window.onYouTubeIframeAPIReady = () => {
       const ytDiv = document.createElement('div');
+      ytDiv.id = "hitori-player-core";
       storage.appendChild(ytDiv);
+      
       containerRef.current = ytDiv;
-      playerRef.current = new window.YT.Player(ytDiv, {
+      playerRef.current = new window.YT.Player("hitori-player-core", {
         height: '100%',
         width: '100%',
         videoId: queue[index]?.id || '',
