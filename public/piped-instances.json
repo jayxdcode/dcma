@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-31T05:26:14.110Z",
+  "generated_at": "2026-03-31T06:51:09.775Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2026.0.0",
   "instances": [
@@ -16,63 +16,63 @@
           "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 227,
+          "time_ms": 197,
           "body_sample": "[\"adopt me\",\"adolescence\",\"adopt me house build\",\"adore you\",\"adom tv live\",\"ado\",\"adopt me trading\",\"adore you miley cyrus\",\"adom fm 106.3 live\",\"adopt me channel\",\"adopt me house build tutorial\",\"adolf hitler\",\"adopt me grinding\",\"adopt me admin abuse\"]"
         },
         {
           "kind": "suggest",
-          "term": "Never Gonna Give You Up",
+          "term": "imagine dragons",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 233,
-          "body_sample": "[\"never gonna give you up\",\"never gonna give you up rick astley\",\"never gonna give you up karaoke\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up piano\",\"never gonna give you up remix\",\"never gonna give you up meme\",\"never gonna give you up voice crack\",\"never gonna give yo"
+          "time_ms": 202,
+          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons radioactive\",\"imagine dragons live\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons lyrics\",\"imagine dragons bad liar\",\"imagine dragons whatever it takes\",\"imagin"
         },
         {
           "kind": "suggest",
-          "term": "союз советский социалистических республик",
+          "term": "erika",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 307,
-          "body_sample": "[\"cccp national anthem 1977\",\"soviet anthem belarus\",\"soviet national anthem 1977\"]"
+          "time_ms": 195,
+          "body_sample": "[\"erika kirk\",\"erika german song\",\"erika kirk parody\",\"erika kirk druski\",\"erika kirk speech\",\"erika piano\",\"erika kirk interview\",\"erika song\",\"erika diane\",\"erika kirk jd vance\",\"erika i don't know\",\"erika kirk dancing\",\"erika kirk skit\",\"erika jayne\"]"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "союз советский социалистических республик",
+          "term": "ado",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 756,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmDehF2p8sc\",\"type\":\"stream\",\"title\":\"All the republics of the USSR explained in 10 minutes\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmDehF2p8sc/hq720.jpg?host=i.ytimg.com&rs=AOn4CLCTd0QKdM3th_wYOIXxX-pNSPW1Lw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\""
+          "time_ms": 656,
+          "body_sample": "{\"items\":[{\"url\":\"/channel/UCln9P4Qm3-EAY4aiEPmRwEA\",\"type\":\"channel\",\"name\":\"Ado\",\"thumbnail\":\"https://proxy.piped.private.coffee/BKpE74RwbPJ8zLaad9Y2XoX7SmIEsoma1KB8dNzwtWwiOqgTNnYI_guEP1iAaTBrdk4nHakx=s176-c-k-c0x00ffffff-no-rw-mo?host=yt3.googleusercontent.com\",\"description\":\"元気です。\",\"subscribers\":9110000,\"videos\":-"
         },
         {
           "kind": "search",
-          "term": "erika",
+          "term": "iris out",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 485,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=UXs-hFpYjoA\",\"type\":\"stream\",\"title\":\"Erika\",\"thumbnail\":\"https://proxy.piped.private.coffee/deEToSN3hcg6axN6WZi8-LIO2ite1Lfzad4rnDw26O7BWQEoDS9xlVqb3QNviKjWtOkn6zUxafKGmG7g=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"LaMasque\",\"uploaderUrl\":\"/channel/UCvMZDKqBc0HZBvZTuEy"
+          "time_ms": 486,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Cb0JZhdmjtg\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/VGf2lFXKQdSyrz2g3Czj66doPtUxvJBrWDK6UFeOj8zRqS-tgs_D8FG5-8pYTX-Uh9FxZBDJIXtN1nKF=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-"
         },
         {
           "kind": "search",
-          "term": "ado",
+          "term": "imagine dragons",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 457,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=YvYii6dluM8\",\"type\":\"stream\",\"title\":\"ビバリウム - Vivarium\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/YvYii6dluM8/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3m1M-2kEp4yyPclqT0JYcozGKNzTw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/UC5DHwv9N4OQ9AWt"
+          "time_ms": 470,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LzInU71ljJQ\",\"type\":\"stream\",\"title\":\"Imagine Dragons Playlist 2024 - Best songs - Top 10 GREATEST HITS SONGS - Best of Imagine Dragons\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LzInU71ljJQ/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3nkoP-UfTKTRwJw-zFyoU0-uCVMSw&sqp=-oaymwEWCJADEOEBIAQq"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 256,
-        "avg_search_ms": 566,
-        "combined_latency_ms": 822
+        "avg_suggestion_ms": 198,
+        "avg_search_ms": 537,
+        "combined_latency_ms": 735
       },
-      "checked_at": "2026-03-31T05:26:07.271Z",
+      "checked_at": "2026-03-31T06:51:02.909Z",
       "version": "2026.0.0",
       "isLatest": true
     }
