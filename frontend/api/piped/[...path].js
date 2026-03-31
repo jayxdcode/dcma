@@ -156,7 +156,7 @@ async function doUpstreamRequest(targetUrl, req, forwardedHeaders, bodyBuf) {
       method: req.method,
       headers: forwardedHeaders,
       body: bodyBuf && bodyBuf.length ? bodyBuf : undefined,
-      redirect: 'manual',
+      redirect: 'follow',
       signal: controller.signal
     });
     clearTimeout(timeout);
@@ -277,10 +277,7 @@ export default async function handler(req, res) {
         res.setHeader('Vary', 'Origin');
 
         // stream / buffer upstream body into response
-        const arrBuf = await upstream.arrayBuffer();
-        const buf = Buffer.from(arrBuf);
-        res.setHeader('Content-Length', String(buf.length)); // Recalculate length based on the raw decompressed buffer
-        res.end(buf);
+        upstream.body.pipe(res);
         return; // success — done
       } catch (err) {
         lastError = err;
