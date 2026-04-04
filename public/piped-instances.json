@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-04T11:39:31.137Z",
+  "generated_at": "2026-04-04T13:05:13.224Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2026.0.0",
   "instances": [
@@ -11,13 +11,23 @@
       "suggestions": [
         {
           "kind": "suggest",
-          "term": "ado",
+          "term": "rick astley",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 145,
-          "body_sample": "[\"adopt me\",\"adolescence\",\"adore you\",\"adopt me house build\",\"ado\",\"adopt me trading\",\"adom tv live\",\"adore you miley cyrus\",\"adopt me house build tutorial\",\"adoration live\",\"adopt me new update\",\"adopt me grinding\",\"adopt me live\",\"adolf hitler\"]"
+          "time_ms": 153,
+          "body_sample": "[\"rick astley\",\"rick astley never gonna give you up\",\"rick astley glastonbury 2023\",\"rick astley the smiths\",\"rick astley foo fighters\",\"rick astley waiting on you\",\"rick astley together forever\",\"rick astley songs\",\"rick astley cry for help\",\"rick astley take me to your heart\",\"rick astley live\",\"rick astley never gon"
+        },
+        {
+          "kind": "suggest",
+          "term": "imagine dragons",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 162,
+          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons live\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons lyrics\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons bad liar\",\"imagine dragons whatever it takes\",\"imagin"
         },
         {
           "kind": "suggest",
@@ -28,51 +38,41 @@
           "status": 200,
           "time_ms": 229,
           "body_sample": "[\"cccp national anthem 1977\",\"soviet anthem belarus\",\"soviet national anthem 1977\"]"
-        },
-        {
-          "kind": "suggest",
-          "term": "iris out",
-          "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
-          "ok": true,
-          "status": 200,
-          "time_ms": 152,
-          "body_sample": "[\"iris out\",\"iris out chainsaw man\",\"iris out kenshi yonezu\",\"iris out english cover\",\"iris out reaction\",\"iris out piano\",\"iris out cover\",\"iris out lyrics\",\"iris out 1 hour\",\"iris out dance\",\"iris out opening\",\"iris out karaoke\",\"iris out live\",\"iris out english\"]"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "erika",
+          "term": "союз советский социалистических республик",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=erika&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 509,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=r2DZzyeni6I\",\"type\":\"stream\",\"title\":\"Erika - German March\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/r2DZzyeni6I/hqdefault.jpg?host=i.ytimg.com&rs=AOn4CLCmRXMSjEqh5t84Q6QfixYgY429wg&sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\":\"Camarada Patriota\",\"uploade"
+          "time_ms": 721,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmDehF2p8sc\",\"type\":\"stream\",\"title\":\"All the republics of the USSR explained in 10 minutes\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmDehF2p8sc/hq720.jpg?host=i.ytimg.com&rs=AOn4CLCTd0QKdM3th_wYOIXxX-pNSPW1Lw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\""
         },
         {
           "kind": "search",
-          "term": "ado",
+          "term": "erika",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 572,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=NB94LKrLEt4\",\"type\":\"stream\",\"title\":\"おどるポンポコリン - Odoru Ponpokorin\",\"thumbnail\":\"https://proxy.piped.private.coffee/g7luv0CqyFqDZjgrhi7pAtKj_OWMk_DW_yofSjYbMIi26HY-wc1fnYjbu5V2G12aOci8F0x4aACIngDowQ=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/"
+          "time_ms": 523,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=z9sXQXcj83s\",\"type\":\"stream\",\"title\":\"Erika (Auf der Heide blüht ein kleines Techno edit)\",\"thumbnail\":\"https://proxy.piped.private.coffee/O2il0U5cxbZi6twvz1rUcU7CiPo8QNCZCHTJYErWCcS3Hguc582TE8y11VGZmT0sHs6U7O0wo9CadVc2=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"DerSchie"
         },
         {
           "kind": "search",
-          "term": "iris out",
+          "term": "imagine dragons",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 1299,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmZD-TU96q4\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmZD-TU96q4/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3k5RltzYfug575ZJLL7LqgbEi3pEg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-aW"
+          "time_ms": 580,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LzInU71ljJQ\",\"type\":\"stream\",\"title\":\"Imagine Dragons Playlist 2024 - Best songs - Top 10 GREATEST HITS SONGS - Best of Imagine Dragons\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LzInU71ljJQ/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3nkoP-UfTKTRwJw-zFyoU0-uCVMSw&sqp=-oaymwEWCJADEOEBIAQq"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 175,
-        "avg_search_ms": 793,
-        "combined_latency_ms": 968
+        "avg_suggestion_ms": 181,
+        "avg_search_ms": 608,
+        "combined_latency_ms": 789
       },
-      "checked_at": "2026-04-04T11:39:24.621Z",
+      "checked_at": "2026-04-04T13:05:06.710Z",
       "version": "2026.0.0",
       "isLatest": true
     }
