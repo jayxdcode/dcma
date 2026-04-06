@@ -97,12 +97,21 @@ export function addTimestamps(lyrics) {
 
 async function fetchTranslationAndRomanization(track, lyrics, signal) {
   console.debug('[lyrics] fetchTranslationAndRomanization called for', track.title, '-', track.artist, 'lines:', lyrics.length);
+  
   if (!BACKEND_URL) {
     console.warn('[lyrics] BACKEND_URL is empty');
     return { rom: '', transl: '' };
   }
   try {
-    const u = joinPaths(BACKEND_URL, '/translate'); 
+    const u = joinPaths(BACKEND_URL, '/translate');
+    
+    // Race the real signal against a 5s timeout so a dead backend doesn't hang forever
+    const timeoutController = new AbortController();
+    const timeoutId = setTimeout(() => timeoutController.abort(), 5000);
+    const combinedSignal = signal ?
+      AbortSignal.any([signal, timeoutController.signal]) :
+      timeoutController.signal;
+    
     const r = await fetch(u, {
       method: 'POST',
       headers: {
@@ -113,21 +122,22 @@ async function fetchTranslationAndRomanization(track, lyrics, signal) {
         lyrics: lyrics.map(l => ({ t: l.time, l: l.text })),
         ...track
       }),
-      signal: signal ?? undefined
+      signal: combinedSignal
     });
-
+    clearTimeout(timeoutId);
+    
     console.debug('[lyrics] translation backend response status:', r.status);
+    
     if (!r.ok) return { rom: '', transl: '' };
     const d = await r.json();
-    console.debug('[lyrics] translation backend response payload keys:', Object.keys(d || {}));
     return {
       rom: d.romanization ?? '',
       transl: d.translation ?? ''
     };
   } catch (e) {
     if (e instanceof DOMException && e.name === 'AbortError') {
-      console.debug('[lyrics] translation fetch aborted');
-      throw e;
+      console.debug('[lyrics] translation fetch aborted or timed out');
+      return { rom: '', transl: '' }; // graceful — don't re-throw, lyrics still show
     }
     console.error('[lyrics] fetchTranslationAndRomanization error:', e);
     return { rom: '', transl: '' };

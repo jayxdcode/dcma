@@ -227,7 +227,7 @@ export function PlayerProvider({ children, initialQueue }) {
         height: '100%',
         width: '100%',
         videoId: queue[index]?.id || '',
-        playerVars: { controls: 0, playsinline: 1, rel: 0, start: startSec, autoplay: 0 },
+        playerVars: { origin: window.location.origin, controls: 0, playsinline: 1, rel: 0, start: startSec, autoplay: 0 },
         events: {
           onReady: () => {
             setIsPlayerReady(true);
@@ -312,6 +312,28 @@ export function PlayerProvider({ children, initialQueue }) {
     sendCommand('PLAY');
     setPlaying(true);
   }, [index, isPlayerReady]); // eslint-disable-line
+  
+  // ---------- Time/Duration polling ----------
+useEffect(() => {
+  const interval = setInterval(() => {
+    if (useAudioEngine && audioRef.current) {
+      setTime(Math.floor(audioRef.current.currentTime || 0));
+      setDuration(Math.floor(audioRef.current.duration || 0));
+      return;
+    }
+    const p = playerRef.current;
+    if (!p || typeof p.getPlayerState !== 'function') return;
+    const state = p.getPlayerState?.();
+    // states: -1 unstarted, 0 ended, 1 playing, 2 paused, 3 buffering, 5 cued
+    if (state === 1 || state === 2 || state === 3) {
+      const ct = p.getCurrentTime?.() ?? 0;
+      const dur = p.getDuration?.() ?? 0;
+      setTime(Math.floor(ct));
+      setDuration(Math.floor(dur));
+    }
+  }, 500);
+  return () => clearInterval(interval);
+}, [isPlayerReady, useAudioEngine]);
   
   // ---------- Player controls ----------
   const play = () => {

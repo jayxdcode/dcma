@@ -66,7 +66,7 @@ export default function PlayerFull({ open, onClose }) {
       console.debug('[PlayerFull] aborting lyrics fetch for', track.title);
       ac.abort();
     };
-  }, [track?.title, track?.artist, track?.album, player?.duration]);
+  }, [track?.title, track?.artist, track?.album]); // removed player?.duration
 
   const activeLineIndex = useMemo(() => {
     if (player?.time == null || !lines.length) return 0; // allow time === 0
