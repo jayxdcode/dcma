@@ -21,9 +21,13 @@ function joinPaths(...parts) {
   }
 }
 
-const BACKEND_URL = new URL('/api', import.meta.env.VITE_BACKEND_BASE).href;
-console.log("[lyrics] Backend: ", BACKEND_URL);
-const LRCLIB_API = 'https://lrclib.net/api/';
+const rawBackend = import.meta.env.VITE_BACKEND_BASE || '';
+const normalizedBackend = rawBackend && !/^[a-z][a-z0-9+.-]*:/i.test(rawBackend)
+  ? `https://${rawBackend}`
+  : rawBackend;
+const BACKEND_URL = normalizedBackend ? new URL('/api', normalizedBackend).href : '';
+console.debug("[lyrics] Backend:", BACKEND_URL);
+const LRCLIB_API = 'https://lrclib.net/api';
   
 // process.env may not be available in browser; attempt to read safely
 const BACKEND_API_KEY =
@@ -88,30 +92,118 @@ export function parseLRC(base, rom, trans) {
 
 export function addTimestamps(lyrics) {
   if (!lyrics) return '';
-  if (/^\[\d{2}:\d{2}\.\d{2,3}\]/m.test(lyrics)) return lyrics;
+  if (/^\[\d{1,2}:\d{2}(?:\.\d{1,3})?\]/m.test(lyrics)) return lyrics;
   return lyrics
     .split('\n')
     .map((l, i) => `[00:00.${String(100 + i).padStart(3, '0')}] ${l}`)
     .join('\n');
 }
 
+function normalizeTimedLines(source) {
+  if (!source) return [];
+  if (typeof source === 'string') {
+    return parseLRCToArray(source);
+  }
+
+  if (Array.isArray(source)) {
+    return source.flatMap((item) => {
+      if (!item) return [];
+      const time = item.time ?? item.t ?? item.start ?? item.timestamp;
+      const text = item.text ?? item.lyric ?? item.l ?? item.line ?? '';
+      if (time == null) return [];
+      return [{ time: Math.round(Number(time) || 0), text: String(text || '').trim() }];
+    });
+  }
+
+  if (typeof source === 'object' && source.time != null) {
+    return [{ time: Math.round(Number(source.time) || 0), text: String(source.text ?? source.lyric ?? source.l ?? '').trim() }];
+  }
+
+  return [];
+}
+
+function normalizePlainLyrics(source) {
+  if (!source) return '';
+  if (Array.isArray(source)) {
+    return source
+      .map(item => (typeof item === 'string' ? item : item?.text ?? item?.lyric ?? ''))
+      .filter(Boolean)
+      .join('\n');
+  }
+  if (typeof source === 'object') {
+    return String(source.text ?? source.lyric ?? source?.lyrics ?? '');
+  }
+  return String(source);
+}
+
+function parseTranslationPayload(value, baseLines) {
+  if (!value) return [];
+  if (Array.isArray(value)) {
+    return value
+      .map((item, index) => {
+        const text = typeof item === 'string'
+          ? item
+          : item?.text ?? item?.lyric ?? item?.line ?? item?.trans ?? '';
+        return {
+          time: baseLines?.[index]?.time ?? 0,
+          text: String(text || '').trim()
+        };
+      })
+      .filter(line => line.text);
+  }
+
+  if (typeof value === 'string') {
+    if (/^\[\d{1,2}:\d{2}(?:\.\d{1,3})?\]/m.test(value)) {
+      return parseLRCToArray(value);
+    }
+    return String(value)
+      .split(/\r?\n/)
+      .map((line, index) => ({ time: baseLines?.[index]?.time ?? 0, text: line.trim() }))
+      .filter(line => line.text);
+  }
+
+  if (typeof value === 'object') {
+    return parseTranslationPayload(value.text ?? value.lyric ?? value?.lyrics ?? value?.translation ?? '', baseLines);
+  }
+
+  return [];
+}
+
+function getTranslationBaseUrl() {
+  return BACKEND_URL || LRCLIB_API;
+}
+
 async function fetchTranslationAndRomanization(track, lyrics, signal) {
   console.debug('[lyrics] fetchTranslationAndRomanization called for', track.title, '-', track.artist, 'lines:', lyrics.length);
-  
-  if (!BACKEND_URL) {
-    console.warn('[lyrics] BACKEND_URL is empty');
+  const baseUrl = getTranslationBaseUrl();
+  if (!baseUrl) {
+    console.warn('[lyrics] no translation endpoint configured');
     return { rom: '', transl: '' };
   }
+
   try {
-    const u = joinPaths(BACKEND_URL, '/translate');
-    
-    // Race the real signal against a 5s timeout so a dead backend doesn't hang forever
+    const u = joinPaths(baseUrl, 'translate');
     const timeoutController = new AbortController();
     const timeoutId = setTimeout(() => timeoutController.abort(), 5000);
-    const combinedSignal = signal ?
-      AbortSignal.any([signal, timeoutController.signal]) :
-      timeoutController.signal;
-    
+    const combinedController = new AbortController();
+
+    const cleanup = () => {
+      clearTimeout(timeoutId);
+      if (signal && typeof signal.removeEventListener === 'function') {
+        signal.removeEventListener('abort', onSignalAbort);
+      }
+    };
+
+    const onSignalAbort = () => combinedController.abort();
+    if (signal && typeof signal.addEventListener === 'function') {
+      if (signal.aborted) {
+        combinedController.abort();
+      } else {
+        signal.addEventListener('abort', onSignalAbort);
+      }
+    }
+    timeoutController.signal.addEventListener('abort', () => combinedController.abort());
+
     const r = await fetch(u, {
       method: 'POST',
       headers: {
@@ -122,22 +214,22 @@ async function fetchTranslationAndRomanization(track, lyrics, signal) {
         lyrics: lyrics.map(l => ({ t: l.time, l: l.text })),
         ...track
       }),
-      signal: combinedSignal
+      signal: combinedController.signal
     });
-    clearTimeout(timeoutId);
-    
-    console.debug('[lyrics] translation backend response status:', r.status);
-    
+    cleanup();
+
+    console.debug('[lyrics] translation response status:', r.status);
     if (!r.ok) return { rom: '', transl: '' };
+
     const d = await r.json();
     return {
-      rom: d.romanization ?? '',
-      transl: d.translation ?? ''
+      rom: d.romanization ?? d.roman ?? d.rom ?? d.romanized ?? '',
+      transl: d.translation ?? d.trans ?? d.transl ?? d.translated ?? ''
     };
   } catch (e) {
     if (e instanceof DOMException && e.name === 'AbortError') {
       console.debug('[lyrics] translation fetch aborted or timed out');
-      return { rom: '', transl: '' }; // graceful — don't re-throw, lyrics still show
+      return { rom: '', transl: '' };
     }
     console.error('[lyrics] fetchTranslationAndRomanization error:', e);
     return { rom: '', transl: '' };
@@ -178,10 +270,11 @@ export async function loadLyrics(
       return;
     }
 
-    const list = await r.json();
+    const json = await r.json();
+    const list = Array.isArray(json) ? json : (json?.results ?? json?.data ?? []);
     console.debug('[lyrics] lrclib returned list length:', Array.isArray(list) ? list.length : 'not-array');
 
-    const chosen = list?.[0];
+    const chosen = Array.isArray(list) ? list[0] : json;
     if (!chosen) {
       console.debug('[lyrics] lrclib returned empty list (no results)');
       return;
@@ -189,22 +282,30 @@ export async function loadLyrics(
 
     console.debug('[lyrics] chosen entry:', { title: chosen.title ?? chosen.name, artist: chosen.artist });
 
-    const raw = chosen.syncedLyrics ?? addTimestamps(chosen.plainLyrics ?? '');
-    console.debug('[lyrics] raw lyrics length:', raw.length);
+    const synced = chosen.syncedLyrics ?? chosen.synced_lyrics ?? chosen.lrc ?? chosen.lyrics ?? '';
+    const plain = chosen.plainLyrics ?? chosen.plain_lyrics ?? chosen.lyrics ?? chosen.text ?? '';
+    const timed = normalizeTimedLines(synced);
+    const base = timed.length ? timed : parseLRCToArray(addTimestamps(normalizePlainLyrics(plain || synced)));
 
-    const base = parseLRCToArray(raw);
     console.debug('[lyrics] parsed base lines:', base.length);
     onTransReady(mergeLRC(base, null, null));
 
     // Try to fetch romanization & translation (optional)
-    const { rom, transl } = raw.length === 1 ? { rom: null, transl: null } : await fetchTranslationAndRomanization(
+    if (base.length <= 1) {
+      return;
+    }
+
+    const { rom, transl } = await fetchTranslationAndRomanization(
       { title, artist, album, duration },
       base,
       signal
     );
 
     console.debug('[lyrics] translation fetched lengths:', { romLen: rom?.length ?? 0, translLen: transl?.length ?? 0 });
-    onTransReady(parseLRC(raw, rom, transl));
+
+    const romanLines = parseTranslationPayload(rom, base);
+    const translLines = parseTranslationPayload(transl, base);
+    onTransReady(mergeLRC(base, romanLines, translLines));
   } catch (e) {
     if (e instanceof DOMException && e.name === 'AbortError') {
       console.debug('[lyrics] loadLyrics aborted');

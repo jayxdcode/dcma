@@ -100,3 +100,17 @@ body {
 .hidden {
   display: none;
 }
+
+/* Unavailable Tab Styling */
+.MuiTab-root.unavailable {
+  opacity: 0.4 !important;
+  color: #E382A8 !important;
+  cursor: not-allowed !important;
+  text-decoration: line-through;
+  transition: all 0.2s ease;
+}
+
+.MuiTab-root.unavailable:hover {
+  opacity: 0.5 !important;
+  background: rgba(227, 130, 168, 0.05);
+}

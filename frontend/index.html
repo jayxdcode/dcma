@@ -10,8 +10,6 @@
     (function() {
       'use strict';
       
-      const IFRAME_ID = 'hitori-player-core';
-      
       /* ========================================================================
          HELPERS
          ======================================================================== */
@@ -46,85 +44,6 @@
       } else {
         loadErudaAt(document);
       }
-      
-      /* ========================================================================
-         IFRAME DEBUGGER + IFRAME ERUDA
-         ======================================================================== */
-      (function IFRAME_DEBUGGER_DEFINE() {
-        function iframeDebug() {
-          const iframe = document.querySelector('#' + IFRAME_ID);
-          if (!iframe) {
-            _warn("Iframe #" + IFRAME_ID + " not found.");
-            return;
-          }
-          
-          const btn = document.createElement('button');
-          btn.innerHTML = 'DEBUG MODE: OFF';
-          btn.style.cssText = `
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 2147483647;
-            padding: 12px 20px;
-            background: #2c2f33;
-            color: white;
-            border: 2px solid #5865F2;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: sans-serif;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-          `;
-          
-          let isVisible = false;
-          const originalStyles = iframe.getAttribute('style') || '';
-          
-          btn.onclick = () => {
-            if (!isVisible) {
-              // Expand Iframe
-              iframe.style.setProperty('position', 'fixed', 'important');
-              iframe.style.setProperty('top', '0', 'important');
-              iframe.style.setProperty('left', '0', 'important');
-              iframe.style.setProperty('width', '100vw', 'important');
-              iframe.style.setProperty('height', '90vh', 'important');
-              iframe.style.setProperty('z-index', '2147483646', 'important');
-              iframe.style.setProperty('display', 'block', 'important');
-              iframe.style.setProperty('pointer-events', 'auto', 'important');
-              
-              btn.innerHTML = 'DEBUG MODE: ON';
-              btn.style.background = '#ed4245';
-              
-              // Inject Eruda into the Iframe specifically for debugging
-              try {
-                if (iframe.contentDocument) {
-                  loadErudaAt(iframe.contentDocument, () => {
-                    _log("Eruda initialized inside iframe");
-                  });
-                }
-              } catch (e) {
-                _warn("Could not inject Eruda into iframe (likely CORS/Security):", e.message);
-              }
-            } else {
-              // Revert Styles
-              if (originalStyles) iframe.setAttribute('style', originalStyles);
-              else iframe.removeAttribute('style');
-              
-              btn.innerHTML = 'DEBUG MODE: OFF';
-              btn.style.background = '#2c2f33';
-            }
-            isVisible = !isVisible;
-          };
-          
-          document.body.appendChild(btn);
-        }
-        
-        window.iframeDebug = iframeDebug;
-        // Auto-show debug button after a short delay
-        setTimeout(() => {
-          if (document.body) iframeDebug();
-          _log('iframeDebug ready');
-        }, 2000);
-      })();
       
       /* ========================================================================
          DONE

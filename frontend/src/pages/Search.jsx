@@ -37,68 +37,27 @@ const getYTId = (url) => {
   return m ? m[1] : null;
 };
 
-function bucketForFilter(filter, buckets) {
+function bucketForFilter(bucketFilter, buckets) {
   if (!buckets) return [];
-  const b = buckets;
-  const flatten = (arrOrMaybe) => {
-    if (!arrOrMaybe) return [];
-    if (Array.isArray(arrOrMaybe)) return arrOrMaybe;
-    if (Array.isArray(arrOrMaybe.items)) return arrOrMaybe.items;
-    if (Array.isArray(arrOrMaybe.results)) return arrOrMaybe.results;
-    return [];
-  };
-
-  if (filter === 'all') {
-    if (Array.isArray(b.music_all)) return flatten(b.music_all);
-    const merged = [];
-    for (const k of Object.keys(b)) {
-      if (k.startsWith('music_') && Array.isArray(b[k])) merged.push(...b[k]);
-    }
-    if (merged.length) return merged;
-    for (const k of ['items', 'results', 'videos', 'contents']) {
-      if (Array.isArray(b[k])) return flatten(b[k]);
-    }
-    return [];
-  }
-
-  if (filter === 'music_songs' || filter === 'songs') {
-    const a = flatten(b.music_songs);
-    if (a.length) return a;
-    const b2 = flatten(b.music_videos);
-    if (b2.length) return b2;
-    return flatten(b.music_all);
-  }
-  if (filter === 'music_artists') {
-    const a = flatten(b.music_artists);
-    if (a.length) return a;
-    return flatten(b.channels) || [];
-  }
-  if (filter === 'music_albums') {
-    const a = flatten(b.music_albums);
-    if (a.length) return a;
-    return flatten(b.albums) || [];
-  }
-  if (filter === 'music_playlists') {
-    const a = flatten(b.music_playlists);
-    if (a.length) return a;
-    return flatten(b.playlists) || [];
-  }
-
-  if (Array.isArray(b.music_all)) return flatten(b.music_all);
-  return flatten(b.items || b.results || b.videos || b.contents || []);
+  // Since search() now only populates one bucket based on the filter,
+  // just return the items directly without complex fallback logic
+  const bucket = buckets[bucketFilter];
+  return Array.isArray(bucket) ? bucket : [];
 }
 
 export default function SearchPage() {
   const [q, setQ] = useState('');
   const [results, setResults] = useState([]);
   const [buckets, setBuckets] = useState(null);
+  const [loadedQuery, setLoadedQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [suggestions, setSuggestions] = useState([]);
   const [suggestVisible, setSuggestVisible] = useState(false);
   const [suggestLoading, setSuggestLoading] = useState(false);
 
-  const [filter, setFilter] = useState('all');
+  const [bucketFilter, setBucketFilter] = useState('music_all');
+  const [searchFilter, setSearchFilter] = useState('all');
   const [sortBy, setSortBy] = useState('relevance');
 
   const [menuAnchor, setMenuAnchor] = useState(null);
@@ -110,6 +69,7 @@ export default function SearchPage() {
   const inputRef = useRef(null);
   const suggestTimer = useRef(null);
   const latestSuggestReq = useRef(0);
+  const latestSearchReq = useRef(0);
   const mounted = useRef(true);
 
   const [suggestPos, setSuggestPos] = useState({ top: 0, left: 0, width: 360 });
@@ -125,15 +85,17 @@ export default function SearchPage() {
       const raw = sessionStorage.getItem(SS_KEY);
       if (!raw) return;
       const parsed = JSON.parse(raw);
-      if (parsed?.query) setQ(parsed.query);
+      if (parsed?.query) setQ(parsed.query); setLoadedQuery(parsed.query);
       if (parsed?.buckets) {
         setBuckets(parsed.buckets);
-        const bucketItems = bucketForFilter(parsed.filter || filter, parsed.buckets);
+        const bucketItems = bucketForFilter(parsed.bucketFilter || bucketFilter, parsed.buckets);
         const mapped = Array.isArray(bucketItems) ? bucketItems : [];
         setResults(mapped);
       }
-      if (parsed?.filter) setFilter(parsed.filter);
+      if (parsed?.bucketFilter) setBucketFilter(parsed.bucketFilter);
+      if (parsed?.searchFilter) setSearchFilter(parsed.searchFilter);
       if (parsed?.sortBy) setSortBy(parsed.sortBy);
+      if (parsed?.query) setLoadedQuery(parsed.query);
     } catch (e) { /* ignore */ }
   }, []);
 
@@ -220,29 +182,40 @@ export default function SearchPage() {
     if (e && e.preventDefault) e.preventDefault();
     const query = typeof typedQuery === 'string' ? typedQuery : q;
     if (!query) return;
+    const normalizedQuery = query.trim();
+    if (!normalizedQuery) return;
+
+    const reqId = ++latestSearchReq.current;
     setLoading(true);
     setResults([]);
     setBuckets(null);
+
     try {
-      const b = await pipedSearch(query, { limit: 50, filter });
+      const b = await pipedSearch(normalizedQuery, { limit: 50, filter: searchFilter });
+      if (reqId !== latestSearchReq.current) return;
+
       if (!b) {
         setBuckets(null);
         setResults([]);
         return;
       }
-      setBuckets(b);
-      const rawBucketItems = bucketForFilter(filter, b);
+
+      const rawBucketItems = bucketForFilter(bucketFilter, b);
       const mapped = Array.isArray(rawBucketItems) ? rawBucketItems : [];
       const sorted = applySort(mapped, sortBy);
+      setBuckets({ [bucketFilter]: mapped });
+      setLoadedQuery(normalizedQuery);
       setResults(sorted);
 
-      const save = { query, buckets: b, timestamp: Date.now(), filter, sortBy };
+      const save = { query: normalizedQuery, buckets: { [bucketFilter]: mapped }, timestamp: Date.now(), bucketFilter, searchFilter, sortBy };
       try { sessionStorage.setItem(SS_KEY, JSON.stringify(save)); } catch (e) {}
     } catch (err) {
+      if (reqId !== latestSearchReq.current) return;
       console.error('piped search failed', err);
       setBuckets(null);
       setResults([]);
     } finally {
+      if (reqId !== latestSearchReq.current) return;
       setLoading(false);
     }
   }
@@ -262,16 +235,16 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (!buckets) return;
-    const rawBucketItems = bucketForFilter(filter, buckets);
+    const rawBucketItems = bucketForFilter(bucketFilter, buckets);
     const mapped = Array.isArray(rawBucketItems) ? rawBucketItems : [];
     const sorted = applySort(mapped, sortBy);
     setResults(sorted);
     try {
       const cur = JSON.parse(sessionStorage.getItem(SS_KEY) || '{}');
-      const merged = { ...cur, filter, sortBy };
+      const merged = { ...cur, bucketFilter, searchFilter, sortBy };
       sessionStorage.setItem(SS_KEY, JSON.stringify(merged));
     } catch (e) {}
-  }, [filter, sortBy, buckets]);
+  }, [bucketFilter, searchFilter, sortBy, buckets]);
 
   // play + enqueue helpers
   function playFromCover(item) {
@@ -321,24 +294,56 @@ export default function SearchPage() {
     inputRef.current?.focus();
   }
 
-  // improved filter click: load from sessionStorage if no buckets present
-  function onFilterClick(key) {
-    if (!buckets) {
-      try {
-        const raw = sessionStorage.getItem(SS_KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (parsed?.buckets) {
-            setBuckets(parsed.buckets);
-            const items = bucketForFilter(key, parsed.buckets);
-            setResults(Array.isArray(items) ? items : []);
-            setFilter(key);
-            return;
-          }
-        }
-      } catch (e) { /* ignore */ }
+  async function onFilterClick(bucketKey, searchKey) {
+    const normalizedQuery = q.trim();
+    const isSameQuery = normalizedQuery && loadedQuery === normalizedQuery;
+    const hasCachedBucket = isSameQuery && buckets && Array.isArray(bucketForFilter(bucketKey, buckets)) && bucketForFilter(bucketKey, buckets).length > 0;
+
+    setBucketFilter(bucketKey);
+    setSearchFilter(searchKey);
+
+    if (hasCachedBucket) {
+      return;
     }
-    setFilter(key);
+
+    if (!normalizedQuery) {
+      setResults([]);
+      return;
+    }
+
+    const reqId = ++latestSearchReq.current;
+    setLoading(true);
+    setResults([]);
+
+    try {
+      const b = await pipedSearch(normalizedQuery, { limit: 50, filter: searchKey });
+      if (reqId !== latestSearchReq.current) return;
+
+      const rawBucketItems = bucketForFilter(bucketKey, b);
+      const mapped = Array.isArray(rawBucketItems) ? rawBucketItems : [];
+      setBuckets({ [bucketKey]: mapped });
+      setLoadedQuery(normalizedQuery);
+
+      const cur = JSON.parse(sessionStorage.getItem(SS_KEY) || '{}');
+      const merged = {
+        ...cur,
+        query: normalizedQuery,
+        buckets: { ...(isSameQuery ? (cur.buckets || {}) : {}), [bucketKey]: mapped },
+        timestamp: Date.now(),
+        bucketFilter: bucketKey,
+        searchFilter: searchKey,
+        sortBy,
+      };
+      try { sessionStorage.setItem(SS_KEY, JSON.stringify(merged)); } catch (e) {}
+    } catch (err) {
+      if (reqId !== latestSearchReq.current) return;
+      console.error('piped search failed', err);
+      setBuckets(null);
+      setResults([]);
+    } finally {
+      if (reqId !== latestSearchReq.current) return;
+      setLoading(false);
+    }
   }
 
   const topResult = results && results.length > 0 ? results[0] : null;
@@ -410,19 +415,20 @@ export default function SearchPage() {
 
       {/* filters + sort */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', fontSize: 14 }}>
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', fontSize: 14, overflowX: 'auto', paddingBottom: 0.5}}>
           {[
-            { key: 'all', label: 'All' },
-            { key: 'music_songs', label: 'Songs' },
-            { key: 'channels', label: 'Artist' },
-            { key: 'albums', label: 'Album' },
-            { key: 'playlists', label: 'Playlist' },
+            { bucketKey: 'music_all', searchKey: 'all', label: 'All' },
+            { bucketKey: 'music_videos', searchKey: 'videos', label: 'Videos' },
+            { bucketKey: 'music_songs', searchKey: 'music_songs', label: 'Songs' },
+            { bucketKey: 'music_artists', searchKey: 'channels', label: 'Artists' },
+            { bucketKey: 'music_albums', searchKey: 'albums', label: 'Albums' },
+            { bucketKey: 'music_playlists', searchKey: 'playlists', label: 'Playlists' },
           ].map(opt => {
-            const selected = filter === opt.key;
+            const selected = bucketFilter === opt.bucketKey;
             return (
               <Box
-                key={opt.key}
-                onClick={() => onFilterClick(opt.key)}
+                key={opt.bucketKey}
+                onClick={() => onFilterClick(opt.bucketKey, opt.searchKey)}
                 sx={{
                   cursor: 'pointer',
                   opacity: selected ? 1 : 0.7,
@@ -655,7 +661,7 @@ export default function SearchPage() {
 
         {!loading && results.length === 0 && (
           <Box sx={{ textAlign: 'center', mt: 4, opacity: 0.6 }}>
-            <Typography variant="body2">No results yet. Try searching for an artist.</Typography>
+            <Typography variant="body2">{loadedQuery ? `Sorry! No results found for "${loadedQuery}" :/` : 'Search something!'}</Typography>
           </Box>
         )}
       </Box>
@@ -702,12 +708,11 @@ function AnimatedEq(props) {
         height: props.sx?.fontSize ? `calc(${props.sx.fontSize}px)` : 24,
         '& svg': {
           '@keyframes eq': {
-            '0%': { transform: 'scaleY(0.6)' },
-            '50%': { transform: 'scaleY(1.05)' },
-            '100%': { transform: 'scaleY(0.6)' },
+            '0%, 100%': { transform: 'scaleY(0.8)' },
+            '50%': { transform: 'scaleY(1.2)' },
           },
           transformOrigin: 'center bottom',
-          animation: 'eq 900ms linear infinite',
+          animation: 'eq 1.2s ease-in-out infinite',
         }
       }}
     >

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Select, MenuItem, FormControl, InputLabel, Paper, Switch, FormControlLabel } from '@mui/material';
+import { Button, Select, MenuItem, FormControl, InputLabel, Paper, Switch, FormControlLabel, LinearProgress, Typography, Box } from '@mui/material';
 import { useModals } from '../components/ModalProvider';
 
 export default function Settings({ selectedPresetKey, setThemeByKey, presets }) {
@@ -10,6 +10,26 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
   const [autoLoadEruda, setAutoLoadEruda] = useState(
     localStorage.getItem('hitori_autoload_eruda') === 'true'
   );
+
+  const [storageUsage, setStorageUsage] = useState({ used: 0, total: 0 });
+
+  // Calculate storage usage
+  useEffect(() => {
+    const calculateStorage = () => {
+      let total = 0;
+      for (let key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+          total += localStorage[key].length + key.length;
+        }
+      }
+      // Estimate total storage (5MB typical for localStorage)
+      const totalMB = 5;
+      const usedMB = (total / (1024 * 1024)).toFixed(2);
+      setStorageUsage({ used: parseFloat(usedMB), total: totalMB });
+    };
+
+    calculateStorage();
+  }, []);
 
   // Function to inject Eruda script
   const injectEruda = (isInitialLoad = false) => {
@@ -98,6 +118,25 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
         <Paper className="card">
           <div style={{ fontWeight: 700, marginBottom: 4 }}>Data</div>
           <div className="small" style={{ marginBottom: 12 }}>Manage local data and cache.</div>
+
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              Storage Usage: {storageUsage.used}MB / {storageUsage.total}MB
+            </Typography>
+            <LinearProgress
+              variant="determinate"
+              value={(storageUsage.used / storageUsage.total) * 100}
+              sx={{
+                height: 8,
+                borderRadius: 4,
+                bgcolor: 'rgba(255,255,255,0.1)',
+                '& .MuiLinearProgress-bar': {
+                  bgcolor: storageUsage.used > storageUsage.total * 0.8 ? '#ff6b6b' : 'var(--accent)'
+                }
+              }}
+            />
+          </Box>
+
           <Button 
             variant="outlined" 
             color="error" 
@@ -135,6 +174,33 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
             >
               Load Eruda Now
             </Button>
+          </div>
+        </Paper>
+
+        <Paper className="card">
+          <div style={{ fontWeight: 700, marginBottom: 4 }}>Build Info</div>
+          <div className="small" style={{ marginBottom: 12 }}>Application version and build details.</div>
+          <div className="v-stack" style={{ gap: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="small" style={{ opacity: 0.8 }}>Version</span>
+              <span className="small" style={{ fontWeight: 600 }}>1.5.9 (Ayane)</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="small" style={{ opacity: 0.8 }}>Stage</span>
+              <span className="small" style={{ fontWeight: 600 }}>Alpha</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="small" style={{ opacity: 0.8 }}>Build Date</span>
+              <span className="small" style={{ fontWeight: 600 }}>{new Date().toLocaleDateString()}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="small" style={{ opacity: 0.8 }}>React</span>
+              <span className="small" style={{ fontWeight: 600 }}>18.2.0</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="small" style={{ opacity: 0.8 }}>MUI</span>
+              <span className="small" style={{ fontWeight: 600 }}>5.15.0</span>
+            </div>
           </div>
         </Paper>
       </div>

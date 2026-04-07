@@ -1,5 +1,5 @@
 // src/components/Player.jsx
-import { useRef } from 'react';
+import { useRef, useState, Suspense, lazy } from 'react';
 import { IconButton, LinearProgress } from '@mui/material';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
@@ -7,9 +7,11 @@ import SkipNext from '@mui/icons-material/SkipNext';
 import SkipPrevious from '@mui/icons-material/SkipPrevious';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { usePlayer } from '../lib/playerContext';
+const PlayerFull = lazy(() => import('../pages/PlayerFull'));
 
-export default function Player({ onOpen }) {
+export default function Player() {
   const player = usePlayer();
+  const [open, setOpen] = useState(false);
   const touchStartY = useRef(0);
 
   if (!player || !player.track) return null;
@@ -20,59 +22,66 @@ export default function Player({ onOpen }) {
   const handleTouchStart = (e) => { touchStartY.current = e.touches[0].clientY; };
   const handleTouchEnd = (e) => {
     const diff = touchStartY.current - e.changedTouches[0].clientY;
-    if (diff > 50) onOpen(); // Swipe Up > 50px
+    if (diff > 50) setOpen(true);
   };
 
   return (
-    <div 
-      className="card"
-      style={{
-        position: 'fixed', bottom: 76, left: 16, right: 16,
-        padding: 0, zIndex: 1200,
-        background: '#151e32',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-        display: 'flex', flexDirection: 'column', overflow:'hidden'
-      }}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* Progress Line */}
-      <LinearProgress variant="determinate" value={progress} sx={{ height: 2, bgcolor: 'transparent', '& .MuiLinearProgress-bar': { bgcolor: 'var(--accent)' } }} />
+    <>
+      <div 
+        className="card"
+        style={{
+          position: 'fixed', bottom: 76, left: 16, right: 16,
+          padding: 0, zIndex: 1500,
+          background: '#151e32',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+          display: 'flex', flexDirection: 'column', overflow:'hidden'
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Progress Line */}
+        <LinearProgress variant="determinate" value={progress} sx={{ height: 2, bgcolor: 'transparent', '& .MuiLinearProgress-bar': { bgcolor: 'var(--accent)' } }} />
 
-      <div style={{ display: 'flex', alignItems: 'center', padding: '8px 12px', gap: 12 }}>
-        {/* Cover */}
-        <div style={{ width: 42, height: 42, borderRadius: 6, overflow: 'hidden', flexShrink: 0 }}>
-          <img src={track.cover || 'https://placecats.com/neo/800/800'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </div>
-
-        {/* Info - Click to Open */}
-        <div style={{ flex: 1, overflow: 'hidden', cursor: 'pointer' }} onClick={onOpen}>
-          <div style={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '0.95rem' }}>
-            {track.title}
+        <div style={{ display: 'flex', alignItems: 'center', padding: '8px 12px', gap: 12 }}>
+          {/* Cover */}
+          <div style={{ width: 42, height: 42, borderRadius: 6, overflow: 'hidden', flexShrink: 0 }}>
+            <img src={track.cover || 'https://placecats.com/neo/800/800'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
-          <div className="small" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {track.artist}
-          </div>
-        </div>
 
-        {/* Controls */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton onClick={toggle} sx={{ color: 'white' }}>
-            <SkipPrevious />
-          </IconButton>
-          <IconButton onClick={toggle} sx={{ color: 'white' }}>
-            {playing ? <Pause /> : <PlayArrow />}
-          </IconButton>
-          <IconButton onClick={next} sx={{ color: 'white' }}>
-            <SkipNext />
-          </IconButton>
-          {/* Explicit Expand Button */}
-          <IconButton onClick={onOpen} sx={{ color: 'var(--text-secondary)' }}>
-            <KeyboardArrowUpIcon />
-          </IconButton>
+          {/* Info - Click to Open */}
+          <div style={{ flex: 1, overflow: 'hidden', cursor: 'pointer' }} onClick={() => setOpen(true)}>
+            <div style={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '0.95rem' }}>
+              {track.title}
+            </div>
+            <div className="small" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {track.artist}
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton onClick={player.prev} sx={{ color: 'white' }}>
+              <SkipPrevious />
+            </IconButton>
+            <IconButton onClick={toggle} sx={{ color: 'white' }}>
+              {playing ? <Pause /> : <PlayArrow />}
+            </IconButton>
+            <IconButton onClick={next} sx={{ color: 'white' }}>
+              <SkipNext />
+            </IconButton>
+            {/* Explicit Expand Button */}
+            <IconButton onClick={() => setOpen(true)} sx={{ color: 'var(--text-secondary)' }}>
+              <KeyboardArrowUpIcon />
+            </IconButton>
+          </div>
         </div>
       </div>
-    </div>
+      
+      {/* PlayerFull always mounted but kept off-screen to preserve iframe */}
+      <Suspense fallback={null}>
+        <PlayerFull open={open} onClose={() => setOpen(false)} />
+      </Suspense>
+    </>
   );
 }
 

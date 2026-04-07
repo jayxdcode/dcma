@@ -11,7 +11,7 @@
 .top-progress-bar{
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var('--accent'), var('--accent-2'));
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
   transition: width 200ms ease-out, opacity 300ms linear;
   box-shadow: 0 0 8px rgba(0,0,0,0.08);
 }

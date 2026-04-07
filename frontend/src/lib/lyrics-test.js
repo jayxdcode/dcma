@@ -1,4 +1,4 @@
-import { loadLyrics } from './lyrics.ts'; // adjust extension/path if needed
+import { loadLyrics } from './lyrics.js'; // adjust extension/path if needed
 
 function onTransReady(lines) { console.log(JSON.stringify(lines, null, 2)); }
 

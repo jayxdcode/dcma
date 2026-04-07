@@ -96,6 +96,7 @@ export const ModalProvider = ({ children }) => {
         autoHideDuration={4000}
         onClose={() => setAlertData({ ...alertData, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        sx={{ zIndex: 1500 }}
       >
         <Alert 
           variant="filled" 

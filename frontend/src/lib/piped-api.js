@@ -118,40 +118,13 @@ function stableIdFor(item) {
 	return `x:${JSON.stringify(raw)}`; // last resort
 }
 
-/** Classify item into one of: song, album, artist, playlist, video, other
- *
- * Uses several heuristics: explicit fields, resultType, category or title hints.
- */
-function classifyItem(raw) {
-	if (!raw || typeof raw !== 'object') return 'other';
-	const title = String(raw?.title || raw?.name || raw?.caption || '').toLowerCase();
-	const uploader = String(raw?.uploader || raw?.channel || raw?.author || '').toLowerCase();
-	const category = String(raw?.category || raw?.type || raw?.resultType || '').toLowerCase();
-
-	// explicit hints
-	if (/album|ep|deluxe|remaster|remastere?d/.test(title) || /album/.test(category) || raw?.album) return 'album';
-	if (/artist|band|singer/.test(category) || raw?.isArtist || raw?.artist) return 'artist';
-	if (/playlist|list|queue/.test(title) || /playlist/.test(category) || raw?.playlistId || raw?.list) return 'playlist';
-
-	// songs: explicit music indicators or length/duration present and small
-	if (/song|track|single|audio|official audio|lyrics|lyric/.test(title) || /music|song|audio/.test(category) || raw?.isMusic) return 'song';
-	if (raw?.duration || raw?.lengthSeconds) {
-		// short durations likely songs (<= 15 minutes)
-		const d = Number(raw?.duration || raw?.lengthSeconds || 0);
-		if (d && d <= 60 * 15) return 'song';
-	}
-
-	// videos (non-music) fallback if it has video-like props
-	if (raw?.videoId || raw?.watchUrl || raw?.views || raw?.duration) return 'video';
-
-	return 'other';
-}
-
-// --- improved search() implementation (yt-music style grouping + dedupe) ---
+// --- simplified search() implementation ---
 /**
  * search(q, opts)
  * opts: { filter, limit }
- * returns { music_all, music_songs, music_albums, music_artists, music_playlists, music_videos, raw }
+ * Since we now call with specific filters (not filter=all for all buckets),
+ * we can skip classification and just return items for the requested filter.
+ * returns { [bucketKey]: [...items], raw: data }
  */
 export async function search(q, opts = {}) {
 	if (!q) throw new Error('search: q is required');
@@ -159,7 +132,7 @@ export async function search(q, opts = {}) {
 	const params = { q, filter, limit };
 	const data = await request('/search', { params });
 
-	// We'll collect candidates from many possible keys and nested arrays
+	// Extract items from common response keys
 	const candidates = [];
 	function collectArrays(obj) {
 		if (!obj || typeof obj !== 'object') return;
@@ -169,101 +142,43 @@ export async function search(q, opts = {}) {
 			} else if (v && typeof v === 'object') collectArrays(v);
 		}
 	}
-
-	// top-level arrays
-	['videos', 'contents', 'items', 'results', 'playlists', 'sections', 'suggestions', 'albums'].forEach(k => {
+	
+	// Collect from top-level arrays
+	['videos', 'contents', 'items', 'results', 'playlists', 'sections', 'albums'].forEach(k => {
 		if (Array.isArray(data?.[k])) candidates.push(...data[k]);
 	});
 	if (Array.isArray(data)) candidates.push(...data);
 	collectArrays(data);
 
-	// maps to dedupe
-	const seen = new Map(); // stableId -> normalized item
-
-	// buckets
-	const buckets = { music_all: [], music_songs: [], music_albums: [], music_artists: [], music_playlists: [], music_videos: [], raw: data };
-
-	// push helper that classifies, normalizes and dedupes
-	function pushCandidate(raw) {
-		if (!raw || typeof raw !== 'object') return;
-		const cls = classifyItem(raw);
+	// Normalize and dedupe items
+	const seen = new Map();
+	const items = [];
+	for (const raw of candidates) {
+		if (!raw || typeof raw !== 'object') continue;
 		const norm = normalizeVideoItem(raw);
 		const stable = stableIdFor(raw) || stableIdFor(norm);
-		if (!stable) return;
-		if (seen.has(stable)) {
-			// merge lightweight missing properties if helpful (prefer first seen)
-			const existing = seen.get(stable);
-			if (!existing.thumbnail && norm.thumbnail) existing.thumbnail = norm.thumbnail;
-			if (!existing.uploader && norm.uploader) existing.uploader = norm.uploader;
-			return; // skip duplicates
-		}
-		seen.set(stable, norm);
-
-		// only include music-like items in music buckets
-		if (cls === 'song') buckets.music_songs.push(norm);
-		else if (cls === 'album') buckets.music_albums.push(norm);
-		else if (cls === 'artist') buckets.music_artists.push(norm);
-		else if (cls === 'playlist') buckets.music_playlists.push(norm);
-		else if (cls === 'video') buckets.music_videos.push(norm);
-		else {
-			// still include unknowns in music_all if they look musical
-			const isMusic = /music|audio|song|lyric|official audio|vevo/i.test(`${norm.title} ${norm.uploader || ''}`);
-			if (!isMusic) return;
-			buckets.music_videos.push(norm);
-		}
-
-		// also push into the master list
-		buckets.music_all.push(norm);
+		if (!stable || seen.has(stable)) continue;
+		seen.set(stable, true);
+		items.push(norm);
+		if (items.length >= limit) break;
 	}
 
-	for (const c of candidates) {
-		try {
-			pushCandidate(c);
-		} catch (e) { /* ignore */ }
-	}
-
-	// If nothing found, fallback to a lighter candidate scan (top-level objects)
-	if (!buckets.music_all.length) {
-		const videos = candidates.filter(it => it && (it.url || it.videoId || it.id)).slice(0, limit).map(normalizeVideoItem);
-		for (const v of videos) {
-			const stable = stableIdFor(v);
-			if (stable && !seen.has(stable)) {
-				seen.set(stable, v);
-				buckets.music_all.push(v);
-				buckets.music_videos.push(v);
-			}
-		}
-	}
-
-	// Final dedupe and ordering: prefer songs, then albums, artists, playlists, videos
-	const order = (arr) => arr.filter(Boolean).slice(0, limit || 50);
-	buckets.music_songs = order(buckets.music_songs);
-	buckets.music_albums = order(buckets.music_albums);
-	buckets.music_artists = order(buckets.music_artists);
-	buckets.music_playlists = order(buckets.music_playlists);
-	buckets.music_videos = order(buckets.music_videos);
-
-	// Rebuild master list with priority: songs -> albums -> artists -> playlists -> videos
-	const master = [];
-	const pushed = new Set();
-	function addList(list) {
-		for (const it of list) {
-			const sid = stableIdFor(it.raw || it);
-			if (!sid || pushed.has(sid)) continue;
-			pushed.add(sid);
-			master.push(it);
-			if (master.length >= (limit || 50)) break;
-		}
-	}
-	addList(buckets.music_songs);
-	if (master.length < (limit || 50)) addList(buckets.music_albums);
-	if (master.length < (limit || 50)) addList(buckets.music_artists);
-	if (master.length < (limit || 50)) addList(buckets.music_playlists);
-	if (master.length < (limit || 50)) addList(buckets.music_videos);
-
-	buckets.music_all = master;
-
-	return buckets;
+	// Map filter to bucket key for consistency with bucketForFilter
+	const filterToBucket = {
+		'all': 'music_all',
+		'videos': 'music_videos',
+		'music_videos': 'music_videos',
+		'music_songs': 'music_songs',
+		'channels': 'music_artists',
+		'music_artists': 'music_artists',
+		'albums': 'music_albums',
+		'music_albums': 'music_albums',
+		'playlists': 'music_playlists',
+		'music_playlists': 'music_playlists',
+	};
+	
+	const bucketKey = filterToBucket[filter] || 'music_all';
+	return { [bucketKey]: items, raw: data };
 }
 
 /**

@@ -1,9 +1,9 @@
 // src/pages/PlayerFull.jsx
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { usePlayer } from '../lib/playerContext';
+import { useModals } from '../components/ModalProvider';
 // explicit .js import (lyrics.js converted)
-import { loadLyrics } from '../lib/lyrics.js';
-import { IconButton, Slider, Tabs, Tab, useMediaQuery, Box } from '@mui/material';
+import { IconButton, Slider, Tabs, Tab, useMediaQuery, Box, Menu, MenuItem, FormControlLabel, Switch } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import PlayCircleIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import PauseCircleIcon from '@mui/icons-material/PauseCircleFilled';
@@ -11,7 +11,12 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import RepeatIcon from '@mui/icons-material/Repeat';
-
+import VideocamIcon from '@mui/icons-material/VideocamOutlined';
+import VideocamOffIcon from '@mui/icons-material/VideocamOffOutlined';
+import MoreVert from '@mui/icons-material/MoreVert';
+import ReplayCircleIcon from '@mui/icons-material/ReplayCircleFilled';
+import LyricsDisplay from '../components/LyricsDisplay';
+import { related as pipedRelated } from '../lib/piped-api.js';
 const fmtTime = (s) => {
   if (isNaN(s)) return "0:00";
   const m = Math.floor(s / 60);
@@ -23,61 +28,73 @@ export default function PlayerFull({ open, onClose }) {
   const player = usePlayer();
   const track = player?.track;
   const isDesktop = useMediaQuery('(min-width:900px)');
+  const { showAlert } = useModals();
 
-  const [lines, setLines] = useState([]);
   const [tabValue, setTabValue] = useState(0); // 0: Up Next, 1: Lyrics, 2: Related
   const [seeking, setSeeking] = useState(false);
   const [seekVal, setSeekVal] = useState(0);
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const [showIframe, setShowIframe] = useState(false); // Toggle between cover and iframe
+  const [relatedTracks, setRelatedTracks] = useState([]);
+  const [loadingRelated, setLoadingRelated] = useState(false);
+  const [menuAnchor, setMenuAnchor] = useState(null);
+  const [menuTarget, setMenuTarget] = useState(null);
 
   // Gesture refs
   const touchStartY = useRef(0);
   const touchStartX = useRef(0);
+  const iframeContainerRef = useRef(null);
 
-  // DEBUG 
-  useEffect(()=> {
-    console.debug('[PlayerFull] track keys:', Object.keys(track || {}), track);
-  }, [track]);
-
-  // Load Lyrics — depend on the metadata used for searching
+  // Handle iframe display toggle - overlay approach
+  // Initialize YouTube player once container is ready
   useEffect(() => {
-    if (!track?.title || !track?.artist) {
-      console.debug('[PlayerFull] loadLyrics skipped — missing track title/artist', track);
+    const playerCore = document.querySelector('#hitori-player-core');
+    const displayContainer = iframeContainerRef.current;
+
+    if (!displayContainer) return;
+
+    // Initialize YouTube player if not already done
+    if (!playerCore && player?.initializeYouTubePlayer) {
+      player.initializeYouTubePlayer(displayContainer);
       return;
     }
-    console.debug('[PlayerFull] calling loadLyrics for', track.title, '-', track.artist);
-    let ac = new AbortController();
-    setLines([]);
 
-    loadLyrics(
-      track.title,
-      track.artist,
-      track.album || '',
-      player.duration || 0,
-      (parsed) => {
-        console.debug('[PlayerFull] loadLyrics callback — lines:', Array.isArray(parsed) ? parsed.length : parsed);
-        setLines(parsed);
-      },
-      { flag: false, query: '' },
-      ac.signal
-    );
-
-    return () => {
-      console.debug('[PlayerFull] aborting lyrics fetch for', track.title);
-      ac.abort();
-    };
-  }, [track?.title, track?.artist, track?.album]); // removed player?.duration
-
-  const activeLineIndex = useMemo(() => {
-    if (player?.time == null || !lines.length) return 0; // allow time === 0
-    const t = player.time * 1000; // player.time is seconds, lyrics are ms
-    let idx = 0;
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].time <= t) idx = i;
-      else break;
+    // If player already exists, move it to this container if needed
+    if (playerCore && playerCore.parentNode !== displayContainer) {
+      displayContainer.appendChild(playerCore);
     }
-    return idx;
-  }, [player?.time, lines]);
+    
+    if (playerCore) {
+      playerCore.style.display = 'block';
+      playerCore.style.width = '100%';
+      playerCore.style.height = '100%';
+      playerCore.style.pointerEvents = showIframe ? 'auto' : 'none';
+    }
+  }, [showIframe, player]);
+
+  useEffect(() => {
+    const playerCore = document.querySelector('#hitori-player-core');
+    if (!playerCore) return;
+    playerCore.style.pointerEvents = showIframe ? 'auto' : 'none';
+  }, [showIframe]);
+
+  // Load related tracks when track changes
+  useEffect(() => {
+    if (!track?.id) {
+      setRelatedTracks([]);
+      return;
+    }
+    setLoadingRelated(true);
+    pipedRelated(track.id)
+      .then(result => {
+        setRelatedTracks(result.related || []);
+      })
+      .catch(err => {
+        console.warn('Failed to load related tracks:', err);
+        setRelatedTracks([]);
+      })
+      .finally(() => setLoadingRelated(false));
+  }, [track?.id]);
 
   const handleSeekChange = (_, val) => { setSeeking(true); setSeekVal(val); };
   const handleSeekCommit = (_, val) => { setSeeking(false); player.seek(val); };
@@ -100,17 +117,64 @@ export default function PlayerFull({ open, onClose }) {
       return;
     }
 
-    // Swipe Horizontal for Tracks (only on top section)
+    // Swipe Horizontal for Tracks (only on top section
     if (Math.abs(dx) > 80 && Math.abs(dy) < 60) {
       if (dx > 0) player.prev();
       else player.next();
     }
   };
 
+  // Menu handlers
+  const openMenu = (e, relatedTrack) => {
+    e.stopPropagation();
+    setMenuAnchor(e.currentTarget);
+    setMenuTarget(relatedTrack);
+  };
+
+  const closeMenu = () => {
+    setMenuAnchor(null);
+    setMenuTarget(null);
+  };
+
+  const handleMenuAddToQueue = () => {
+    if (menuTarget && player) {
+      player.enqueue(menuTarget, false);
+      closeMenu();
+      showAlert?.('Added to queue', 'success');
+    }
+  };
+
+  const handleMenuAddNext = () => {
+    if (menuTarget && player) {
+      player.enqueue(menuTarget, true);
+      closeMenu();
+      showAlert?.('Added next', 'success');
+    }
+  };
+
+  const handleMenuOpenInPlayer = () => {
+    if (menuTarget && player) {
+      player.playTrack?.(menuTarget, { openPlayer: true });
+      closeMenu();
+    }
+  };
+
   if (!track) return null;
 
   return (
-    <div className={`fs-player ${open ? 'open' : ''}`} style={{ background: '#071029' }}>
+    <div
+      className={`fs-player ${open ? 'open' : ''}`}
+      style={{
+        background: '#071029',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 1600,
+        transform: open ? 'translateY(0)' : 'translateY(100%)',
+        transition: 'transform 0.35s ease, opacity 0.35s ease',
+        opacity: open ? 1 : 0,
+        pointerEvents: open ? 'auto' : 'none',
+      }}
+    >
 
       {/* --- TOP SECTION (Controls + Art) --- */}
       <div
@@ -128,16 +192,48 @@ export default function PlayerFull({ open, onClose }) {
         <div className="h-stack" style={{ justifyContent: 'space-between', marginBottom: 20 }}>
           <IconButton onClick={onClose} sx={{ color: 'white' }}><KeyboardArrowDownIcon fontSize="large" /></IconButton>
           <div className="small" style={{ letterSpacing: 1 }}>PLAYING FROM HITORI</div>
-          <div style={{ width: 40 }} />
+          <IconButton onClick={() => setShowIframe(!showIframe)} sx={{ color: 'white' }}>
+            {showIframe ? <VideocamIcon fontSize="large" /> : <VideocamOffIcon fontSize="large" />}
+          </IconButton>
         </div>
 
-        {/* Cover Art */}
+        {/* Cover Art / Iframe Toggle */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0 }}>
           <div style={{
             aspectRatio: '1/1', width: '100%', maxHeight: '45vh',
-            borderRadius: 12, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.6)'
+            borderRadius: 12, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
+            position: 'relative'
           }}>
-            <img src={track.cover || 'https://placecats.com/neo/800/800'} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            {/* Iframe always present */}
+            <div
+              ref={iframeContainerRef}
+              id="iframe-display-container"
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                borderRadius: 12,
+                overflow: 'hidden'
+              }}
+            />
+            {/* Cover Image Overlay */}
+            <img
+              src={track.cover || 'https://placecats.com/neo/800/800'}
+              alt=""
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                opacity: showIframe ? 0 : 1,
+                transition: 'opacity 0.3s ease',
+                pointerEvents: showIframe ? 'none' : 'auto'
+              }}
+            />
           </div>
         </div>
 
@@ -166,8 +262,8 @@ export default function PlayerFull({ open, onClose }) {
            <div style={{ display:'flex', justifyContent:'space-around', alignItems:'center', marginTop: 10 }}>
              <IconButton size="large" sx={{ color: 'rgba(255,255,255,0.6)' }}><ShuffleIcon /></IconButton>
              <IconButton onClick={player.prev} size="large" sx={{ color: 'white' }}><SkipPreviousIcon sx={{ fontSize: 40 }} /></IconButton>
-             <IconButton onClick={player.toggle} sx={{ color: 'white', p:0 }}>
-               {player.playing ? <PauseCircleIcon sx={{ fontSize: 75 }} /> : <PlayCircleIcon sx={{ fontSize: 75 }} />}
+             <IconButton onClick={player.readyToReplay ? player.replayCurrent : player.toggle} sx={{ color: 'white', p:0 }}>
+               {player.readyToReplay ? <ReplayCircleIcon sx={{ fontSize: 75 }} /> : (player.playing ? <PauseCircleIcon sx={{ fontSize: 75 }} /> : <PlayCircleIcon sx={{ fontSize: 75 }} />)}
              </IconButton>
              <IconButton onClick={player.next} size="large" sx={{ color: 'white' }}><SkipNextIcon sx={{ fontSize: 40 }} /></IconButton>
              <IconButton size="large" sx={{ color: 'rgba(255,255,255,0.6)' }}><RepeatIcon /></IconButton>
@@ -208,16 +304,25 @@ export default function PlayerFull({ open, onClose }) {
           >
              <Tabs
                value={tabValue}
-               onChange={(e, v) => { e.stopPropagation(); setTabValue(v); setBottomSheetOpen(true); }}
+               onChange={
+                (e, v) => {
+                  if (e.target.classList.contains('disabled')) {
+                    e.stopPropagation(); showAlert('Sorry, this feature is not available at the moment', 'info');
+                  } else {
+                    e.stopPropagation(); setTabValue(v); setBottomSheetOpen(true);
+                  }
+                }
+              }
                centered
                sx={{
                  '& .MuiTab-root': { color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', fontWeight: 600, minWidth: 80 },
                  '& .Mui-selected': { color: '#fff' },
-                 '& .MuiTabs-indicator': { backgroundColor: '#fff' }
+                 '& .MuiTabs-indicator': { backgroundColor: '#fff' },
+                 justifyContent: 'space-evenly', width: '100%'
                }}
              >
                <Tab label="UP NEXT" />
-               <Tab label="LYRICS" />
+               <Tab label="LYRICS" className="disabled" />
                <Tab label="RELATED" />
              </Tabs>
           </div>
@@ -230,31 +335,24 @@ export default function PlayerFull({ open, onClose }) {
           }}>
             {/* LYRICS TAB */}
             {tabValue === 1 && (
-              <div style={{ textAlign: 'center', paddingBottom: 100 }}>
-                {lines.length > 0 ? lines.map((l, i) => (
-                  <div key={i}
-                    onClick={() => { player.seek(l.time/1000); }}
-                    style={{
-                      padding: '12px 0',
-                      fontSize: i === activeLineIndex ? '1.5rem' : '1.1rem',
-                      fontWeight: i === activeLineIndex ? 800 : 500,
-                      color: i === activeLineIndex ? '#fff' : 'rgba(255,255,255,0.4)',
-                      transform: i === activeLineIndex ? 'scale(1.05)' : 'scale(1)',
-                      transition: 'all 0.3s ease',
-                      cursor: 'pointer'
-                    }}>
-                    {l.text}
-                    {l.trans && <div style={{ fontSize: '0.7em', fontWeight: 400, marginTop: 4 }}>{l.trans}</div>}
-                  </div>
-                )) : (
-                  <div className="small">Lyrics not available</div>
-                )}
-              </div>
+              <LyricsDisplay track={track} player={player} />
             )}
 
             {/* UP NEXT TAB */}
             {tabValue === 0 && (
               <div className="v-stack">
+                 <FormControlLabel
+                   control={
+                     <Switch
+                       checked={player.endlessPlaybackEnabled}
+                       onChange={(e) => player.setEndlessPlaybackEnabled?.(e.target.checked)}
+                       size="small"
+                       sx={{ color: '#fff' }}
+                     />
+                   }
+                   label="Endless playback"
+                   sx={{ marginBottom: 1, color: 'rgba(255,255,255,0.8)', '.MuiFormControlLabel-label': { fontWeight: 600 } }}
+                 />
                  <div className="small" style={{ fontWeight: 700 }}>Now Playing</div>
                  <div className="card" style={{ background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', gap: 12, border: 0 }}>
                    <img src={track.cover} style={{ width: 48, height: 48, borderRadius: 4 }} alt="" />
@@ -280,11 +378,60 @@ export default function PlayerFull({ open, onClose }) {
             )}
 
             {/* RELATED TAB */}
-            {tabValue === 2 && <div className="small" style={{ textAlign: 'center', marginTop: 50 }}>No related tracks found.</div>}
+            {tabValue === 2 && (
+              <div className="v-stack">
+                <div className="small" style={{ fontWeight: 700 }}>Related Tracks</div>
+                {loadingRelated ? (
+                  <div className="small" style={{ textAlign: 'center', marginTop: 20 }}>Loading...</div>
+                ) : relatedTracks.length > 0 ? (
+                  relatedTracks.map((relTrack, i) => (
+                    <div
+                      key={relTrack.id || i}
+                      className="h-stack"
+                      style={{
+                        padding: '10px 0',
+                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                        cursor: 'pointer',
+                        alignItems: 'center'
+                      }}
+                      onClick={(e) => {
+                        if (e.target && e.target.closest && e.target.closest('.related-menu-button')) return;
+                        player.play(relTrack);
+                      }}
+                    >
+                      <div style={{ color: 'rgba(255,255,255,0.5)', width: 20 }}>{i+1}</div>
+                      <img src={relTrack.cover || 'https://placecats.com/neo/300/300'} style={{ width: 48, height: 48, borderRadius: 4, marginRight: 12 }} alt="" />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 600 }}>{relTrack.title}</div>
+                        <div className="small">{relTrack.artist}</div>
+                      </div>
+                      <div className="small" style={{ marginRight: 12 }}>{fmtTime(relTrack.duration)}</div>
+                      <IconButton
+                        className="related-menu-button"
+                        onClick={(e) => openMenu(e, relTrack)}
+                        size="small"
+                        sx={{ color: 'var(--text, white)' }}
+                      >
+                        <MoreVert />
+                      </IconButton>
+                    </div>
+                  ))
+                ) : (
+                  <div className="small" style={{ opacity: 0.5, textAlign: 'center', marginTop: 20 }}>No related tracks found</div>
+                )}
+              </div>
+            )}
 
           </div>
         </div>
       </div>
+
+      {/* Related tracks menu */}
+      <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={closeMenu}>
+        <MenuItem onClick={handleMenuAddToQueue}>Add to queue</MenuItem>
+        <MenuItem onClick={handleMenuAddNext}>Add next</MenuItem>
+        <MenuItem onClick={handleMenuOpenInPlayer}>Open in player</MenuItem>
+      </Menu>
     </div>
   );
 }

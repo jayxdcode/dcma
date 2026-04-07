@@ -272,6 +272,9 @@ export default function TopBar({
 				<Typography variant="h6" fontWeight={700} sx={{ letterSpacing: -0.5 }}>
 					{appName}
 				</Typography>
+				<Typography variant="caption" sx={{ opacity: 0.6, fontSize: '0.7rem', letterSpacing: 0.5 }}>
+					v1.5.9
+				</Typography>
 			</div>
 
 			<Box>

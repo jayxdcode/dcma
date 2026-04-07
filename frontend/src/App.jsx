@@ -1,5 +1,5 @@
 // src/App.jsx
-import { useState, Suspense, lazy, memo } from 'react';
+import { Suspense, lazy, memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import TopBar from './components/TopBar';
 import BottomNavBar from './components/BottomNavBar';
@@ -13,17 +13,15 @@ const Search = lazy(() => import('./pages/Search'));
 const LyricsPage = lazy(() => import('./pages/Lyrics'));
 const About = lazy(() => import('./pages/About'));
 const Settings = lazy(() => import('./pages/Settings'));
-
-// lazy player full to avoid initial bundle cost
-const PlayerFull = lazy(() => import('./pages/PlayerFull'));
+const Album = lazy(() => import('./pages/Album'));
+const Playlist = lazy(() => import('./pages/Playlist'));
+const History = lazy(() => import('./pages/History'));
 
 // memoize top/bottom bars to avoid re-renders when props are stable
 const MemoTopBar = memo(TopBar);
 const MemoBottomNav = memo(BottomNavBar);
 
 export default function App({ palette, setPalette, presets, selectedPresetKey, setThemeByKey }){
-  const [isPlayerOpen, setPlayerOpen] = useState(false);
-
   return (
     <PlayerProvider>
       <div className="app-shell" aria-label="Hitori App">
@@ -44,6 +42,9 @@ export default function App({ palette, setPalette, presets, selectedPresetKey, s
               <Route path="/" element={<Home/>} />
               <Route path="/search" element={<Search/>} />
               <Route path="/lyrics" element={<LyricsPage/>} />
+              <Route path="/album/:albumId" element={<Album/>} />
+              <Route path="/playlist/:playlistId" element={<Playlist/>} />
+              <Route path="/history" element={<History/>} />
               {/* keep /player route commented unless you want it routed */}
               <Route path="/about" element={<About/>} />
               <Route path="/settings" element={
@@ -57,18 +58,8 @@ export default function App({ palette, setPalette, presets, selectedPresetKey, s
           </Suspense>
         </main>
 
-        {/* PlayerFull is lazy: only loaded when open or navigated to */}
-        <Suspense fallback={null}>
-          {isPlayerOpen && (
-            <PlayerFull
-              open={isPlayerOpen}
-              onClose={() => setPlayerOpen(false)}
-            />
-          )}
-        </Suspense>
-
         {/* Small persistent player component (should be light) */}
-        <Player onOpen={() => setPlayerOpen(true)} />
+        <Player />
 
         <MemoBottomNav />
       </div>

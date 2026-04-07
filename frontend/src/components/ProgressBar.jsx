@@ -31,20 +31,22 @@ export default function ProgressBar(){
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.key]); // run on navigation
 
-  // once component tree has painted, finish the bar
+  // once component tree has painted, finish the bar after a short delay
   useEffect(() => {
-    // when pct reaches <=85 and we don't want to wait: finish after a short delay
     if (!visible) return;
+    let hideTimer = null;
     const finishTimer = setTimeout(() => {
       setPct(100);
-      // hide after animation
-      setTimeout(() => {
+      clearInterval(timerRef.current);
+      hideTimer = setTimeout(() => {
         setVisible(false);
         setPct(0);
       }, 300);
-      clearInterval(timerRef.current);
-    }, 350); // small delay to allow lazy-loaded component to mount
-    return () => clearTimeout(finishTimer);
+    }, 900);
+    return () => {
+      clearTimeout(finishTimer);
+      if (hideTimer) clearTimeout(hideTimer);
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
