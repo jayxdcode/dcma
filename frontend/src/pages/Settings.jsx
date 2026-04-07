@@ -2,103 +2,115 @@ import React, { useState, useEffect } from 'react';
 import { Button, Select, MenuItem, FormControl, InputLabel, Paper, Switch, FormControlLabel, LinearProgress, Typography, Box } from '@mui/material';
 import { useModals } from '../components/ModalProvider';
 import packageJson from '../../package.json';
+import packageLockJson from '../../package-lock.json';
 import hitoriJson from '../../hitori.json';
 
 /**
- * Returns the version of a package from the imported package.json
+ * Returns the version of a package from the imported package-lock.json,
+ * falling back to package.json if not found in the lock file.
  * @param {string} packageName - The name of the package (e.g., 'react')
  * @returns {string|null} - The version string or null if not found
  */
 const getVersion = (packageName) => {
-  return packageJson.dependencies?.[packageName] || 
-         packageJson.devDependencies?.[packageName] || 
-         null;
+	// 1. Check Lockfile for exact installed version
+	const lockVersion = packageLockJson.packages?.[`node_modules/${packageName}`]?.version ||
+		packageLockJson.dependencies?.[packageName]?.version;
+	
+	if (lockVersion) return lockVersion;
+	
+	// 2. Fallback to package.json ranges
+	const manifestVersion = packageJson.dependencies?.[packageName] ||
+		packageJson.devDependencies?.[packageName] ||
+		packageJson.peerDependencies?.[packageName];
+	
+	return manifestVersion || null;
 };
 
+
 export default function Settings({ selectedPresetKey, setThemeByKey, presets }) {
-  const presetKeys = presets ? Object.keys(presets) : [];
-  const { showConfirm, showAlert } = useModals();
-  
-  // Local state to track the switch UI
-  const [autoLoadEruda, setAutoLoadEruda] = useState(
-    localStorage.getItem('hitori_autoload_eruda') === 'true'
-  );
-  
-  const [storageUsage, setStorageUsage] = useState({ used: 0, total: 0 });
-  
-  // Calculate storage usage
-  useEffect(() => {
-    const calculateStorage = () => {
-      let total = 0;
-      for (let key in localStorage) {
-        if (localStorage.hasOwnProperty(key)) {
-          total += localStorage[key].length + key.length;
-        }
-      }
-      // Estimate total storage (5MB typical for localStorage)
-      const totalMB = 5;
-      const usedMB = (total / (1024 * 1024)).toFixed(2);
-      setStorageUsage({ used: parseFloat(usedMB), total: totalMB });
-    };
-    
-    calculateStorage();
-  }, []);
-  
-  // Function to inject Eruda script
-  const injectEruda = (isInitialLoad = false) => {
-    if (typeof window.eruda !== 'undefined') return;
-    
-    const script = document.createElement('script');
-    script.src = "https://cdn.jsdelivr.net/npm/eruda";
-    document.body.appendChild(script);
-    script.onload = () => {
-      window.eruda.init();
-      if (!isInitialLoad) {
-        showAlert("Eruda Loaded!", "success");
-      }
-    };
-  };
-  
-  // Check for autoload on mount
-  useEffect(() => {
-    if (autoLoadEruda) {
-      injectEruda(true);
-    }
-  }, []);
-  
-  const handleEnableDebug = async () => {
-    if (typeof window.eruda !== 'undefined') {
-      showAlert('Eruda is already present. Check the bottom right corner for the icon.');
-      return;
-    }
-    const confirm = await showConfirm("Enable Eruda Dev Tools?", "This will load the Eruda console for this session.");
-    if (confirm) {
-      injectEruda();
-    }
-  };
-  
-  const handleToggleAutoload = async (e) => {
-    const newValue = e.target.checked;
-    
-    if (newValue) {
-      const confirm = await showConfirm(
-        "Enable Eruda Autoload?",
-        "Eruda will automatically load every time you open the app. This is recommended for debugging only."
-      );
-      if (confirm) {
-        localStorage.setItem('hitori_autoload_eruda', 'true');
-        setAutoLoadEruda(true);
-        injectEruda();
-      }
-    } else {
-      localStorage.removeItem('hitori_autoload_eruda');
-      setAutoLoadEruda(false);
-      showAlert("Autoload disabled. Eruda will not load on next refresh.");
-    }
-  };
-  
-  return (
-    <div className="fade-in">
+	const presetKeys = presets ? Object.keys(presets) : [];
+	const { showConfirm, showAlert } = useModals();
+	
+	// Local state to track the switch UI
+	const [autoLoadEruda, setAutoLoadEruda] = useState(
+		localStorage.getItem('hitori_autoload_eruda') === 'true'
+	);
+	
+	const [storageUsage, setStorageUsage] = useState({ used: 0, total: 0 });
+	
+	// Calculate storage usage
+	useEffect(() => {
+		const calculateStorage = () => {
+			let total = 0;
+			for (let key in localStorage) {
+				if (localStorage.hasOwnProperty(key)) {
+					total += localStorage[key].length + key.length;
+				}
+			}
+			// Estimate total storage (5MB typical for localStorage)
+			const totalMB = 5;
+			const usedMB = (total / (1024 * 1024)).toFixed(2);
+			setStorageUsage({ used: parseFloat(usedMB), total: totalMB });
+		};
+		
+		calculateStorage();
+	}, []);
+	
+	// Function to inject Eruda script
+	const injectEruda = (isInitialLoad = false) => {
+		if (typeof window.eruda !== 'undefined') return;
+		
+		const script = document.createElement('script');
+		script.src = "https://cdn.jsdelivr.net/npm/eruda";
+		document.body.appendChild(script);
+		script.onload = () => {
+			window.eruda.init();
+			if (!isInitialLoad) {
+				showAlert("Eruda Loaded!", "success");
+			}
+		};
+	};
+	
+	// Check for autoload on mount
+	useEffect(() => {
+		if (autoLoadEruda) {
+			injectEruda(true);
+		}
+	}, []);
+	
+	const handleEnableDebug = async () => {
+		if (typeof window.eruda !== 'undefined') {
+			showAlert('Eruda is already present. Check the bottom right corner for the icon.');
+			return;
+		}
+		const confirm = await showConfirm("Enable Eruda Dev Tools?", "This will load the Eruda console for this session.");
+		if (confirm) {
+			injectEruda();
+		}
+	};
+	
+	const handleToggleAutoload = async (e) => {
+		const newValue = e.target.checked;
+		
+		if (newValue) {
+			const confirm = await showConfirm(
+				"Enable Eruda Autoload?",
+				"Eruda will automatically load every time you open the app. This is recommended for debugging only."
+			);
+			if (confirm) {
+				localStorage.setItem('hitori_autoload_eruda', 'true');
+				setAutoLoadEruda(true);
+				injectEruda();
+			}
+		} else {
+			localStorage.removeItem('hitori_autoload_eruda');
+			setAutoLoadEruda(false);
+			showAlert("Autoload disabled. Eruda will not load on next refresh.");
+		}
+	};
+	
+	return (
+		<div className="fade-in">
       <Typography variant="h4" sx={{ fontWeight: 800, mb: 3, letterSpacing: '-0.5px' }} className="page-title">Settings</Typography>
       
       <div className="v-stack" sx={{
@@ -218,7 +230,7 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
             </div>
           </div>
         </Paper>
-      </div>
-    </div>
-  );
+      </div> <
+		/div>
+	);
 }
