@@ -68,7 +68,7 @@ export default function HistoryPage() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#071029', minHeight: '100vh', color: 'white', p: 3 }}>
+    <Box sx={{ bgcolor: '#071029', minHeight: '100vh', p: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
         <HistoryIcon sx={{ fontSize: 32 }} />
         <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
@@ -80,11 +80,11 @@ export default function HistoryPage() {
       <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
         <Chip
           label={`${history.length} tracks`}
-          sx={{ bgcolor: 'rgba(255,255,255,0.1)', color: 'white' }}
+          sx={{ bgcolor: 'rgba(255,255,255,0.1)' }}
         />
         <Chip
           label={`${formatDuration(getTotalPlayTime())} total`}
-          sx={{ bgcolor: 'rgba(255,255,255,0.1)', color: 'white' }}
+          sx={{ bgcolor: 'rgba(255,255,255,0.1)' }}
         />
       </Box>
 
