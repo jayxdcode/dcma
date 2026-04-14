@@ -200,7 +200,7 @@ export default function PlayerFull({ open, onClose }) {
         {/* Cover Art / Iframe Toggle */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0 }}>
           <div style={{
-            aspectRatio: '1/1', width: '100%', maxHeight: '45vh',
+            aspectRatio: '1/1', width: '100%', maxWidth: "45vh", maxHeight: '45vh',
             borderRadius: 12, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
             position: 'relative'
           }}>

@@ -22,6 +22,12 @@ function normalizeTrack(t) {
 
 export function PlayerProvider({ children, initialQueue, setOpenFull }) {
   const playerRef = useRef(null);
+
+  useEffect(() => {
+    // Assign the ref to window for debugging purposes (can be removed on production)
+    window.playerRef = playerRef;
+  }, []);
+
   const audioRef = useRef(null);
   const containerRef = useRef(null);
   const skipSegmentsRef = useRef([]);
@@ -531,7 +537,11 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
         },
         onStateChange: (e) => {
           // During initial load, don't update playing state from YouTube events
-          if (isInitialLoad.current && e.data === 1) return;
+          if (isInitialLoad.current && e.data === 1) {
+            // Pause the video to prevent autoplay during initial load
+            playerRef.current?.pauseVideo?.();
+            return;
+          }
           if (e.data === 1) setPlaying(true);
           if (e.data === 2) setPlaying(false);
           if (e.data === 0) {
