@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-16T20:54:45.853Z",
+  "generated_at": "2026-04-16T21:50:18.683Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2026.0.0",
   "instances": [
@@ -11,23 +11,23 @@
       "suggestions": [
         {
           "kind": "suggest",
-          "term": "imagine dragons",
+          "term": "rick astley",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=rick%20astley&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 164,
-          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons and sia\",\"imagine dragons radioactive\",\"imagine dragons live\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons lyrics\",\"imagine dragons bad liar\",\"imagine dragons "
+          "time_ms": 157,
+          "body_sample": "[\"rick astley\",\"rick astley never gonna give you up\",\"rick astley songs\",\"rick astley glastonbury 2023\",\"rick astley together forever\",\"rick astley the smiths\",\"rick astley live\",\"rick astley cry for help\",\"rick astley tour 2026\",\"rick astley foo fighters\",\"rick astley she wants to dance with me\",\"rick astley raindrops"
         },
         {
           "kind": "suggest",
-          "term": "союз советский социалистических республик",
+          "term": "ado",
           "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&music=true",
+          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 250,
-          "body_sample": "[\"cccp national anthem 1977\",\"советский гимн 1944\",\"soviet anthem belarus\"]"
+          "time_ms": 154,
+          "body_sample": "[\"adopt me\",\"adolescence\",\"adotfrmdao\",\"adore you\",\"adopt me house build\",\"ado\",\"adopt me trading\",\"adorn miguel\",\"adom tv live\",\"adopt me channel\",\"adore you miley cyrus\",\"adom fm 106.3 live\",\"adolf hitler\",\"adofoasa episode 79\"]"
         },
         {
           "kind": "suggest",
@@ -36,32 +36,32 @@
           "url": "https://api.piped.private.coffee/suggestions?query=Never%20Gonna%20Give%20You%20Up&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 168,
+          "time_ms": 160,
           "body_sample": "[\"never gonna give you up\",\"never gonna give you up rick astley\",\"never gonna give you up karaoke\",\"never gonna give you up lyrics\",\"never gonna give you up 10 hours\",\"never gonna give you up piano\",\"never gonna give you up remix\",\"never gonna give you up live\",\"never gonna give you up meme\",\"never gonna give you up vo"
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "ado",
+          "term": "imagine dragons",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=ado&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 625,
-          "body_sample": "{\"items\":[{\"url\":\"/channel/UCln9P4Qm3-EAY4aiEPmRwEA\",\"type\":\"channel\",\"name\":\"Ado\",\"thumbnail\":\"https://proxy.piped.private.coffee/BKpE74RwbPJ8zLaad9Y2XoX7SmIEsoma1KB8dNzwtWwiOqgTNnYI_guEP1iAaTBrdk4nHakx=s176-c-k-c0x00ffffff-no-rw-mo?host=yt3.googleusercontent.com\",\"description\":\"元気です。\",\"subscribers\":9150000,\"videos\":-"
+          "time_ms": 569,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=mWRsgZuwf_8\",\"type\":\"stream\",\"title\":\"Imagine Dragons - Demons (Official Music Video)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/mWRsgZuwf_8/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDcZvI5Udq7xj1fSkrwKqWlK3G1Gw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\",\"uploaderName\":\"Imag"
         },
         {
           "kind": "search",
-          "term": "imagine dragons",
+          "term": "ado",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=ado&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 468,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Kx7B-XvmFtE\",\"type\":\"stream\",\"title\":\"Believer\",\"thumbnail\":\"https://proxy.piped.private.coffee/weYQWfEwWNPOuAm34geXN1LkSYPlsJay78NnQgHC3PKsyZcdvBHIsMtqoFh3rioA4XgMdHMQd3h6vH6mbA=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Imagine Dragons\",\"uploaderUrl\":\"/channel/UC0aXrjV"
+          "time_ms": 408,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=NB94LKrLEt4\",\"type\":\"stream\",\"title\":\"おどるポンポコリン - Odoru Ponpokorin\",\"thumbnail\":\"https://proxy.piped.private.coffee/g7luv0CqyFqDZjgrhi7pAtKj_OWMk_DW_yofSjYbMIi26HY-wc1fnYjbu5V2G12aOci8F0x4aACIngDowQ=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Ado\",\"uploaderUrl\":\"/channel/"
         },
         {
           "kind": "search",
@@ -71,8 +71,8 @@
           "url": "https://api.piped.private.coffee/search?q=%D1%81%D0%BE%D1%8E%D0%B7%20%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B8%D0%B9%20%D1%81%D0%BE%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D1%85%20%D1%80%D0%B5%D1%81%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 491,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=-8gySW7duCU\",\"type\":\"stream\",\"title\":\"Гимн СССР (1983)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/-8gySW7duCU/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3nbFlf8cejPsoKD-BFS5HH3ii9ikw&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Музыка на советском телевидении\",\"uploaderUrl"
+          "time_ms": 415,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=gmeKoM9Y50w\",\"type\":\"stream\",\"title\":\"СССР РАСПАЛСЯ В 1991 ГОДА ПАМЯТЬ СОЮЗ СОВЕТСКИХ СОЦИАЛИСТИЧЕСКИХ РЕСПУБЛИК \\uD83E\\uDD40\\uD83E\\uDD40\\uD83E\\uDD40\\uD83E\\uDD40\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/gmeKoM9Y50w/hqdefault.jpg?host=i.ytimg.com&rs=AMzJL3l0-gX5eYU7LkOi-ZKTk65RxrYz0"
         }
       ],
       "metrics": {
@@ -81,11 +81,11 @@
         "suggestion_success_rate": 1,
         "search_success_rate": 1,
         "combined_success_rate": 1,
-        "avg_suggestion_ms": 194,
-        "avg_search_ms": 528,
-        "combined_latency_ms": 722
+        "avg_suggestion_ms": 157,
+        "avg_search_ms": 464,
+        "combined_latency_ms": 621
       },
-      "checked_at": "2026-04-16T20:54:39.236Z",
+      "checked_at": "2026-04-16T21:50:12.126Z",
       "version": "2026.0.0",
       "isLatest": true
     }
