@@ -17,7 +17,10 @@ import MoreVert from '@mui/icons-material/MoreVert';
 import ReplayCircleIcon from '@mui/icons-material/ReplayCircleFilled';
 import CircularProgress from '@mui/material/CircularProgress';
 import WarningIcon from '@mui/icons-material/Warning';
+
+import { LyricsProvider } from '../context/LyricsContext';
 import LyricsDisplay from '../components/LyricsDisplay';
+
 import { related as pipedRelated } from '../lib/piped-api.js';
 const fmtTime = (s) => {
   if (isNaN(s)) return "0:00";
@@ -211,7 +214,7 @@ export default function PlayerFull({ open, onClose }) {
         {/* Cover Art / Iframe Toggle */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0 }}>
           <div style={{
-            aspectRatio: '16/9', width: '100%', maxHeight: '45vh',
+            width: '100%', height: '100%', maxHeight: '45vh',
             borderRadius: 12, overflow: 'hidden', boxShadow: showIframe ? '0 12px 40px rgba(0,0,0,0.6)' : 'none',
             position: 'relative'
           }}>
@@ -220,6 +223,7 @@ export default function PlayerFull({ open, onClose }) {
               ref={iframeContainerRef}
               id="iframe-display-container"
               style={{
+                aspectRatio: '16/9',
                 width: '100%',
                 height: '100%',
                 position: 'absolute',
@@ -372,7 +376,7 @@ export default function PlayerFull({ open, onClose }) {
                }}
              >
                <Tab label="UP NEXT" />
-               <Tab label="LYRICS" className="disabled" />
+               <Tab label="LYRICS" />
                <Tab label="RELATED" />
              </Tabs>
           </div>
@@ -385,7 +389,9 @@ export default function PlayerFull({ open, onClose }) {
           }}>
             {/* LYRICS TAB */}
             {tabValue === 1 && (
-              <LyricsDisplay track={track} player={player} />
+              <LyricsProvider>
+                <LyricsDisplay track={track} player={player} />
+              </LyricsProvider>
             )}
 
             {/* UP NEXT TAB */}

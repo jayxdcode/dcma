@@ -1,8 +1,6 @@
 // src/lib/lyrics.js
 import hitori from '../../hitori.json' with { type: "json" };
-// import { useModals } from '../components/ModalProvider';
-import { createInterface } from 'node:readline/promises';
-
+import { useModals } from '../components/ModalProvider';
 
 // Sorryyyyy, i cant use this as User-Agent :/
 const APP_VERSION = hitori.versionName;
@@ -23,7 +21,7 @@ function joinPaths(...parts) {
   }
 }
 
-const rawBackend = import.meta.env?.VITE_LRC_BACKEND_BASE || process.env.VITE_LRC_BACKEND_BASE || '';
+const rawBackend = import.meta.env.VITE_LRC_BACKEND_BASE || '';
 const normalizedBackend = rawBackend && !/^[a-z][a-z0-9+.-]*:/i.test(rawBackend)
   ? `https://${rawBackend}`
   : rawBackend;
@@ -253,15 +251,7 @@ async function fetchTranslationAndRomanization(track, lyrics, signal) {
 }
 
 export async function promptForManualLyrics(reload) {
-  // Temp
-  // const { showPrompt } = useModals();
-
-  const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  
-  const showPrompt = rl.question.bind(rl);
+  const { showPrompt } = useModals();
 
   const q = await showPrompt('Search manually for lyrics:');
   if (q?.trim()) reload({ flag: true, query: q.trim() });

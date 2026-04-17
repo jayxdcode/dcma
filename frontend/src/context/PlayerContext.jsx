@@ -568,6 +568,7 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
       events: {
         onReady: () => {
           setIsPlayerReady(true);
+          clearPlayerError();
           addLog("Native Player Ready");
         },
         onStateChange: (e) => {
@@ -593,6 +594,8 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
 
   const onPlayerError = (event) => {
     const errorCode = event?.data;
+    // if (errorCode !== 153) return;
+
     const errorMessages = {
       2: 'Invalid video ID',
       5: 'HTML5 player error',
@@ -649,6 +652,9 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
     if (retryIntervalRef.current) clearInterval(retryIntervalRef.current);
     if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
     
+    // Initially remove error since a reload was already on the fly
+    clearPlayerError();
+
     const currentTrack = queue[index];
     if (!currentTrack?.id || !isPlayerReady) {
       addLog('Cannot retry: track or player not ready');

@@ -12,10 +12,10 @@ const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete,
   // Load Lyrics — triggered when metadata or manual search parameters change
   useEffect(() => {
     // 1. Resolve which metadata to use (Manual vs Automatic)
-    const effectiveTrack = manualMetadata ? {
-      title: manualMetadata.title || track?.title,
-      artist: manualMetadata.artist || track?.artist,
-      album: manualMetadata.album || track?.album,
+    const effectiveTrack = manualMetadata && manualMetadata.title ? {
+      title: manualMetadata.title,
+      artist: manualMetadata.artist,
+      album: manualMetadata.album,
       customQuery: manualMetadata.customQuery || ''
     } : track;
 
@@ -71,7 +71,8 @@ const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete,
     track?.title, 
     track?.artist, 
     track?.album, 
-    manualMetadata, 
+    manualMetadata?.title,
+    manualMetadata?.artist, 
     player?.duration, 
     onProgressUpdate, 
     onSearchComplete, 

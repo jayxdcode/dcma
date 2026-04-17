@@ -1,8 +1,13 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
+import React, { createContext, useContext, useState, useRef, useCallback } from 'react';
 import { parseLRCToArray, addTimestamps } from '../lib/lyrics';
 import { useModals } from '../components/ModalProvider'; 
 
-const LyricsContext = createContext();
+
+const LyricsContext = createContext({
+    lyrics: [],
+    candidates: [],
+    loadLyrics: async () => {}
+});
 
 export const LyricsProvider = ({ children }) => {
     const [lyrics, setLyrics] = useState([]);
@@ -12,7 +17,7 @@ export const LyricsProvider = ({ children }) => {
     // Access this from the console or other scripts via window.lastCandidates
     const lastCandidatesRef = useRef([]);
 
-    const loadLyrics = async (title, artist, album, duration, onTransReady, manual = { flag: false, query: "" }, signal = null) => {
+    const loadLyrics = useCallback(async (title, artist, album, duration, onTransReady, manual = { flag: false, query: "" }, signal = null) => {
         // Internal helper to update both the Context state and the callback
         const updateLyrics = (data) => {
             setLyrics(data);
@@ -81,9 +86,9 @@ export const LyricsProvider = ({ children }) => {
 
             // Call your backend for translations (Update URL to your actual backend)
             try {
-                const transRes = await fetch(`https://src-backend.onrender.com/api/translate`, {
+                const transRes = await fetch(`https://frontend-dcma.vercel.app/api/translate`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${backendKey}` },
                     body: JSON.stringify({ lrc: rawLrc, title, artist }),
                     signal
                 });
@@ -98,7 +103,7 @@ export const LyricsProvider = ({ children }) => {
             showAlert(`Lyrics Error: ${e.message}`, "fail");
             updateLyrics([{ time: 0, text: '× Error loading lyrics.', roman: '', trans: '' }]);
         }
-    };
+    }, [showAlert]);
 
     return (
         <LyricsContext.Provider value={{ lyrics, candidates, loadLyrics }}>
@@ -107,4 +112,8 @@ export const LyricsProvider = ({ children }) => {
     );
 };
 
-export const useLyrics = () => useContext(LyricsContext);
+export const useLyrics = () => useContext(LyricsContext) || {
+    lyrics: [],
+    candidates: [],
+    loadLyrics: async () => {}
+};

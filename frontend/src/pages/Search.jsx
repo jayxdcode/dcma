@@ -297,9 +297,6 @@ export default function SearchPage() {
   async function clearSearchFilter() {
     setBucketFilter('music_all');
     setSearchFilter('all');
-    if (q.trim()) {
-      await doSearch(null, q.trim());
-    }
   }
 
   async function onFilterClick(bucketKey, searchKey) {

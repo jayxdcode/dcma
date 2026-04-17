@@ -90,3 +90,6 @@ node_modules
 
 # spck editor
 cdn_modules
+
+
+**/.vercel
