@@ -12,7 +12,7 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-import { usePlayer } from '../lib/playerContext';
+import { usePlayer } from '../context/PlayerContext';
 import { playlistPage as pipedPlaylistPage } from '../lib/piped-api.js';
 
 export default function PlaylistPage() {

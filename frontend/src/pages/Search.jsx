@@ -25,7 +25,7 @@ import {
   GraphicEq as GraphicEqIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
-import { usePlayer } from '../lib/playerContext';
+import { usePlayer } from '../context/PlayerContext';
 import { search as pipedSearch, suggestions as pipedSuggestions } from '../lib/piped-api.js';
 
 const SS_KEY = 'search:last:v1';
@@ -294,6 +294,14 @@ export default function SearchPage() {
     inputRef.current?.focus();
   }
 
+  async function clearSearchFilter() {
+    setBucketFilter('music_all');
+    setSearchFilter('all');
+    if (q.trim()) {
+      await doSearch(null, q.trim());
+    }
+  }
+
   async function onFilterClick(bucketKey, searchKey) {
     const normalizedQuery = q.trim();
     const isSameQuery = normalizedQuery && loadedQuery === normalizedQuery;
@@ -416,13 +424,22 @@ export default function SearchPage() {
       {/* filters + sort */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', fontSize: 14, overflowX: 'auto', paddingBottom: 0.5}}>
+          {searchFilter !== 'all' && (
+            <IconButton
+              aria-label="clear filter"
+              size="small"
+              onClick={clearSearchFilter}
+              sx={{ ml: 1, color: 'var(--text, #fff)', border: '1px solid rgba(255,255,255,0.12)', padding: 0.5 }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          )}
           {[
-            { bucketKey: 'music_all', searchKey: 'all', label: 'All' },
-            { bucketKey: 'music_videos', searchKey: 'videos', label: 'Videos' },
             { bucketKey: 'music_songs', searchKey: 'music_songs', label: 'Songs' },
-            { bucketKey: 'music_artists', searchKey: 'channels', label: 'Artists' },
-            { bucketKey: 'music_albums', searchKey: 'albums', label: 'Albums' },
-            { bucketKey: 'music_playlists', searchKey: 'playlists', label: 'Playlists' },
+            { bucketKey: 'music_videos', searchKey: 'music_videos', label: 'Videos' },
+            { bucketKey: 'music_artists', searchKey: 'music_artists', label: 'Artists' },
+            { bucketKey: 'music_albums', searchKey: 'music_albums', label: 'Albums' },
+            { bucketKey: 'music_playlists', searchKey: 'music_playlists', label: 'Playlists' },
           ].map(opt => {
             const selected = bucketFilter === opt.bucketKey;
             return (

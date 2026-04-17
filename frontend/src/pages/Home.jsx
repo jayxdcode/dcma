@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Paper, Button, Typography, Card, CardContent } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { usePlayer } from '../lib/playerContext';
+import { usePlayer } from '../context/PlayerContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {

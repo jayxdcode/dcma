@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import TopBar from './components/TopBar';
 import BottomNavBar from './components/BottomNavBar';
 import Player from './components/Player';
-import { PlayerProvider } from './lib/playerContext';
+import { PlayerProvider } from './context/PlayerContext';
 import ProgressBar from './components/ProgressBar';
 
 // lazy pages (code-split)

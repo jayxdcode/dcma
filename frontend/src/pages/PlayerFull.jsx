@@ -1,6 +1,6 @@
 // src/pages/PlayerFull.jsx
 import { useEffect, useMemo, useState, useRef } from 'react';
-import { usePlayer } from '../lib/playerContext';
+import { usePlayer } from '../context/PlayerContext';
 import { useModals } from '../components/ModalProvider';
 // explicit .js import (lyrics.js converted)
 import { IconButton, Slider, Tabs, Tab, useMediaQuery, Box, Menu, MenuItem, FormControlLabel, Switch } from '@mui/material';
@@ -15,6 +15,8 @@ import VideocamIcon from '@mui/icons-material/VideocamOutlined';
 import VideocamOffIcon from '@mui/icons-material/VideocamOffOutlined';
 import MoreVert from '@mui/icons-material/MoreVert';
 import ReplayCircleIcon from '@mui/icons-material/ReplayCircleFilled';
+import CircularProgress from '@mui/material/CircularProgress';
+import WarningIcon from '@mui/icons-material/Warning';
 import LyricsDisplay from '../components/LyricsDisplay';
 import { related as pipedRelated } from '../lib/piped-api.js';
 const fmtTime = (s) => {
@@ -39,6 +41,7 @@ export default function PlayerFull({ open, onClose }) {
   const [loadingRelated, setLoadingRelated] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [menuTarget, setMenuTarget] = useState(null);
+  const [coverAspectRatio, setCoverAspectRatio] = useState(1); // Default aspect ratio
 
   // Gesture refs
   const touchStartY = useRef(0);
@@ -85,7 +88,7 @@ export default function PlayerFull({ open, onClose }) {
       return;
     }
     setLoadingRelated(true);
-    pipedRelated(track.id)
+    pipedRelated(track.id, { rawItem: track })
       .then(result => {
         setRelatedTracks(result.related || []);
       })
@@ -161,6 +164,14 @@ export default function PlayerFull({ open, onClose }) {
 
   if (!track) return null;
 
+  const handleImageLoad = (event) => {
+    const { naturalWidth, naturalHeight } = event.target;
+    // Calculate aspect ratio: width / height
+    const ratio = naturalWidth / naturalHeight;
+    setCoverAspectRatio(ratio);
+    console.log("Aspect Ratio:", ratio);
+  };
+
   return (
     <div
       className={`fs-player ${open ? 'open' : ''}`}
@@ -200,8 +211,8 @@ export default function PlayerFull({ open, onClose }) {
         {/* Cover Art / Iframe Toggle */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 0 }}>
           <div style={{
-            aspectRatio: '1/1', width: '100%', maxWidth: "45vh", maxHeight: '45vh',
-            borderRadius: 12, overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
+            aspectRatio: '16/9', width: '100%', maxHeight: '45vh',
+            borderRadius: 12, overflow: 'hidden', boxShadow: showIframe ? '0 12px 40px rgba(0,0,0,0.6)' : 'none',
             position: 'relative'
           }}>
             {/* Iframe always present */}
@@ -215,25 +226,39 @@ export default function PlayerFull({ open, onClose }) {
                 top: 0,
                 left: 0,
                 borderRadius: 12,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                opacity: showIframe ? 1 : 0
               }}
             />
             {/* Cover Image Overlay */}
-            <img
-              src={track.cover || 'https://placecats.com/neo/800/800'}
-              alt=""
+            <div
               style={{
-                width: '100%',
+                width: 'auto',
                 height: '100%',
-                objectFit: 'cover',
+                aspectRatio: coverAspectRatio,
                 position: 'absolute',
                 top: 0,
                 left: 0,
+                right: 0,
+                margin: '0 auto',
+                boxShadow: showIframe ? 'none' : '0 12px 40px rgba(0,0,0,0.6)',
                 opacity: showIframe ? 0 : 1,
                 transition: 'opacity 0.3s ease',
-                pointerEvents: showIframe ? 'none' : 'auto'
+                pointerEvents: showIframe ? 'none' : 'auto',
               }}
-            />
+            >
+              <img
+                src={track.cover || 'https://placecats.com/neo/800/800'}
+                alt=""
+                onLoad={handleImageLoad}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  borderRadius: 12,
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -262,8 +287,33 @@ export default function PlayerFull({ open, onClose }) {
            <div style={{ display:'flex', justifyContent:'space-around', alignItems:'center', marginTop: 10 }}>
              <IconButton size="large" sx={{ color: 'rgba(255,255,255,0.6)' }}><ShuffleIcon /></IconButton>
              <IconButton onClick={player.prev} size="large" sx={{ color: 'white' }}><SkipPreviousIcon sx={{ fontSize: 40 }} /></IconButton>
-             <IconButton onClick={player.readyToReplay ? player.replayCurrent : player.toggle} sx={{ color: 'white', p:0 }}>
-               {player.readyToReplay ? <ReplayCircleIcon sx={{ fontSize: 75 }} /> : (player.playing ? <PauseCircleIcon sx={{ fontSize: 75 }} /> : <PlayCircleIcon sx={{ fontSize: 75 }} />)}
+             <IconButton 
+               onClick={() => {
+                 if (player?.playerError) {
+                   showAlert?.(
+                     `Retrying playback...`,
+                     'info',
+                     5000
+                   );
+                   player.performRetry(player.playerError.currentTime);
+                 } else if (player.readyToReplay) {
+                   player.replayCurrent();
+                 } else {
+                   player.toggle();
+                 }
+               }}
+               sx={{ color: player?.playerError ? '#ff6b6b' : 'white', p:0 }}
+               title={player?.playerError ? `Error: ${player?.playerError.message}. Click to retry immediately.` : ''}
+             >
+               {player?.playerError ? (
+                 <WarningIcon sx={{ fontSize: 75 }} />
+               ) : player?.isLoading ? (
+                 <CircularProgress sx={{ width: '75px !important', height: '75px !important', color: 'white' }} />
+               ) : player.readyToReplay ? (
+                 <ReplayCircleIcon sx={{ fontSize: 75 }} />
+               ) : (
+                 player.playing ? <PauseCircleIcon sx={{ fontSize: 75 }} /> : <PlayCircleIcon sx={{ fontSize: 75 }} />
+               )}
              </IconButton>
              <IconButton onClick={player.next} size="large" sx={{ color: 'white' }}><SkipNextIcon sx={{ fontSize: 40 }} /></IconButton>
              <IconButton size="large" sx={{ color: 'rgba(255,255,255,0.6)' }}><RepeatIcon /></IconButton>

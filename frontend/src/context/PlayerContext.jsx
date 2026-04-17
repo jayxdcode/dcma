@@ -37,11 +37,21 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
   const wasUserAction = useRef(false);
   const youtubeApiReadyRef = useRef(false); // Track when YT API is ready
   const playerInitializedRef = useRef(false); // Track if player has been initialized
+  const metadataCacheRef = useRef(new Map()); // Cache full track metadata by ID to preserve across state updates
   
   const saveTimeoutRef = useRef(null); // debounce saver
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [useAudioEngine, setUseAudioEngine] = useState(false);
   const [debugLogs, setDebugLogs] = useState([]); // Debugger state
+  
+  // Error handling state
+  const [playerError, setPlayerError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [retryTimeRemaining, setRetryTimeRemaining] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const retryTimeoutRef = useRef(null);
+  const retryIntervalRef = useRef(null);
+  const errorTimestampRef = useRef(null);
   
   const addLog = (msg) => {
     setDebugLogs(prev => [`${new Date().toLocaleTimeString()}: ${msg}`, ...prev].slice(0, 5));
@@ -159,7 +169,13 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
         const ids = iframePlaylist.filter(Boolean);
         const existingIds = queue.map(t => t.id).filter(Boolean);
         if (ids.length && ids.join(',') !== existingIds.join(',')) {
-          setQueueState(ids.map(id => normalizeTrack({ id })));
+          // Preserve metadata from existing queue AND from metadata cache (handles state update delays)
+          const existingTrackMap = new Map(queue.map(t => [t.id, t]));
+          const newQueue = ids.map(id => {
+            const existing = existingTrackMap.get(id) || metadataCacheRef.current.get(id);
+            return existing || normalizeTrack({ id });
+          });
+          setQueueState(newQueue);
         }
       }
     }
@@ -245,6 +261,8 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
     const normalized = normalizeTrack(track);
     if (!normalized?.id) return;
     wasUserAction.current = true;
+    // Cache metadata immediately to preserve even if state update is delayed
+    metadataCacheRef.current.set(normalized.id, normalized);
     setQueueState([normalized]);
     setIndexState(0);
     setReadyToReplay(false);
@@ -270,6 +288,11 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
     const insertIndex = currentQueue.length ? (nextUp ? Math.min(currentQueue.length, index + 1) : currentQueue.length) : 0;
     const nextQueue = [...currentQueue];
     nextQueue.splice(insertIndex, 0, normalized);
+
+    // Cache all metadata immediately to preserve even if state update is delayed
+    nextQueue.forEach(t => {
+      if (t?.id) metadataCacheRef.current.set(t.id, t);
+    });
 
     setQueueState(nextQueue);
     if (!currentQueue.length) setIndexState(0);
@@ -509,6 +532,17 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
   useEffect(() => { persistLastPlay(false); }, [time]);
   useEffect(() => { persistLastPlay(false); }, [volume]);
   
+  // Clean up metadata cache to remove entries for tracks no longer in queue
+  useEffect(() => {
+    const queueIds = new Set(queue.map(t => t?.id).filter(Boolean));
+    const cacheKeys = Array.from(metadataCacheRef.current.keys());
+    cacheKeys.forEach(id => {
+      if (!queueIds.has(id)) {
+        metadataCacheRef.current.delete(id);
+      }
+    });
+  }, [queue]);
+  
   // ---------- Player init ----------
   // Expose player initialization function for PlayerFull to call when ready
   const initializeYouTubePlayer = (containerElement) => {
@@ -529,7 +563,8 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
       height: '100%',
       width: '100%',
       videoId: queue[index]?.id || '',
-      playerVars: { origin: window.location.origin, controls: 0, playsinline: 1, rel: 0, start: startSec, autoplay: 0 },
+      host: 'https://www.youtube-nocookie.com',
+      playerVars: { origin: window.location.origin, enablejsapi: 1, controls: 0, playsinline: 1, rel: 0, start: startSec, autoplay: 0 },
       events: {
         onReady: () => {
           setIsPlayerReady(true);
@@ -547,7 +582,8 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
           if (e.data === 0) {
             handleTrackEnded();
           }
-        }
+        },
+        onError: onPlayerError
       }
     });
     
@@ -555,6 +591,100 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
     addLog("YouTube Player initialized");
   };
 
+  const onPlayerError = (event) => {
+    const errorCode = event?.data;
+    const errorMessages = {
+      2: 'Invalid video ID',
+      5: 'HTML5 player error',
+      100: 'Video not found (removed or private)',
+      101: 'Video cannot be played (embedding disabled)',
+      150: 'Video cannot be played (same as 101)'
+    };
+    const errorMsg = errorMessages[errorCode] || `YouTube Error Code: ${errorCode || 'Unknown'}`;
+    
+    // Save timestamp and current time for retry
+    errorTimestampRef.current = Date.now();
+    const currentTime = getCurrentIframeTime();
+    const currentTrack = queue[index];
+    
+    // Calculate exponential backoff: 2^retryCount * 1000ms, max 5 mins
+    const backoffMs = Math.min(Math.pow(2, retryCount) * 1000, 300000);
+    const backoffSec = Math.ceil(backoffMs / 1000);
+    
+    addLog(`Player Error: ${errorMsg} (Retry in ${backoffSec}s)`);
+    
+    setPlayerError({
+      code: errorCode,
+      message: errorMsg,
+      details: `Failed to load video: ${currentTrack?.title || 'Unknown'}`,
+      timestamp: errorTimestampRef.current,
+      currentTime,
+      trackId: currentTrack?.id
+    });
+    
+    setRetryCount(prev => prev + 1);
+    setRetryTimeRemaining(backoffSec);
+    setPlaying(false);
+    
+    // Start countdown timer
+    if (retryIntervalRef.current) clearInterval(retryIntervalRef.current);
+    if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+    
+    let remainingTime = backoffSec;
+    retryIntervalRef.current = setInterval(() => {
+      remainingTime--;
+      setRetryTimeRemaining(remainingTime);
+      if (remainingTime <= 0) {
+        clearInterval(retryIntervalRef.current);
+      }
+    }, 1000);
+    
+    // Schedule automatic retry
+    retryTimeoutRef.current = setTimeout(() => {
+      performRetry(currentTime);
+    }, backoffMs);
+  };
+
+  const performRetry = (startTime = 0) => {
+    if (retryIntervalRef.current) clearInterval(retryIntervalRef.current);
+    if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+    
+    const currentTrack = queue[index];
+    if (!currentTrack?.id || !isPlayerReady) {
+      addLog('Cannot retry: track or player not ready');
+      return;
+    }
+    
+    addLog(`Retrying video load (attempt ${retryCount + 1}): ${currentTrack.id}`);
+    setPlayerError(null);
+    setRetryTimeRemaining(0);
+    setIsLoading(true);
+    
+    // Reload with current time
+    const playlistIds = queue.map(track => track.id).filter(Boolean);
+    const loaded = applyPlaylistToIframe({ 
+      playlistIds, 
+      currentIndex: index, 
+      startSeconds: startTime || 0, 
+      autoplay: playing 
+    });
+    
+    if (!loaded) {
+      sendCommand('LOAD', currentTrack.id, { start: startTime || 0 });
+      if (playing) sendCommand('PLAY');
+    }
+    
+    // Clear loading state after a reasonable time
+    setTimeout(() => setIsLoading(false), 3000);
+  };
+
+  const clearPlayerError = () => {
+    setPlayerError(null);
+    setRetryCount(0);
+    setRetryTimeRemaining(0);
+    if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+    if (retryIntervalRef.current) clearInterval(retryIntervalRef.current);
+  };
   // Load YouTube API script and mark when ready
   useEffect(() => {
     if (!audioRef.current) {
@@ -644,7 +774,13 @@ export function PlayerProvider({ children, initialQueue, setOpenFull }) {
           const ids = iframePlaylist.filter(Boolean);
           const currentIds = queue.map(t => t.id).filter(Boolean);
           if (ids.length && ids.join(',') !== currentIds.join(',')) {
-            setQueueState(ids.map(id => normalizeTrack({ id })));
+            // Preserve metadata from existing queue AND from metadata cache (handles state update delays)
+            const existingTrackMap = new Map(queue.map(t => [t.id, t]));
+            const newQueue = ids.map(id => {
+              const existing = existingTrackMap.get(id) || metadataCacheRef.current.get(id);
+              return existing || normalizeTrack({ id });
+            });
+            setQueueState(newQueue);
           }
         }
       }
@@ -777,6 +913,10 @@ useEffect(() => {
       const normalizedQueue = Array.isArray(q) ? q.map(normalizeTrack) : [];
       wasUserAction.current = true;
       setReadyToReplay(false);
+      // Cache all metadata immediately to preserve even if state update is delayed
+      normalizedQueue.forEach(t => {
+        if (t?.id) metadataCacheRef.current.set(t.id, t);
+      });
       setQueueState(normalizedQueue);
       setIndexState(i);
       if (isPlayerReady && normalizedQueue[i]?.id) {
@@ -816,13 +956,23 @@ useEffect(() => {
     setVolume: setPlayerVolume,
     isPlayerReady,
     setPlayerContainer,
-    initializeYouTubePlayer
+    initializeYouTubePlayer,
+    // Error handling
+    playerError,
+    retryTimeRemaining,
+    isLoading,
+    retryCount,
+    performRetry,
+    clearPlayerError
   };
   
   useEffect(() => {
     window.hitoriPlayer = value;
     return () => {
       if (window.hitoriPlayer === value) delete window.hitoriPlayer;
+      // Cleanup retry timers on unmount
+      if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+      if (retryIntervalRef.current) clearInterval(retryIntervalRef.current);
     };
   }, [value]);
 

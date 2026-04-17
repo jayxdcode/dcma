@@ -1,6 +1,8 @@
 // src/lib/lyrics.js
-import hitori from '../../hitori.json';
-import { useModals } from '../components/ModalProvider';
+import hitori from '../../hitori.json' with { type: "json" };
+// import { useModals } from '../components/ModalProvider';
+import { createInterface } from 'node:readline/promises';
+
 
 // Sorryyyyy, i cant use this as User-Agent :/
 const APP_VERSION = hitori.versionName;
@@ -21,7 +23,7 @@ function joinPaths(...parts) {
   }
 }
 
-const rawBackend = import.meta.env.VITE_BACKEND_BASE || '';
+const rawBackend = import.meta.env?.VITE_LRC_BACKEND_BASE || process.env.VITE_LRC_BACKEND_BASE || '';
 const normalizedBackend = rawBackend && !/^[a-z][a-z0-9+.-]*:/i.test(rawBackend)
   ? `https://${rawBackend}`
   : rawBackend;
@@ -31,8 +33,8 @@ const LRCLIB_API = 'https://lrclib.net/api';
   
 // process.env may not be available in browser; attempt to read safely
 const BACKEND_API_KEY =
-  (typeof process !== 'undefined' && process.env && process.env.BACKEND_API_KEY)
-    ? process.env.BACKEND_API_KEY
+  (typeof process !== 'undefined' && process.env && process.env.LRC_BACKEND_API_KEY)
+    ? process.env.LRC_BACKEND_API_KEY
     : '';
     
 /**
@@ -43,32 +45,43 @@ const BACKEND_API_KEY =
  * LrcLine: { time, text }
  */
 
-export function parseLRCToArray(lrc) {
-  console.debug('[lyrics] parseLRCToArray called (len:', lrc ? lrc.length : 0, ')');
-  if (!lrc) return [];
-  const lines = [];
-  const rx = /\[(\d+):(\d+)(?:\.(\d+))?\](.*)/g;
-
-  for (const raw of lrc.split('\n')) {
+export function parseLRCToArray(raw, rom = '', transl = '') {
+    if (!raw) return [];
+    const lines = [];
+    
+    // This regex is safe and won't cause infinite loops
+    // It captures: [min:sec.ms] text
+    const rx = /^\[(\d+):(\d+)(?:[:.](\d+))?\](.*)/gm;
+    
     let m;
-    // reset lastIndex to ensure global regex works per-line reliably
-    rx.lastIndex = 0;
-    while ((m = rx.exec(raw))) {
-      const time =
-        +m[1] * 60000 +
-        +m[2] * 1000 +
-        (m[3] ? +m[3].padEnd(3, '0') : 0);
+    while ((m = rx.exec(raw)) !== null) {
+        const minutes = parseInt(m[1], 10);
+        const seconds = parseInt(m[2], 10);
+        const ms = m[3] ? parseInt(m[3].padEnd(3, '0').substring(0, 3), 10) : 0;
+        
+        const time = minutes * 60000 + seconds * 1000 + ms;
+        const text = (m[4] || "").trim();
 
-      lines.push({
-        time,
-        text: raw.replace(rx, '').trim()
-      });
+        lines.push({
+            time,
+            text,
+            roman: "",
+            trans: ""
+        });
     }
-  }
-  lines.sort((a, b) => a.time - b.time);
-  if (lines.length && lines[0].time !== 0) lines.unshift({ time: 0, text: '' });
-  console.debug('[lyrics] parseLRCToArray ->', lines.length, 'lines');
-  return lines;
+
+    // Merge Romaji and Translation if they exist
+    if (rom || transl) {
+        const romLines = rom ? rom.split('\n') : [];
+        const transLines = transl ? transl.split('\n') : [];
+        return lines.map((l, i) => ({
+            ...l,
+            roman: romLines[i] || "",
+            trans: transLines[i] || ""
+        }));
+    }
+
+    return lines;
 }
 
 export function mergeLRC(base, rom, trans) {
@@ -219,7 +232,10 @@ async function fetchTranslationAndRomanization(track, lyrics, signal) {
     cleanup();
 
     console.debug('[lyrics] translation response status:', r.status);
-    if (!r.ok) return { rom: '', transl: '' };
+    if (!r.ok) {
+      console.warn('[lyrics] translation request returned status:', r.status);
+      return { rom: '', transl: '' };
+    }
 
     const d = await r.json();
     return {
@@ -236,87 +252,17 @@ async function fetchTranslationAndRomanization(track, lyrics, signal) {
   }
 }
 
-export async function loadLyrics(
-  title,
-  artist,
-  album,
-  duration,
-  onTransReady,
-  manual = { flag: false, query: '' },
-  signal = null
-) {
-  console.debug('[lyrics] loadLyrics called for:', { title, artist, album, duration, manual });
-
-  // initial interim state so UI can display something quickly
-  onTransReady([{
-    time: 0,
-    text: manual.flag ? 'Manual search...' : 'Searching for lyrics...',
-    roman: '',
-    trans: manual.flag ? manual.query : `${title} — ${artist}`
-  }]);
-
-  try {
-    const q = encodeURIComponent([title, artist, album].join(' '));
-    const searchUrl = joinPaths(LRCLIB_API, `/search?q=${q}`);
-    console.debug('[lyrics] searching lrclib at:', searchUrl);
-
-    const r = await fetch(searchUrl, {
-      signal: signal ?? undefined
-    });
-
-    console.debug('[lyrics] lrclib response status:', r.status);
-    if (!r.ok) {
-      console.warn('[lyrics] lrclib search returned not-ok status');
-      return;
-    }
-
-    const json = await r.json();
-    const list = Array.isArray(json) ? json : (json?.results ?? json?.data ?? []);
-    console.debug('[lyrics] lrclib returned list length:', Array.isArray(list) ? list.length : 'not-array');
-
-    const chosen = Array.isArray(list) ? list[0] : json;
-    if (!chosen) {
-      console.debug('[lyrics] lrclib returned empty list (no results)');
-      return;
-    }
-
-    console.debug('[lyrics] chosen entry:', { title: chosen.title ?? chosen.name, artist: chosen.artist });
-
-    const synced = chosen.syncedLyrics ?? chosen.synced_lyrics ?? chosen.lrc ?? chosen.lyrics ?? '';
-    const plain = chosen.plainLyrics ?? chosen.plain_lyrics ?? chosen.lyrics ?? chosen.text ?? '';
-    const timed = normalizeTimedLines(synced);
-    const base = timed.length ? timed : parseLRCToArray(addTimestamps(normalizePlainLyrics(plain || synced)));
-
-    console.debug('[lyrics] parsed base lines:', base.length);
-    onTransReady(mergeLRC(base, null, null));
-
-    // Try to fetch romanization & translation (optional)
-    if (base.length <= 1) {
-      return;
-    }
-
-    const { rom, transl } = await fetchTranslationAndRomanization(
-      { title, artist, album, duration },
-      base,
-      signal
-    );
-
-    console.debug('[lyrics] translation fetched lengths:', { romLen: rom?.length ?? 0, translLen: transl?.length ?? 0 });
-
-    const romanLines = parseTranslationPayload(rom, base);
-    const translLines = parseTranslationPayload(transl, base);
-    onTransReady(mergeLRC(base, romanLines, translLines));
-  } catch (e) {
-    if (e instanceof DOMException && e.name === 'AbortError') {
-      console.debug('[lyrics] loadLyrics aborted');
-      return;
-    }
-    console.error('[lyrics] loadLyrics error:', e);
-  }
-}
-
 export async function promptForManualLyrics(reload) {
-  const { showPrompt } = useModals();
+  // Temp
+  // const { showPrompt } = useModals();
+
+  const rl = createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  
+  const showPrompt = rl.question.bind(rl);
+
   const q = await showPrompt('Search manually for lyrics:');
   if (q?.trim()) reload({ flag: true, query: q.trim() });
 }

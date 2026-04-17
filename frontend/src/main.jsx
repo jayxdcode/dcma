@@ -4,6 +4,7 @@ import { HashRouter } from 'react-router-dom';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import App from './App';
 import { ModalProvider } from './components/ModalProvider';
+import { LyricsProvider } from './context/LyricsContext';
 import './index.css';
 import { CATPPUCCIN_PRESETS, buildMuiThemeFromPalette } from './theme';
 
@@ -62,6 +63,8 @@ function Root(){
 
 createRoot(document.getElementById('root')).render(
   <ModalProvider>
-    <Root/>
+    <LyricsProvider>
+      <Root/>
+    </LyricsProvider>
   </ModalProvider>
 );

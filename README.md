@@ -22,8 +22,11 @@
 - BACKEND_BASE (backend base URL)
 
 ## Frontend
-- VITE_BACKEND_BASE (e.g. https://my-backend.example.com)
+- VITE_LRC_BACKEND_BASE (e.g. https://my-backend.example.com)
+- LRC_BACKEND_API_KEY
 - VITE_DISCORD_CLIENT_ID
+
+> VITE_LRC_BACKEND_BASE is the backend for translation and romanization. It is different from the deprecated Backend implementation.
 
 ## Notes
 - Activity audio capture requires user gesture and may behave differently across clients.

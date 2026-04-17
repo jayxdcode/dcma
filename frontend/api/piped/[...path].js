@@ -207,6 +207,20 @@ export default async function handler(req, res) {
     // remove ins & path before forwarding
     searchParams.delete('ins');
     searchParams.delete('path');
+
+    // Prefer music-specific search results and normalize music filter values.
+    if (suffix === 'search' || suffix === 'suggestions') {
+      if (!searchParams.has('music')) searchParams.set('music', 'true');
+      const filter = searchParams.get('filter');
+      if (filter) {
+        const normalizedFilter = filter.trim().toLowerCase();
+        if (normalizedFilter === 'music_videos' || normalizedFilter === 'videos') searchParams.set('filter', 'videos');
+        else if (normalizedFilter === 'music_songs' || normalizedFilter === 'songs') searchParams.set('filter', 'videos');
+        else if (normalizedFilter === 'music_artists' || normalizedFilter === 'channels') searchParams.set('filter', 'channels');
+        else if (normalizedFilter === 'music_playlists' || normalizedFilter === 'playlists') searchParams.set('filter', 'playlists');
+        else if (normalizedFilter === 'music_albums' || normalizedFilter === 'albums') searchParams.set('filter', 'all');
+      }
+    }
     
     const forwardedQs = searchParams.toString();
     
