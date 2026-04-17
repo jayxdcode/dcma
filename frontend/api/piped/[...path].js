@@ -39,7 +39,7 @@ async function fetchInstances() {
   if (_instancesCache && (now - _instancesAt) < INSTANCES_CACHE_TTL) return _instancesCache;
   try {
     // prefer a pre-generated JSON list if provided (easier / deterministic)
-    const jsonUrl = 'https://raw.githubusercontent.com/jayxdcode/dcma/refs/heads/main/public/piped-instances.json';
+    const jsonUrl = 'https://raw.githubusercontent.com/jayxdcode/piped-instances/refs/heads/main/public/minimal.json';
     if (jsonUrl) {
       try {
         const list = await fetchJsonUrl(jsonUrl);
