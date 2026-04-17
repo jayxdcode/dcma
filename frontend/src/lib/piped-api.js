@@ -2,7 +2,7 @@
 // ES module client for Piped-based backend with base path /piped
 // Exports: search, suggestions, related, nextTracks, artistPage, albumPage, playlistPage, getStreams
 
-const BASE = 'https://frontend-dcma.vercel.app/api/piped'; 
+const BASE = window.location.origin.includes("vercel.app") ? `/api/piped` : `https://frontend-dcma.vercel.app/api/piped`; // EDIT THIS IF NECESSARY
 // proxy /piped -> actual piped instance or an mitm router for dynamic
 
 /** Safely join base + path without producing double or missing slashes */

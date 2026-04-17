@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useRef, useCallback } from 
 import { parseLRCToArray, addTimestamps } from '../lib/lyrics';
 import { useModals } from '../components/ModalProvider'; 
 
+const LRC_ENDPOINT = window.location.origin.includes("vercel.app") ? `/api/translate` : `https://frontend-dcma.vercel.app/api/translate`;
 
 const LyricsContext = createContext({
     lyrics: [],
@@ -86,7 +87,7 @@ export const LyricsProvider = ({ children }) => {
 
             // Call your backend for translations (Update URL to your actual backend)
             try {
-                const transRes = await fetch(`https://frontend-dcma.vercel.app/api/translate`, {
+                const transRes = await fetch(LRC_ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${backendKey}` },
                     body: JSON.stringify({ lrc: rawLrc, title, artist }),
