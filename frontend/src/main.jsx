@@ -1,14 +1,50 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, Component } from 'react'; // Added Component for ErrorBoundary
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
-import { ThemeProvider, CssBaseline } from '@mui/material';
+import { ThemeProvider, CssBaseline, Box, Typography, Button } from '@mui/material'; // Added MUI components for error UI
 import App from './App';
 import { ModalProvider } from './components/ModalProvider';
 import './index.css';
 import hitori from '../hitori.json';
 import { CATPPUCCIN_PRESETS, buildMuiThemeFromPalette } from './theme';
 
-// palette extracted from image (default)
+// --- FIXED: Set global variable immediately so it's available before render ---
+// window.hitori = hitori;
+// Test error boundary first before removing comment!
+
+// --- ADDED: Error Boundary Component ---
+class GlobalErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("App Crash:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Box sx={{ 
+          height: '100vh', display: 'flex', flexDirection: 'column', 
+          alignItems: 'center', justifyContent: 'center', bgcolor: '#071029', color: 'white', p: 3 
+        }}>
+          <Typography variant="h4" gutterBottom>Something went wrong</Typography>
+          <Typography variant="body1" sx={{ color: '#E382A8', mb: 3 }}>
+            {this.state.error?.toString()}
+          </Typography>
+          <Button variant="contained" onClick={() => window.location.reload()}>
+            Reload Application
+          </Button>
+        </Box>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 const imagePalette = {
   background: '#071029',
   surface: '#0F1724',
@@ -18,15 +54,15 @@ const imagePalette = {
 };
 
 function Root(){
-  // restore selected preset from localStorage to persist theme across reloads
   const persistedKey = localStorage.getItem('hitori_selected_preset') || 'image';
   const [selectedPresetKey, setSelectedPresetKey] = useState(persistedKey);
-  const initialPalette = (persistedKey && persistedKey !== 'image' && CATPPUCCIN_PRESETS[persistedKey]) ? CATPPUCCIN_PRESETS[persistedKey] : imagePalette;
+  const initialPalette = (persistedKey && persistedKey !== 'image' && CATPPUCCIN_PRESETS[persistedKey]) 
+    ? CATPPUCCIN_PRESETS[persistedKey] 
+    : imagePalette;
+  
   const [palette, setPalette] = useState(initialPalette);
 
-  useEffect(() => {
-    window.hitori = hitori;
-  }, []);
+  // Removed the window.hitori useEffect from here because it's now at the top level
 
   const setThemeByKey = (key) => {
     if (key === 'image') {
@@ -59,14 +95,23 @@ function Root(){
     <ThemeProvider theme={muiTheme}>
       <CssBaseline />
       <HashRouter>
-        <App palette={palette} setPalette={setPalette} selectedPresetKey={selectedPresetKey} setThemeByKey={setThemeByKey} presets={CATPPUCCIN_PRESETS}/>
+        <App 
+          palette={palette} 
+          setPalette={setPalette} 
+          selectedPresetKey={selectedPresetKey} 
+          setThemeByKey={setThemeByKey} 
+          presets={CATPPUCCIN_PRESETS}
+        />
       </HashRouter>
     </ThemeProvider>
   );
 }
 
+// --- WRAPPED: Error Boundary goes around Root ---
 createRoot(document.getElementById('root')).render(
-  <ModalProvider>
-    <Root/>
-  </ModalProvider>
+  <GlobalErrorBoundary>
+    <ModalProvider>
+      <Root/>
+    </ModalProvider>
+  </GlobalErrorBoundary>
 );
