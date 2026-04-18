@@ -5,6 +5,7 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import App from './App';
 import { ModalProvider } from './components/ModalProvider';
 import './index.css';
+import hitori from '../hitori.json';
 import { CATPPUCCIN_PRESETS, buildMuiThemeFromPalette } from './theme';
 
 // palette extracted from image (default)
@@ -22,6 +23,10 @@ function Root(){
   const [selectedPresetKey, setSelectedPresetKey] = useState(persistedKey);
   const initialPalette = (persistedKey && persistedKey !== 'image' && CATPPUCCIN_PRESETS[persistedKey]) ? CATPPUCCIN_PRESETS[persistedKey] : imagePalette;
   const [palette, setPalette] = useState(initialPalette);
+
+  useEffect(() => {
+    window.hitori = hitori;
+  }, []);
 
   const setThemeByKey = (key) => {
     if (key === 'image') {

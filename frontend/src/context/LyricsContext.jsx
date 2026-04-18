@@ -106,7 +106,7 @@ export const LyricsProvider = ({ children }) => {
             try {
                 const transRes = await fetch(LRC_ENDPOINT, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${backendKey}` },
+                    headers: { 'Content-Type': 'application/json', 'X-App-Info': `Hitori v${window.hitori.versionName}` },
                     body: JSON.stringify({ lrc: rawLrc, title, artist }),
                     signal
                 });

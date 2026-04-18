@@ -208,11 +208,11 @@ export async function search(q, opts = {}) {
 
 /**
  * suggestions(query, opts)
- * always includes music=true
+ * always music_songs only
  */
 export async function suggestions(query, opts = {}) {
 	if (!query) throw new Error('suggestions: query is required');
-	const params = Object.assign({}, opts.params || {}, { query, music: true, limit: opts.limit || 10 });
+	const params = Object.assign({}, opts.params || {}, { query, filter: 'music_songs', limit: opts.limit || 10 });
 	const data = await request('/suggestions', { params });
 	if (Array.isArray(data)) return data;
 	if (data?.suggestions) return data.suggestions;
