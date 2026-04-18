@@ -8,7 +8,7 @@ import { useLyrics } from '../context/LyricsContext.jsx';
 const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete, manualMetadata }) => {
   // Pull lyrics state and the loader from our new Context
   const { lyrics, loadLyrics } = useLyrics();
-
+  
   // Load Lyrics — triggered when metadata or manual search parameters change
   useEffect(() => {
     // 1. Resolve which metadata to use (Manual vs Automatic)
@@ -16,40 +16,44 @@ const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete,
       title: manualMetadata.title,
       artist: manualMetadata.artist,
       album: manualMetadata.album,
+      duration: player?.duration || 0,
       customQuery: manualMetadata.customQuery || ''
     } : track;
-
+    
     // 2. Validation check
     if (!effectiveTrack?.title || !effectiveTrack?.artist) {
       if (onProgressUpdate) onProgressUpdate('[LyricsDisplay] Missing track info', 'warn');
       return;
     }
-
+    
     if (onProgressUpdate) {
-        onProgressUpdate(`[LyricsDisplay] Searching: "${effectiveTrack.title}" by ${effectiveTrack.artist}`, 'info');
+      onProgressUpdate(`[LyricsDisplay] Searching: "${effectiveTrack.title}" by ${effectiveTrack.artist}`, 'info');
     }
     
     let ac = new AbortController();
-
+    
     // 3. Define the async loader
     const fetchLyrics = async () => {
       try {
+        const { title, artist, album, duration } = effectiveTrack;
+        const isManual = !!(manualMetadata.customQuery);
+        const query = manualMetadata.customQuery || "";
+        
         await loadLyrics(
-          effectiveTrack.title,
-          effectiveTrack.artist,
-          effectiveTrack.album || '',
-          manualMetadata?.duration || player?.duration || 0,
+          {
+            meta: {
+              title, artist, album, duration,
+            },
+            isManual,
+            query,
+          },
           // Callback for UI progress (fired when lyrics are first parsed or translations arrive)
           (parsed) => {
             if (onProgressUpdate) {
-                const count = Array.isArray(parsed) ? parsed.length : 0;
-                onProgressUpdate(`[LyricsDisplay] Loaded ${count} lines`, 'success');
+              const count = Array.isArray(parsed) ? parsed.length : 0;
+              onProgressUpdate(`[LyricsDisplay] Loaded ${count} lines`, 'success');
             }
           },
-          // Manual search flag
-          effectiveTrack.customQuery ? 
-            { flag: true, query: effectiveTrack.customQuery } : 
-            { flag: false, query: '' },
           ac.signal
         );
         
@@ -60,25 +64,25 @@ const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete,
         console.error('[LyricsDisplay] Load failed:', e);
       }
     };
-
+    
     fetchLyrics();
-
+    
     // Cleanup: Abort fetch if track changes or component unmounts
     return () => {
       ac.abort();
     };
   }, [
-    track?.title, 
-    track?.artist, 
-    track?.album, 
+    track?.title,
+    track?.artist,
+    track?.album,
     manualMetadata?.title,
-    manualMetadata?.artist, 
-    player?.duration, 
-    onProgressUpdate, 
-    onSearchComplete, 
+    manualMetadata?.artist,
+    player?.duration,
+    onProgressUpdate,
+    onSearchComplete,
     loadLyrics // included loader from context
   ]);
-
+  
   // Logic to determine which line is currently "active" based on player time
   const activeLineIndex = useMemo(() => {
     if (player?.time == null || !lyrics || !lyrics.length) return 0;
@@ -95,7 +99,7 @@ const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete,
     }
     return idx;
   }, [player?.time, lyrics]);
-
+  
   return (
     <div style={{ textAlign: 'center', paddingBottom: '20vh', paddingTop: '10vh' }}>
       {lyrics && lyrics.length > 0 ? (

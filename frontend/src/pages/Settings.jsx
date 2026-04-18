@@ -3,7 +3,6 @@ import { Button, Select, MenuItem, FormControl, InputLabel, Paper, Switch, FormC
 import { useModals } from '../components/ModalProvider';
 import packageJson from '../../package.json';
 import packageLockJson from '../../package-lock.json';
-import hitoriJson from '../../hitori.json';
 
 /**
  * Returns the version of a package from the imported package-lock.json,
@@ -210,11 +209,11 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
           <div className="v-stack" style={{ gap: '8px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span className="small" style={{ opacity: 0.8 }}>Version</span>
-              <span className="small" style={{ fontWeight: 600 }}>{ `${hitoriJson.versionNumber} (${hitoriJson.codeName})` }</span>
+              <span className="small" style={{ fontWeight: 600 }}>{ `${window.hitori.versionNumber} (${window.hitori.codeName})` }</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span className="small" style={{ opacity: 0.8 }}>Stage</span>
-              <span className="small" style={{ fontWeight: 600 }}>{ hitoriJson.stage }</span>
+              <span className="small" style={{ fontWeight: 600 }}>{ window.hitori.stage }</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span className="small" style={{ opacity: 0.8 }}>Build Date</span>

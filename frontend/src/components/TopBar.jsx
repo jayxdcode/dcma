@@ -21,7 +21,6 @@ import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import InfoIcon from '@mui/icons-material/Info';
 import { useModals } from './ModalProvider';
 import htrImgUrl from '../../assets/htr.png';
-import hitoriJson from '../../hitori.json';
 
 // ---------- Helpers ------------
 window.toggleLogs = () => {
@@ -275,7 +274,7 @@ export default function TopBar({
 					{appName}
 				</Typography>
 				<Typography variant="caption" sx={{ opacity: 0.6, fontSize: '0.7rem', letterSpacing: 0.5 }}>
-					{hitoriJson.versionNumber}
+					{window.hitori.versionNumber}
 				</Typography>
 			</div>
 

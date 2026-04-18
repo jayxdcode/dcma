@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useRef, useCallback } from 'react';
 import { parseLRCToArray, addTimestamps } from '../lib/lyrics';
-import { useModals } from '../components/ModalProvider'; 
+import { useModals } from '../components/ModalProvider';
 
 const LRC_ENDPOINT = window.location.origin.includes("vercel.app") ? `/api/translate` : `https://frontend-dcma.vercel.app/api/translate`;
 
@@ -17,17 +17,34 @@ export const LyricsProvider = ({ children }) => {
     
     // Access this from the console or other scripts via window.lastCandidates
     const lastCandidatesRef = useRef([]);
-
-    const loadLyrics = useCallback(async (title, artist, album, duration, onTransReady, manual = { flag: false, query: "" }, signal = null) => {
+    
+    // new parameter shape; group by category
+    const loadLyrics = useCallback(async (
+        opts = {
+            meta: {
+                title: "",
+                artist: "",
+                album: "",
+                duration: 0
+            },
+            isManual: false,
+            query: ""
+        },
+        onTransReady,
+        signal = null
+    ) => {
+        
+        const { title, artist, album, duration } = opts.meta;
+        
         // Internal helper to update both the Context state and the callback
         const updateLyrics = (data) => {
             setLyrics(data);
             if (onTransReady) onTransReady(data);
         };
-
+        
         try {
             // --- UI Feedback ---
-            if (!manual.flag) {
+            if (!opts.isManual) {
                 updateLyrics([{
                     time: 0,
                     text: 'Searching for lyrics...',
@@ -35,35 +52,35 @@ export const LyricsProvider = ({ children }) => {
                     trans: `${title} - ${artist}`
                 }]);
             }
-
+            
             // --- 1. Manual Config Check (Simulated) ---
             const trackKey = `${title}|${artist}`;
             // If you have a local config file for manual offsets, check it here
-
+            
             // --- 2. Search Logic ---
-            const primaryQuery = manual.flag ? manual.query : `${title} ${artist} ${album || ''}`.trim();
+            const primaryQuery = opts.isManual ? opts.query : `${title} ${artist} ${album || ''}`.trim();
             let response = await fetch(`https://lrclib.net/api/search?q=${encodeURIComponent(primaryQuery)}`, { signal });
             let searchData = await response.json();
-
+            
             // Fallback (Attempt 2)
-            if (!manual.flag && (!Array.isArray(searchData) || !searchData.some(c => c.syncedLyrics))) {
+            if (!opts.isManual && (!Array.isArray(searchData) || !searchData.some(c => c.syncedLyrics))) {
                 updateLyrics([{ time: 0, text: 'Searching...', roman: 'Attempt 2: Retrying without album', trans: '' }]);
                 const fallbackRes = await fetch(`https://lrclib.net/api/search?q=${encodeURIComponent(`${title} ${artist}`)}`, { signal });
                 searchData = await fallbackRes.json();
             }
-
+            
             // --- 3. Candidate Management ---
             const sorted = (Array.isArray(searchData) ? searchData : []).sort((a, b) => {
                 if (a.syncedLyrics && !b.syncedLyrics) return -1;
                 if (!a.syncedLyrics && b.syncedLyrics) return 1;
                 return 0;
             });
-
+            
             // Set global variables
             setCandidates(sorted);
             lastCandidatesRef.current = sorted;
             window.lastCandidates = sorted; // <--- Global Access
-
+            
             // --- 4. Selection ---
             let candidate = null;
             let minDelta = Infinity;
@@ -75,16 +92,16 @@ export const LyricsProvider = ({ children }) => {
                 }
             });
             if (!candidate && sorted.length > 0) candidate = sorted[0];
-
+            
             if (!candidate) {
                 updateLyrics([{ time: 0, text: '× No lyrics found.', roman: '', trans: '' }]);
                 return;
             }
-
+            
             // --- 5. Parsing & Fetching Translations ---
             const rawLrc = candidate.syncedLyrics || addTimestamps(candidate.plainLyrics);
             updateLyrics(parseLRCToArray(rawLrc)); // Instant render
-
+            
             // Call your backend for translations (Update URL to your actual backend)
             try {
                 const transRes = await fetch(LRC_ENDPOINT, {
@@ -98,14 +115,14 @@ export const LyricsProvider = ({ children }) => {
             } catch (err) {
                 console.warn("Translation failed, staying with original.");
             }
-
+            
         } catch (e) {
             if (e.name === 'AbortError') return;
             showAlert(`Lyrics Error: ${e.message}`, "fail");
             updateLyrics([{ time: 0, text: '× Error loading lyrics.', roman: '', trans: '' }]);
         }
     }, [showAlert]);
-
+    
     return (
         <LyricsContext.Provider value={{ lyrics, candidates, loadLyrics }}>
             {children}
