@@ -17,7 +17,7 @@ const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete,
       artist: manualMetadata.artist,
       album: manualMetadata.album,
       duration: player?.duration || 0,
-      customQuery: manualMetadata.customQuery || ''
+      customQuery: manualMetadata?.customQuery || ''
     } : track;
     
     // 2. Validation check
