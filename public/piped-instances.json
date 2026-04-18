@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-17T23:43:28.487Z",
+  "generated_at": "2026-04-18T02:47:10.546Z",
   "source": "https://raw.githubusercontent.com/TeamPiped/documentation/refs/heads/main/content/docs/public-instances/index.md",
   "version_priority": "2026.0.0",
   "instances": [
@@ -11,23 +11,23 @@
       "suggestions": [
         {
           "kind": "suggest",
-          "term": "ado",
-          "path": "/suggestions",
-          "url": "https://api.piped.private.coffee/suggestions?query=ado&music=true",
-          "ok": true,
-          "status": 200,
-          "time_ms": 193,
-          "body_sample": "[\"adopt me\",\"adotfrmdao\",\"adolescence\",\"adore you\",\"adopt me house build\",\"ado\",\"adopt me trading\",\"adorn miguel\",\"adore you miley cyrus\",\"adom tv live\",\"adom fm 106.3 live\",\"adofoasa episode 79\",\"adoration live\",\"adopt me channel\"]"
-        },
-        {
-          "kind": "suggest",
           "term": "erika",
           "path": "/suggestions",
           "url": "https://api.piped.private.coffee/suggestions?query=erika&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 173,
-          "body_sample": "[\"erika kirk\",\"erika german song\",\"erika kirk speech\",\"erika diane\",\"erika kirk interview\",\"erika song\",\"erika jayne\",\"erika kirk jd vance\",\"erika piano\",\"erika i don't know\",\"erika isac\",\"erika remix\",\"erika lyrics\",\"erika piano tutorial\"]"
+          "time_ms": 171,
+          "body_sample": "[\"erika kirk\",\"erika german song\",\"erika kirk speech\",\"erika kirk jd vance\",\"erika diane\",\"erika jayne\",\"erika kirk interview\",\"erika song\",\"erika piano\",\"erika i don't know\",\"erika remix\",\"erika isac\",\"erika piano tutorial\",\"erika lyrics\"]"
+        },
+        {
+          "kind": "suggest",
+          "term": "iris out",
+          "path": "/suggestions",
+          "url": "https://api.piped.private.coffee/suggestions?query=iris%20out&music=true",
+          "ok": true,
+          "status": 200,
+          "time_ms": 174,
+          "body_sample": "[\"iris out\",\"iris out kenshi yonezu\",\"iris out english cover\",\"iris out reaction\",\"iris out piano\",\"iris out karaoke\",\"iris out lyrics\",\"iris out 1 hour\",\"iris out cover\",\"iris out dance\",\"iris out live\",\"iris out opening\",\"iris out chainsaw man\",\"iris out english\"]"
         },
         {
           "kind": "suggest",
@@ -36,43 +36,43 @@
           "url": "https://api.piped.private.coffee/suggestions?query=imagine%20dragons&music=true",
           "ok": true,
           "status": 200,
-          "time_ms": 155,
-          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons and sia\",\"imagine dragons live\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons enemy\",\"imagine dragons bones\",\"imagine dragons lyrics\",\"imagine dragons bad liar\",\"imagine dragons "
+          "time_ms": 177,
+          "body_sample": "[\"imagine dragons\",\"imagine dragons demons\",\"imagine dragons believer\",\"imagine dragons thunder\",\"imagine dragons and sia\",\"imagine dragons live\",\"imagine dragons radioactive\",\"imagine dragons playlist\",\"imagine dragons bones\",\"imagine dragons enemy\",\"imagine dragons lyrics\",\"imagine dragons bad liar\",\"imagine dragons "
         }
       ],
       "searches": [
         {
           "kind": "search",
-          "term": "Never Gonna Give You Up",
+          "term": "rick astley",
           "filter": "all",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=Never%20Gonna%20Give%20You%20Up&filter=all",
+          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=all",
           "ok": true,
           "status": 200,
-          "time_ms": 559,
+          "time_ms": 535,
           "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/hq720.jpg?host=i.ytimg.com&rs=AOn4CLDRxusbm2_TGTnDWEIhBTYW2cUQkw&sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg%3D%3D\""
         },
         {
           "kind": "search",
-          "term": "imagine dragons",
+          "term": "erika",
           "filter": "music_songs",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=imagine%20dragons&filter=music_songs",
+          "url": "https://api.piped.private.coffee/search?q=erika&filter=music_songs",
           "ok": true,
           "status": 200,
-          "time_ms": 429,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=Kx7B-XvmFtE\",\"type\":\"stream\",\"title\":\"Believer\",\"thumbnail\":\"https://proxy.piped.private.coffee/weYQWfEwWNPOuAm34geXN1LkSYPlsJay78NnQgHC3PKsyZcdvBHIsMtqoFh3rioA4XgMdHMQd3h6vH6mbA=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"Imagine Dragons\",\"uploaderUrl\":\"/channel/UC0aXrjV"
+          "time_ms": 398,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=mlYdF1JD4YE\",\"type\":\"stream\",\"title\":\"ERIKA\",\"thumbnail\":\"https://proxy.piped.private.coffee/9ZSS3Kvktu_GcFUlzRcLrOK8Icje-T2OLgPB5YczZrs1vVgtQGmiKVAblrdPULDrAN8ez0wMT9mpxsMg=w120-h120-l90-rw?host=lh3.googleusercontent.com\",\"uploaderName\":\"EICHENBLUT\",\"uploaderUrl\":\"/channel/UCGmFOpOODoQ3UlzSu"
         },
         {
           "kind": "search",
-          "term": "rick astley",
+          "term": "iris out",
           "filter": "music_videos",
           "path": "/search",
-          "url": "https://api.piped.private.coffee/search?q=rick%20astley&filter=music_videos",
+          "url": "https://api.piped.private.coffee/search?q=iris%20out&filter=music_videos",
           "ok": true,
           "status": 200,
-          "time_ms": 499,
-          "body_sample": "{\"items\":[{\"url\":\"/watch?v=dQw4w9WgXcQ\",\"type\":\"stream\",\"title\":\"Never Gonna Give You Up\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/dQw4w9WgXcQ/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3lNNudXg7f4Qf7PiE9tvCAkHTjJ0w&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Rick Astley\",\"uploaderUrl\":\"/channel/U"
+          "time_ms": 486,
+          "body_sample": "{\"items\":[{\"url\":\"/watch?v=LmZD-TU96q4\",\"type\":\"stream\",\"title\":\"IRIS OUT\",\"thumbnail\":\"https://proxy.piped.private.coffee/vi/LmZD-TU96q4/sddefault.jpg?host=i.ytimg.com&rs=AMzJL3k5RltzYfug575ZJLL7LqgbEi3pEg&sqp=-oaymwEWCJADEOEBIAQqCghqEJQEGHgg6AJIWg\",\"uploaderName\":\"Kenshi Yonezu\",\"uploaderUrl\":\"/channel/UCC_OGcKdYY-aW"
         }
       ],
       "metrics": {
@@ -82,10 +82,10 @@
         "search_success_rate": 1,
         "combined_success_rate": 1,
         "avg_suggestion_ms": 174,
-        "avg_search_ms": 496,
-        "combined_latency_ms": 670
+        "avg_search_ms": 473,
+        "combined_latency_ms": 647
       },
-      "checked_at": "2026-04-17T23:43:12.437Z",
+      "checked_at": "2026-04-18T02:46:54.459Z",
       "version": "2026.0.0",
       "isLatest": true
     }
