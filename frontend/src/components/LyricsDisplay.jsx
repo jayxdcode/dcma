@@ -36,8 +36,8 @@ const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete,
     const fetchLyrics = async () => {
       try {
         const { title, artist, album, duration } = effectiveTrack;
-        const isManual = !!(manualMetadata.customQuery);
-        const query = manualMetadata.customQuery || "";
+        const isManual = !!(manualMetadata?.customQuery);
+        const query = manualMetadata?.customQuery || "";
         
         await loadLyrics(
           {
