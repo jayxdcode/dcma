@@ -1,0 +1,15 @@
+[lyrics] Backend: https://src-backend.onrender.com/api
+[lyrics] loadLyrics called for:
+[
+  {
+    "time": 0,
+    "text": "Searching for lyrics...",
+    "roman": "",
+    "trans": "Kaikai Kitan — Eve"
+  }
+]
+[lyrics] Searching lrclib at: https://lrclib.net/api/search?q=Kaikai%20Kitan%20Eve%20
+[lyrics] lrclib response status: 200
+[lyrics] lrclib returned 20 results
+[lyrics] chosen entry: Ao No Waltz - undefined
+[lyrics] parseLRCToArray called (len: 1917 )

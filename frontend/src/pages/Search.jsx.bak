@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TextField, Button, Box, Typography, IconButton, InputAdornment } from '@mui/material';
 import { Search, PlayArrow, PlaylistAdd, Image as ImageIcon } from '@mui/icons-material';
-import { usePlayer } from '../lib/playerContext';
+import { usePlayer } from '../context/PlayerContext';
 
 // Note: I renamed `Search` from `@mui/icons-material` since it
 // conflicts with the default fumction

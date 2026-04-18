@@ -73,6 +73,7 @@ function AppCard({
 	issueUrl,
 	onClose,
 }) {
+	
 	const { showAlert } = useModals();
 	const [repoSummary, setRepoSummary] = useState('');
 

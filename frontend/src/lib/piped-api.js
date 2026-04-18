@@ -2,7 +2,7 @@
 // ES module client for Piped-based backend with base path /piped
 // Exports: search, suggestions, related, nextTracks, artistPage, albumPage, playlistPage, getStreams
 
-const BASE = 'https://frontend-dcma.vercel.app/api/piped'; // <-- your app/server should
+const BASE = window.location.origin.includes("vercel.app") ? `/api/piped` : `https://frontend-dcma.vercel.app/api/piped`; // EDIT THIS IF NECESSARY
 // proxy /piped -> actual piped instance or an mitm router for dynamic
 
 /** Safely join base + path without producing double or missing slashes */
@@ -70,9 +70,33 @@ function extractVideoId(url) {
 	return s;
 }
 
+function normalizeSearchFilter(filter) {
+	const normalized = String(filter || '').toLowerCase();
+	switch (normalized) {
+		case 'music_videos':
+		case 'videos':
+			return 'music_videos';
+		case 'music_songs':
+		case 'songs':
+			return 'music_songs';
+		case 'music_artists':
+		case 'channels':
+			return 'music_artists';
+		case 'music_playlists':
+		case 'playlists':
+			return 'music_playlists';
+		case 'music_albums':
+		case 'albums':
+			return 'music_albums';
+		case 'all':
+		default:
+			return 'all';
+	}
+}
+
 function normalizeVideoItem(item) {
 	const id = extractVideoId(item?.url || item?.videoId || item?.watchUrl || item?.id || item?.video_id || item?.vid);
-	const thumb = item?.thumbnail || item?.thumbnailUrl || (item?.thumbnails && item.thumbnails[0]) || null;
+	const thumb = item?.thumbnail || item?.thumbnailUrl || (item?.thumbnails && item?.thumbnails[0]) || null;
 
 	return {
 		id: id,
@@ -129,7 +153,8 @@ function stableIdFor(item) {
 export async function search(q, opts = {}) {
 	if (!q) throw new Error('search: q is required');
 	const { filter = 'all', limit = 50 } = opts;
-	const params = { q, filter, limit };
+	const normalizedFilter = normalizeSearchFilter(filter);
+	const params = { q, filter: normalizedFilter, music: true, limit };
 	const data = await request('/search', { params });
 
 	// Extract items from common response keys
@@ -224,42 +249,36 @@ export async function related(videoId, opts = {}) {
 	let titleSeed = opts.rawItem?.title || opts.rawItem?.name || null;
 	let uploaderSeed = opts.rawItem?.uploader || opts.rawItem?.channel || null;
 
-	if (!titleSeed) {
-		try {
-			const maybeInfo = await request('/search', { params: { q: videoId, limit: 1 } });
-			const candidate = (Array.isArray(maybeInfo) ? maybeInfo[0] : (maybeInfo?.items?.[0] || null));
-			if (candidate) {
-				titleSeed = candidate.title || candidate.name || titleSeed;
-				uploaderSeed = uploaderSeed || candidate.uploader || candidate.channel || null;
-			}
-		} catch (e) {}
+	if (!titleSeed && opts.rawItem) {
+		titleSeed = opts.rawItem?.title || opts.rawItem?.name || null;
+		uploaderSeed = opts.rawItem?.uploader || opts.rawItem?.channel || null;
 	}
 
-	let searchQ = videoId;
-	if (titleSeed) searchQ = `${titleSeed}${uploaderSeed ? ' ' + uploaderSeed : ''}`;
+	if (titleSeed) {
+		const searchQ = `${titleSeed}${uploaderSeed ? ' ' + uploaderSeed : ''}`;
+		try {
+			const sr = await request('/search', { params: { q: searchQ, filter: 'videos', music: true, limit: 25 } });
+			const arr = [];
+			if (Array.isArray(sr)) arr.push(...sr);
+			if (Array.isArray(sr?.items)) arr.push(...sr.items);
+			if (Array.isArray(sr?.results)) arr.push(...sr.results);
+			if (Array.isArray(sr?.videos)) arr.push(...sr.videos);
+			if (Array.isArray(sr?.contents)) arr.push(...sr.contents);
 
-	try {
-		const sr = await request('/search', { params: { q: searchQ, filter: 'all', limit: 25 } });
-		const arr = [];
-		if (Array.isArray(sr)) arr.push(...sr);
-		if (Array.isArray(sr?.items)) arr.push(...sr.items);
-		if (Array.isArray(sr?.results)) arr.push(...sr.results);
-		if (Array.isArray(sr?.videos)) arr.push(...sr.videos);
-		if (Array.isArray(sr?.contents)) arr.push(...sr.contents);
-
-		const seenRel = new Set();
-		const normalized = [];
-		for (const it of arr) {
-			const nv = normalizeVideoItem(it);
-			if (!nv.id) continue;
-			if (nv.id === extractVideoId(videoId)) continue;
-			if (seenRel.has(nv.id)) continue;
-			seenRel.add(nv.id);
-			normalized.push(nv);
-			if (normalized.length >= 25) break;
-		}
-		if (normalized.length) return { related: normalized, raw: sr };
-	} catch (e) {}
+			const seenRel = new Set();
+			const normalized = [];
+			for (const it of arr) {
+				const nv = normalizeVideoItem(it);
+				if (!nv.id) continue;
+				if (nv.id === extractVideoId(videoId)) continue;
+				if (seenRel.has(nv.id)) continue;
+				seenRel.add(nv.id);
+				normalized.push(nv);
+				if (normalized.length >= 25) break;
+			}
+			if (normalized.length) return { related: normalized, raw: sr };
+		} catch (e) {}
+	}
 
 	try {
 		const trending = await request('/trending', { params: { limit: 25 } });

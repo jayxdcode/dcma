@@ -1,71 +1,160 @@
-import { useEffect, useState, useMemo, memo } from 'react';
-import { loadLyrics } from '../lib/lyrics.js';
+import { useEffect, useMemo, memo } from 'react';
+import { useLyrics } from '../context/LyricsContext.jsx';
 
-const LyricsDisplay = memo(({ track, player }) => {
-  const [lines, setLines] = useState([]);
+/**
+ * LyricsDisplay Component
+ * Handles the triggering of searches via the Context and renders the scrolling lines.
+ */
+const LyricsDisplay = memo(({ track, player, onProgressUpdate, onSearchComplete, manualMetadata }) => {
+  // Pull lyrics state and the loader from our new Context
+  const { lyrics, loadLyrics } = useLyrics();
 
-  // Load Lyrics — depend on the metadata used for searching
+  // Load Lyrics — triggered when metadata or manual search parameters change
   useEffect(() => {
-    if (!track?.title || !track?.artist) {
-      console.debug('[LyricsDisplay] loadLyrics skipped — missing track title/artist', track);
-      setLines([]);
+    // 1. Resolve which metadata to use (Manual vs Automatic)
+    const effectiveTrack = manualMetadata && manualMetadata.title ? {
+      title: manualMetadata.title,
+      artist: manualMetadata.artist,
+      album: manualMetadata.album,
+      customQuery: manualMetadata.customQuery || ''
+    } : track;
+
+    // 2. Validation check
+    if (!effectiveTrack?.title || !effectiveTrack?.artist) {
+      if (onProgressUpdate) onProgressUpdate('[LyricsDisplay] Missing track info', 'warn');
       return;
     }
-    console.debug('[LyricsDisplay] calling loadLyrics for', track.title, '-', track.artist);
+
+    if (onProgressUpdate) {
+        onProgressUpdate(`[LyricsDisplay] Searching: "${effectiveTrack.title}" by ${effectiveTrack.artist}`, 'info');
+    }
+    
     let ac = new AbortController();
-    setLines([]);
 
-    (async() => {
-      await loadLyrics(
-        track.title,
-        track.artist,
-        track.album || '',
-        player.duration || 0,
-        (parsed) => {
-          console.debug('[LyricsDisplay] loadLyrics callback — lines:', Array.isArray(parsed) ? parsed.length : parsed);
-          setLines(parsed);
-        },
-        { flag: false, query: '' },
-        ac.signal
-      );
-    })().catch(e => { console.error('An error has occured while trying to load lyrics:', e) });
+    // 3. Define the async loader
+    const fetchLyrics = async () => {
+      try {
+        await loadLyrics(
+          effectiveTrack.title,
+          effectiveTrack.artist,
+          effectiveTrack.album || '',
+          manualMetadata?.duration || player?.duration || 0,
+          // Callback for UI progress (fired when lyrics are first parsed or translations arrive)
+          (parsed) => {
+            if (onProgressUpdate) {
+                const count = Array.isArray(parsed) ? parsed.length : 0;
+                onProgressUpdate(`[LyricsDisplay] Loaded ${count} lines`, 'success');
+            }
+          },
+          // Manual search flag
+          effectiveTrack.customQuery ? 
+            { flag: true, query: effectiveTrack.customQuery } : 
+            { flag: false, query: '' },
+          ac.signal
+        );
+        
+        if (onSearchComplete) onSearchComplete();
+      } catch (e) {
+        if (e.name === 'AbortError') return;
+        if (onProgressUpdate) onProgressUpdate(`Error: ${e.message}`, 'fail');
+        console.error('[LyricsDisplay] Load failed:', e);
+      }
+    };
 
+    fetchLyrics();
+
+    // Cleanup: Abort fetch if track changes or component unmounts
     return () => {
-      console.debug('[LyricsDisplay] aborting lyrics fetch for', track.title);
       ac.abort();
     };
-  }, [track?.title, track?.artist, track?.album]); // removed player?.duration
+  }, [
+    track?.title, 
+    track?.artist, 
+    track?.album, 
+    manualMetadata?.title,
+    manualMetadata?.artist, 
+    player?.duration, 
+    onProgressUpdate, 
+    onSearchComplete, 
+    loadLyrics // included loader from context
+  ]);
 
+  // Logic to determine which line is currently "active" based on player time
   const activeLineIndex = useMemo(() => {
-    if (player?.time == null || !lines.length) return 0; // allow time === 0
-    const t = player.time * 1000; // player.time is seconds, lyrics are ms
+    if (player?.time == null || !lyrics || !lyrics.length) return 0;
+    
+    const currentTimeMs = player.time * 1000; // Player (seconds) -> Lyrics (ms)
     let idx = 0;
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].time <= t) idx = i;
-      else break;
+    
+    for (let i = 0; i < lyrics.length; i++) {
+      if (lyrics[i].time <= currentTimeMs) {
+        idx = i;
+      } else {
+        break;
+      }
     }
     return idx;
-  }, [player?.time, lines]);
+  }, [player?.time, lyrics]);
 
   return (
-    <div style={{ textAlign: 'center', paddingBottom: 100 }}>
-      {lines.length > 0 ? lines.map((l, i) => (
-        <div key={i}
-          onClick={() => { player.seek(l.time/1000); }}
-          style={{
-            padding: '12px 0',
-            fontSize: i === activeLineIndex ? '1.5rem' : '1.1rem',
-            fontWeight: i === activeLineIndex ? 800 : 500,
-            color: i === activeLineIndex ? '#fff' : 'rgba(255,255,255,0.4)',
-            transform: i === activeLineIndex ? 'scale(1.05)' : 'scale(1)',
-            transition: 'all 0.3s ease',
-            cursor: 'pointer'
-          }}>
-          {l.text}
-          {l.trans && <div style={{ fontSize: '0.7em', fontWeight: 400, marginTop: 4 }}>{l.trans}</div>}
+    <div style={{ textAlign: 'center', paddingBottom: '20vh', paddingTop: '10vh' }}>
+      {lyrics && lyrics.length > 0 ? (
+        lyrics.map((line, i) => {
+          const isActive = i === activeLineIndex;
+          
+          return (
+            <div 
+              key={i}
+              onClick={() => { 
+                if (player?.seek) player.seek(line.time / 1000); 
+              }}
+              style={{
+                padding: '16px 20px',
+                fontSize: isActive ? '1.6rem' : '1.1rem',
+                fontWeight: isActive ? 800 : 500,
+                color: isActive ? '#ffffff' : 'rgba(255,255,255,0.3)',
+                transform: isActive ? 'scale(1.05)' : 'scale(1)',
+                transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                cursor: 'pointer',
+                lineHeight: '1.4'
+              }}
+            >
+              {/* Main Lyric Text */}
+              <div>{line.text}</div>
+              
+              {/* Romaji (if available) */}
+              {line.roman && (
+                <div style={{ 
+                    fontSize: '0.65em', 
+                    opacity: 0.8, 
+                    marginTop: 4, 
+                    fontWeight: 400,
+                    letterSpacing: '0.05em' 
+                }}>
+                  {line.roman}
+                </div>
+              )}
+
+              {/* Translation (if available) */}
+              {line.trans && (
+                <div style={{ 
+                    fontSize: '0.75em', 
+                    opacity: 0.9, 
+                    marginTop: 6, 
+                    fontWeight: 400,
+                    color: isActive ? '#4aeaf3' : 'inherit' // Highlight translation too if active
+                }}>
+                  {line.trans}
+                </div>
+              )}
+            </div>
+          );
+        })
+      ) : (
+        <div style={{ opacity: 0.5, marginTop: '20%' }}>
+          <p>No lyrics found for this track</p>
+          <p style={{ fontSize: '0.8rem' }}>Try searching manually if metadata is incorrect.</p>
         </div>
-      )) : (
-        <div className="small">Lyrics not available</div>
       )}
     </div>
   );

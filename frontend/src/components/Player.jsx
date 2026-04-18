@@ -1,13 +1,15 @@
 // src/components/Player.jsx
-import { useRef, useState, Suspense, lazy } from 'react';
+import { useRef, useState, Suspense, lazy, useEffect } from 'react';
 import { IconButton, LinearProgress } from '@mui/material';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
 import SkipNext from '@mui/icons-material/SkipNext';
 import SkipPrevious from '@mui/icons-material/SkipPrevious';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { usePlayer } from '../lib/playerContext';
-const PlayerFull = lazy(() => import('../pages/PlayerFull'));
+import CircularProgress from '@mui/material/CircularProgress';
+import WarningIcon from '@mui/icons-material/Warning';
+import { usePlayer } from '../context/PlayerContext';
+import PlayerFull from '../pages/PlayerFull';
 
 export default function Player() {
   const player = usePlayer();
@@ -15,7 +17,7 @@ export default function Player() {
   const touchStartY = useRef(0);
 
   if (!player || !player.track) return null;
-  const { track, playing, toggle, next, time, duration } = player;
+  const { track, playing, toggle, next, time, duration, isLoading, playerError, performRetry, retryTimeRemaining } = player;
   
   const progress = duration ? (time / duration) * 100 : 0;
 
@@ -23,6 +25,32 @@ export default function Player() {
   const handleTouchEnd = (e) => {
     const diff = touchStartY.current - e.changedTouches[0].clientY;
     if (diff > 50) setOpen(true);
+  };
+
+  const getPlayPauseButton = () => {
+    if (playerError) {
+      return (
+        <IconButton 
+          onClick={() => performRetry(playerError.currentTime)} 
+          sx={{ color: '#ff6b6b' }}
+          title={`Error: ${playerError.message}. Click to retry immediately.`}
+        >
+          <WarningIcon />
+        </IconButton>
+      );
+    }
+    if (isLoading) {
+      return (
+        <IconButton sx={{ color: 'white' }} disabled>
+          <CircularProgress size={24} sx={{ color: 'white' }} />
+        </IconButton>
+      );
+    }
+    return (
+      <IconButton onClick={toggle} sx={{ color: 'white' }}>
+        {playing ? <Pause /> : <PlayArrow />}
+      </IconButton>
+    );
   };
 
   return (
@@ -34,13 +62,24 @@ export default function Player() {
           padding: 0, zIndex: 1500,
           background: '#151e32',
           boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-          display: 'flex', flexDirection: 'column', overflow:'hidden'
+          display: 'flex', flexDirection: 'column', overflow:'hidden',
+          border: playerError ? '2px solid #ff6b6b' : 'none'
         }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         {/* Progress Line */}
-        <LinearProgress variant="determinate" value={progress} sx={{ height: 2, bgcolor: 'transparent', '& .MuiLinearProgress-bar': { bgcolor: 'var(--accent)' } }} />
+        <LinearProgress 
+          variant="determinate" 
+          value={progress} 
+          sx={{ 
+            height: 2, 
+            bgcolor: 'transparent', 
+            '& .MuiLinearProgress-bar': { 
+              bgcolor: playerError ? '#ff6b6b' : 'var(--accent)' 
+            } 
+          }} 
+        />
 
         <div style={{ display: 'flex', alignItems: 'center', padding: '8px 12px', gap: 12 }}>
           {/* Cover */}
@@ -53,9 +92,14 @@ export default function Player() {
             <div style={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '0.95rem' }}>
               {track.title}
             </div>
-            <div className="small" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {track.artist}
+            <div className="small" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: playerError ? '#ff6b6b' : 'inherit' }}>
+              {playerError ? `Error: ${playerError.message}` : track.artist}
             </div>
+            {retryTimeRemaining > 0 && (
+              <div className="small" style={{ color: '#ffb347', marginTop: '2px' }}>
+                Retrying in {retryTimeRemaining}s
+              </div>
+            )}
           </div>
 
           {/* Controls */}
@@ -63,9 +107,7 @@ export default function Player() {
             <IconButton onClick={player.prev} sx={{ color: 'white' }}>
               <SkipPrevious />
             </IconButton>
-            <IconButton onClick={toggle} sx={{ color: 'white' }}>
-              {playing ? <Pause /> : <PlayArrow />}
-            </IconButton>
+            {getPlayPauseButton()}
             <IconButton onClick={next} sx={{ color: 'white' }}>
               <SkipNext />
             </IconButton>
@@ -78,9 +120,7 @@ export default function Player() {
       </div>
       
       {/* PlayerFull always mounted but kept off-screen to preserve iframe */}
-      <Suspense fallback={null}>
-        <PlayerFull open={open} onClose={() => setOpen(false)} />
-      </Suspense>
+      <PlayerFull open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

@@ -4,13 +4,12 @@ import { Routes, Route } from 'react-router-dom';
 import TopBar from './components/TopBar';
 import BottomNavBar from './components/BottomNavBar';
 import Player from './components/Player';
-import { PlayerProvider } from './lib/playerContext';
+import { PlayerProvider } from './context/PlayerContext';
 import ProgressBar from './components/ProgressBar';
 
 // lazy pages (code-split)
 const Home = lazy(() => import('./pages/Home'));
 const Search = lazy(() => import('./pages/Search'));
-const LyricsPage = lazy(() => import('./pages/Lyrics'));
 const About = lazy(() => import('./pages/About'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Album = lazy(() => import('./pages/Album'));
@@ -41,7 +40,6 @@ export default function App({ palette, setPalette, presets, selectedPresetKey, s
             <Routes>
               <Route path="/" element={<Home/>} />
               <Route path="/search" element={<Search/>} />
-              <Route path="/lyrics" element={<LyricsPage/>} />
               <Route path="/album/:albumId" element={<Album/>} />
               <Route path="/playlist/:playlistId" element={<Playlist/>} />
               <Route path="/history" element={<History/>} />
