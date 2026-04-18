@@ -9,8 +9,7 @@ import hitori from '../hitori.json';
 import { CATPPUCCIN_PRESETS, buildMuiThemeFromPalette } from './theme';
 
 // --- FIXED: Set global variable immediately so it's available before render ---
-// window.hitori = hitori;
-// Test error boundary first before removing comment!
+window.hitori = hitori;
 
 // --- ADDED: Error Boundary Component ---
 class GlobalErrorBoundary extends Component {
@@ -31,11 +30,33 @@ class GlobalErrorBoundary extends Component {
           height: '100vh', display: 'flex', flexDirection: 'column', 
           alignItems: 'center', justifyContent: 'center', bgcolor: '#071029', color: 'white', p: 3 
         }}>
-          <Typography variant="h4" gutterBottom>Something went wrong</Typography>
-          <Typography variant="body1" sx={{ color: '#E382A8', mb: 3 }}>
+          <Box
+            component="img"
+            sx={{
+              height: 300,
+              aspectRatio: "16/9",
+              mb: 2, // Adds margin bottom
+              borderRadius: '10px'
+            }}
+            alt="Hitori"
+            src="../assets/htr-scared-tp.png" 
+          />
+          <Typography variant="h4" sx={{ fontWeight: 'bold' }} gutterBottom>Something went wrong</Typography>
+          <Typography variant="body1" sx={{ color: '#E382A8', mb: 5 }}>
             {this.state.error?.toString()}
           </Typography>
-          <Button variant="contained" onClick={() => window.location.reload()}>
+          <Button
+            variant="outlined"
+            onClick={() => window.location.reload()}
+            sx={{
+              borderRadius: '10px',
+              borderColor: 'linear-gradient(90deg, var(--accent, #1db954), var(--accent-2, #1ed760))',
+              paddingX: 3,
+              fontWeight: 700,
+              textTransform: 'none',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+            }}
+          >
             Reload Application
           </Button>
         </Box>
