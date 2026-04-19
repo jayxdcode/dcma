@@ -208,20 +208,17 @@ export default async function handler(req, res) {
     searchParams.delete('ins');
     searchParams.delete('path');
 
-    // Prefer music-specific search results and normalize music filter values.
-    if (suffix === 'search' || suffix === 'suggestions') {
-      if (!searchParams.has('music')) searchParams.set('music', 'true');
-      const filter = searchParams.get('filter');
-      if (filter) {
-        const normalizedFilter = filter.trim().toLowerCase();
-        if (normalizedFilter === 'music_videos' || normalizedFilter === 'videos') searchParams.set('filter', 'videos');
-        else if (normalizedFilter === 'music_songs' || normalizedFilter === 'songs') searchParams.set('filter', 'videos');
-        else if (normalizedFilter === 'music_artists' || normalizedFilter === 'channels') searchParams.set('filter', 'channels');
-        else if (normalizedFilter === 'music_playlists' || normalizedFilter === 'playlists') searchParams.set('filter', 'playlists');
-        else if (normalizedFilter === 'music_albums' || normalizedFilter === 'albums') searchParams.set('filter', 'all');
-      }
-    }
-    
+    /*
+    R.I.P
+
+    Here lies a bunch of unnecessary filter and query param rewrites.
+
+    DEC 21, 2025 - APR 19, 2025
+
+    TIME OF DEATH: 23:30
+    CAUSE OF DEATH: deletion
+    */
+
     const forwardedQs = searchParams.toString();
     
     // build forwarded headers (filter hop-by-hop)
