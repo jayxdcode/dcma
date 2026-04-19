@@ -154,7 +154,7 @@ export async function search(q, opts = {}) {
 	if (!q) throw new Error('search: q is required');
 	const { filter = 'all', limit = 50 } = opts;
 	const normalizedFilter = normalizeSearchFilter(filter);
-	const params = { q, filter: normalizedFilter, music: true, limit };
+	const params = { q, filter: normalizedFilter, limit };
 	const data = await request('/search', { params });
 
 	// Extract items from common response keys
@@ -209,12 +209,18 @@ export async function search(q, opts = {}) {
 /**
  * suggestions(query, opts)
  * always music_songs only
+ *
+ * UPDATE: use the piped api's /opensearch/suggestions endpoint for better suggestions
  */
 export async function suggestions(query, opts = {}) {
 	if (!query) throw new Error('suggestions: query is required');
 	const params = Object.assign({}, opts.params || {}, { query, filter: 'music_songs', limit: opts.limit || 10 });
-	const data = await request('/suggestions', { params });
-	if (Array.isArray(data)) return data;
+	const data = await request('/opensearch/suggestions', { params });
+
+        // expected output from server:
+        // [query, [...suggestions]]
+
+	if (Array.isArray(data) && Array.isArray(data[1])) return data[1];
 	if (data?.suggestions) return data.suggestions;
 	return data;
 }
