@@ -8,6 +8,7 @@
   --text-secondary: rgba(230, 238, 248, 0.6);
   --player-z: 2000;
   --nav-z: 1300;
+  --background: #071029;
 }
 
 * { box-sizing: border-box; }
@@ -17,7 +18,7 @@ html, body, #root { height: 100%; overflow: hidden; }
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(180deg, #071029 0%, #0b1220 100%);
+  background: var(--background);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
 }

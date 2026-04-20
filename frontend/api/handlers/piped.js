@@ -1,4 +1,4 @@
-// api/piped/[...path].js
+// api/piped.js
 // Robust proxy: will try the selected instance, then fall back to next ones if it fails.
 import { Readable } from 'stream';
 
@@ -8,12 +8,10 @@ const UPSTREAM_TIMEOUT_MS = Number(process.env.PIPED_UPSTREAM_TIMEOUT_MS || 1500
 let _instancesCache = null;
 let _instancesAt = 0;
 
-function safeJoin(base, path) {
-  if (!base) return String(path || '');
-  if (!path) return String(base || '');
-  const a = String(base).replace(/\/+$/g, '');
-  const b = String(path).replace(/^\/+/g, '');
-  return `${a}/${b}`;
+function buildTargetUrl(base, path) {
+  const url = new URL(path, String(base).replace(/\/+$/, ''));
+  url.searchParams.delete('ins');
+  return url.toString();
 }
 
 async function fetchTextWithUA(url) {
@@ -98,7 +96,7 @@ async function fetchInstances() {
       for (const origin of set) {
         instances.push({
           name: origin.replace(/^https?:\/\//, ''),
-          api_url: `${origin}/api/v1`.replace(/\/{2,}/g, '/').replace(':/', '://'),
+          api_url: origin.replace(/\/+$/, ''),
           locations: 'Unknown',
           cdn: null,
           raw: origin
@@ -151,7 +149,7 @@ async function readRequestBody(req) {
 async function doUpstreamRequest(targetUrl, req, forwardedHeaders, bodyBuf) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
-  
+
   try {
     const upstream = await fetch(targetUrl, {
       method: req.method,
@@ -174,12 +172,12 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Range, X-Requested-With, X-Vercel-Cache, X-Vercel-Id');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Range, X-Requested-With, X-Vercel-Cache, X-Vercel-Id, X-Target-Url');
     res.setHeader('Vary', 'Origin');
     res.status(204).end();
     return;
   }
-  
+
   try {
     const instances = await fetchInstances();
     if (!Array.isArray(instances) || instances.length === 0) {
@@ -187,26 +185,14 @@ export default async function handler(req, res) {
       res.status(502).json({ error: 'no piped instances discovered' });
       return;
     }
-    
+
     // parse requested index
-    const parsed = new URL(req.url, `https://${req.headers.host}`);
-    const searchParams = parsed.searchParams;
-    const insRaw = searchParams.get('ins');
+    const insRaw = req.query.ins;
     let startIdx = (Number.isFinite(Number(insRaw)) ? Math.max(0, Math.min(instances.length - 1, Number(insRaw))) : 0);
-    
-    // compute suffix (everything after /api/piped)
-    const incomingPath = parsed.pathname || '';
-    const prefix = '/api/piped';
-    let suffix = '';
-    if (incomingPath.startsWith(prefix)) {
-      suffix = incomingPath.slice(prefix.length).replace(/^\/+/g, '');
-    } else {
-      if (searchParams.has('path')) suffix = searchParams.get('path').replace(/^\/+/, '');
-    }
-    
-    // remove ins & path before forwarding
-    searchParams.delete('ins');
-    searchParams.delete('path');
+
+    // path generation (simplified ver)
+    const urlArray = req.url.split("/").filter(Boolean).slice(2);
+    const path = "/" + urlArray.join("/");
 
     /*
     R.I.P
@@ -219,8 +205,6 @@ export default async function handler(req, res) {
     CAUSE OF DEATH: deletion
     */
 
-    const forwardedQs = searchParams.toString();
-    
     // build forwarded headers (filter hop-by-hop)
     const forwardedHeaders = {};
     const hopByHop = new Set(['connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization', 'te', 'trailers', 'transfer-encoding', 'upgrade', 'host']);
@@ -247,8 +231,12 @@ export default async function handler(req, res) {
       if (!selected || !selected.api_url) continue;
       
       const targetBase = selected.api_url || selected.raw;
-      const targetUrl = forwardedQs ? `${safeJoin(targetBase, suffix)}?${forwardedQs}` : safeJoin(targetBase, suffix);
-      
+      const targetUrl = buildTargetUrl(targetBase, path);
+
+      console.error("The following logs are just CRITICAL info and not an error");
+      console.error(`[crit] instance: ${targetBase}`);
+      console.error(`[crit] path: ${targetUrl.replace(targetBase, "...")}`);
+
       try {
         const result = await doUpstreamRequest(targetUrl, req, forwardedHeaders, bodyBuf);
         if (!result.ok) {
@@ -281,6 +269,9 @@ export default async function handler(req, res) {
           res.setHeader(key, value);
         });
         
+        // Additional header for showing upstream url (may be removed in prod)
+        res.setHeader('X-Target-Url', targetUrl);
+
         // CORS
         res.setHeader('Allow', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS')
         res.setHeader('Access-Control-Allow-Origin', '*');
