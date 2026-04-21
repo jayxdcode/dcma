@@ -1,5 +1,5 @@
 // src/components/ProgressBar.jsx
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './ProgressBar.css';
 

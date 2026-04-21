@@ -1,5 +1,5 @@
 // src/pages/PlayerFull.jsx
-import { useEffect, useMemo, useState, useRef } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { useModals } from '../components/ModalProvider';
 // explicit .js import (lyrics.js converted)

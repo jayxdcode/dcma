@@ -40,10 +40,10 @@ export default function BottomNavBar() {
         onChange={handleChange}
         sx={{ background: 'transparent', height: 64 }}
       >
-        <BottomNavigationAction label="Home" icon={<HomeIcon />} onMouseEnter={() => import('../pages/Home')} sx={{ color: 'var(--text-secondary)', '&.Mui-selected': { color: 'var(--accent)' } }} />
-        <BottomNavigationAction label="Search" icon={<SearchIcon />} onMouseEnter={() => import('../pages/Search')} sx={{ color: 'var(--text-secondary)', '&.Mui-selected': { color: 'var(--accent)' } }} />
-        <BottomNavigationAction label="History" icon={<HistoryIcon />} onMouseEnter={() => import('../pages/History')} sx={{ color: 'var(--text-secondary)', '&.Mui-selected': { color: 'var(--accent)' } }} />
-        <BottomNavigationAction label="Settings" icon={<SettingsIcon />} onMouseEnter={() => import('../pages/Settings')} sx={{ color: 'var(--text-secondary)', '&.Mui-selected': { color: 'var(--accent)' } }} />
+        <BottomNavigationAction label="Home" icon={<HomeIcon />} onMouseEnter={() => import('../pages/Home')} sx={{ color: 'var(--subtext0)', '&.Mui-selected': { color: 'var(--accent)' } }} />
+        <BottomNavigationAction label="Search" icon={<SearchIcon />} onMouseEnter={() => import('../pages/Search')} sx={{ color: 'var(--subtext0)', '&.Mui-selected': { color: 'var(--accent)' } }} />
+        <BottomNavigationAction label="History" icon={<HistoryIcon />} onMouseEnter={() => import('../pages/History')} sx={{ color: 'var(--subtext0)', '&.Mui-selected': { color: 'var(--accent)' } }} />
+        <BottomNavigationAction label="Settings" icon={<SettingsIcon />} onMouseEnter={() => import('../pages/Settings')} sx={{ color: 'var(--subtext0)', '&.Mui-selected': { color: 'var(--accent)' } }} />
       </BottomNavigation>
     </Paper>
   );

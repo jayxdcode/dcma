@@ -265,7 +265,7 @@ export default function TopBar({
 						alignItems: 'center',
 						justifyContent: 'center',
 						borderRadius: 8,
-						background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
+						background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
 					}}
 				>
 					<GraphicEqIcon sx={{ color: '#000', fontSize: 20 }} />

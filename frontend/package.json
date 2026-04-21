@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "local": "vercel dev --yes & vite --host",
+    "local": "vercel dev --yes",
     "dev": "vite",
     "host": "vite --host",
     "build": "vite build",

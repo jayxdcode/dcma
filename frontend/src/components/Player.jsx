@@ -1,5 +1,5 @@
 // src/components/Player.jsx
-import { useRef, useState, Suspense, lazy, useEffect } from 'react';
+import React, { useRef, useState, Suspense, lazy, useEffect } from 'react';
 import { IconButton, LinearProgress } from '@mui/material';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
@@ -63,7 +63,7 @@ export default function Player() {
           background: '#151e32',
           boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
           display: 'flex', flexDirection: 'column', overflow:'hidden',
-          border: playerError ? '2px solid #ff6b6b' : 'none'
+          border: playerError ? '2px solid var(--error)' : 'none'
         }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -76,7 +76,7 @@ export default function Player() {
             height: 2, 
             bgcolor: 'transparent', 
             '& .MuiLinearProgress-bar': { 
-              bgcolor: playerError ? '#ff6b6b' : 'var(--accent)' 
+              bgcolor: playerError ? 'var(--error)' : 'var(--accent)' 
             } 
           }} 
         />
@@ -112,7 +112,7 @@ export default function Player() {
               <SkipNext />
             </IconButton>
             {/* Explicit Expand Button */}
-            <IconButton onClick={() => setOpen(true)} sx={{ color: 'var(--text-secondary)' }}>
+            <IconButton onClick={() => setOpen(true)} sx={{ color: 'var(--subtext0)' }}>
               <KeyboardArrowUpIcon />
             </IconButton>
           </div>

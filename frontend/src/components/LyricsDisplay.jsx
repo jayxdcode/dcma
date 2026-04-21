@@ -1,4 +1,4 @@
-import { useEffect, useMemo, memo } from 'react';
+import React, { useEffect, useMemo, memo } from 'react';
 import { useLyrics } from '../context/LyricsContext.jsx';
 
 /**

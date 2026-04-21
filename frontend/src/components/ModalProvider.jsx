@@ -39,12 +39,13 @@ export const ModalProvider = ({ children }) => {
   }, []);
 
   // Promise-based Confirm
-  const showConfirm = useCallback((title, message) => {
+  const showConfirm = useCallback((title, message, severity = 'info') => {
     return new Promise((resolve) => {
       setDialog({
         open: true,
         title,
         message,
+        severity,
         isPrompt: false,
         resolve
       });
@@ -52,13 +53,14 @@ export const ModalProvider = ({ children }) => {
   }, []);
 
   // Promise-based Prompt
-  const showPrompt = useCallback((title, label, defaultValue = '') => {
+  const showPrompt = useCallback((title, label, defaultValue = '', severity = 'info') => {
     setPromptValue(defaultValue);
     return new Promise((resolve) => {
       setDialog({
         open: true,
         title,
         label,
+        severity,
         isPrompt: true,
         resolve
       });
@@ -77,7 +79,7 @@ export const ModalProvider = ({ children }) => {
 
   const sharedPaperStyles = {
     sx: {
-      backgroundColor: 'var(--surface-2)',
+      backgroundColor: 'var(--surface2)',
       backgroundImage: 'none',
       color: 'var(--text)',
       borderRadius: '12px',
@@ -101,7 +103,7 @@ export const ModalProvider = ({ children }) => {
         <Alert 
           variant="filled" 
           severity={alertData.severity}
-          sx={{ bgcolor: alertData.severity === 'success' ? 'var(--accent)' : 'var(--accent-2)' }}
+          sx={{ bgcolor: `var(--${alertData.severity})` }}
         >
           {alertData.message}
         </Alert>
@@ -112,7 +114,7 @@ export const ModalProvider = ({ children }) => {
         <DialogTitle>{dialog.title}</DialogTitle>
         <DialogContent>
           {dialog.message && (
-            <DialogContentText sx={{ color: 'var(--text-secondary)', mb: 2 }}>
+            <DialogContentText sx={{ color: 'var(--subtext0)', mb: 2 }}>
               {dialog.message}
             </DialogContentText>
           )}
@@ -125,9 +127,9 @@ export const ModalProvider = ({ children }) => {
               value={promptValue}
               onChange={(e) => setPromptValue(e.target.value)}
               sx={{
-                '& label': { color: 'var(--text-secondary)' },
+                '& label': { color: 'var(--subtext0)' },
                 '& input': { color: 'var(--text)' },
-                '& .MuiInput-underline:after': { borderBottomColor: 'var(--accent-2)' }
+                '& .MuiInput-underline:after': { borderBottomColor: 'var(--accent2)' }
               }}
             />
           )}
@@ -135,7 +137,7 @@ export const ModalProvider = ({ children }) => {
         <DialogActions sx={{ p: 2 }}>
           <Button 
             onClick={() => handleCloseDialog(dialog.isPrompt ? null : false)} 
-            sx={{ color: 'var(--text-secondary)' }}
+            sx={{ color: 'var(--subtext0)' }}
           >
             Cancel
           </Button>
@@ -143,8 +145,8 @@ export const ModalProvider = ({ children }) => {
             onClick={() => handleCloseDialog(dialog.isPrompt ? promptValue : true)}
             variant="contained"
             sx={{ 
-              bgcolor: dialog.isPrompt ? 'var(--accent-2)' : 'var(--accent)',
-              '&:hover': { opacity: 0.9, bgcolor: dialog.isPrompt ? 'var(--accent-2)' : 'var(--accent)' }
+              bgcolor: `var(--${dialog.severity})`,
+              '&:hover': { opacity: 0.9 }
             }}
           >
             {dialog.isPrompt ? 'Submit' : 'Confirm'}

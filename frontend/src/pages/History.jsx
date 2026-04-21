@@ -68,7 +68,7 @@ export default function HistoryPage() {
   }
 
   return (
-    <Box sx={{ bgcolor: '#071029', minHeight: '100vh', p: 3 }}>
+    <Box sx={{ bgcolor: 'var(--background)', minHeight: '100vh', p: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
         <HistoryIcon sx={{ fontSize: 32 }} />
         <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
@@ -80,11 +80,11 @@ export default function HistoryPage() {
       <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
         <Chip
           label={`${history.length} tracks`}
-          sx={{ bgcolor: 'rgba(255,255,255,0.1)' }}
+          sx={{ bgcolor: 'var(--background)', boxShadow: '0 1px 7.5px var(--accent)' }}
         />
         <Chip
           label={`${formatDuration(getTotalPlayTime())} total`}
-          sx={{ bgcolor: 'rgba(255,255,255,0.1)' }}
+          sx={{ bgcolor: 'var(--background)', boxShadow: '0 1px 7.5px var(--accent)' }}
         />
       </Box>
 
@@ -115,12 +115,12 @@ export default function HistoryPage() {
                 <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
                   {track.title}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)' }}>
+                <Typography variant="body2">
                   {track.artist}
                 </Typography>
               </CardContent>
               <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)' }}>
+                <Typography variant="body2">
                   {formatDuration(track.duration || 0)}
                 </Typography>
                 <IconButton sx={{ color: 'var(--accent, #1db954)' }}>
@@ -132,11 +132,11 @@ export default function HistoryPage() {
         </Box>
       ) : (
         <Box sx={{ textAlign: 'center', py: 8 }}>
-          <HistoryIcon sx={{ fontSize: 64, color: 'rgba(255,255,255,0.3)', mb: 2 }} />
-          <Typography variant="h6" sx={{ color: 'rgba(255,255,255,0.6)', mb: 1 }}>
+          <HistoryIcon sx={{ color: "var(--subtext0)", fontSize: 64, mb: 2 }} />
+          <Typography variant="h6" sx={{ mb: 1 }}>
             No listening history yet
           </Typography>
-          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.4)' }}>
+          <Typography variant="body2" sx={{ color: "var(--subtext0)" }}>
             Start playing some music to see your history here
           </Typography>
         </Box>

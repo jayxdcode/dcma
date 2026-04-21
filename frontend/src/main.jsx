@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, Component } from 'react'; // Added Component for ErrorBoundary
+import React, { useMemo, useState, useEffect, Component } from 'react'; // Added Component for ErrorBoundary
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, Box, Typography, Button } from '@mui/material'; // Added MUI components for error UI
@@ -50,7 +50,7 @@ class GlobalErrorBoundary extends Component {
             onClick={() => window.location.reload()}
             sx={{
               borderRadius: '10px',
-              borderColor: 'linear-gradient(90deg, var(--accent, #1db954), var(--accent-2, #1ed760))',
+              borderColor: 'linear-gradient(90deg, var(--accent, #1db954), var(--accent2, #1ed760))',
               paddingX: 3,
               fontWeight: 700,
               textTransform: 'none',
@@ -103,13 +103,21 @@ function Root(){
   const muiTheme = useMemo(() => buildMuiThemeFromPalette(palette), [palette]);
 
   useEffect(() => {
-    if(!palette) return;
-    document.documentElement.style.setProperty('--background', palette.background || "#071029");
-    document.documentElement.style.setProperty('--accent', palette.accent || '#2AA9F2');
-    document.documentElement.style.setProperty('--accent-2', palette.accent2 || '#E382A8');
-    document.documentElement.style.setProperty('--surface', palette.surface || '#0F1724');
-    document.documentElement.style.setProperty('--text', palette.text || '#E6EEF8');
-    document.documentElement.style.setProperty('--soft-skin', palette.softSkin || '#FFF3EA');
+    if (!palette) return;
+
+    const root = document.documentElement.style;
+
+    root.setProperty('--background', palette.background || '#071029');
+    root.setProperty('--surface', palette.surface || '#0F1724');
+    root.setProperty('--surface2', palette.surface2 || '#1C2536');
+    root.setProperty('--text', palette.text || '#E6EEF8');
+    root.setProperty('--subtext0', palette.subtext0 || 'rgba(230, 238, 248, 0.6)');
+    root.setProperty('--accent', palette.accent || '#2AA9F2');
+    root.setProperty('--accent2', palette.accent2 || '#E382A8');
+    root.setProperty('--error', palette.error || '#FF5D5D');
+    root.setProperty('--warn', palette.warn || '#FFB347');
+    root.setProperty('--info', palette.info || '#4FC3F7');
+    root.setProperty('--success', palette.success || '#4ADE80');
   }, [palette]);
 
   return (

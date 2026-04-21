@@ -1,5 +1,5 @@
 // src/App.jsx
-import { Suspense, lazy, memo } from 'react';
+import React, { Suspense, lazy, memo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import TopBar from './components/TopBar';
 import BottomNavBar from './components/BottomNavBar';

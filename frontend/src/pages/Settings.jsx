@@ -32,7 +32,7 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
 	
 	// Local state to track the switch UI
 	const [autoLoadEruda, setAutoLoadEruda] = useState(
-		localStorage.getItem('hitori_autoload_eruda') === 'true'
+		localStorage.getItem('htr-eruda') === 'true'
 	);
 	
 	const [storageUsage, setStorageUsage] = useState({ used: 0, total: 0 });
@@ -97,12 +97,12 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
 				"Eruda will automatically load every time you open the app. This is recommended for debugging only."
 			);
 			if (confirm) {
-				localStorage.setItem('hitori_autoload_eruda', 'true');
+				localStorage.setItem('htr-eruda', JSON.stringify(true));
 				setAutoLoadEruda(true);
 				injectEruda();
 			}
 		} else {
-			localStorage.removeItem('hitori_autoload_eruda');
+			localStorage.removeItem('htr-eruda');
 			setAutoLoadEruda(false);
 			showAlert("Autoload disabled. Eruda will not load on next refresh.");
 		}
@@ -112,22 +112,22 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
 		<div className="fade-in">
       <Typography variant="h4" sx={{ fontWeight: 800, mb: 3, letterSpacing: '-0.5px' }} className="page-title">Settings</Typography>
       
-      <div className="v-stack" sx={{
-        '.card': { marginBottom: 1.5 }
+      <Box className="v-stack" sx={{
+        '& .card': { marginBottom: 2 }
       }}>
         <Paper className="card">
           <div style={{ fontWeight: 700, marginBottom: 4 }}>Appearance</div>
           <div className="small" style={{ marginBottom: 16 }}>Customize the look and feel of Hitori.</div>
           
           <FormControl size="small" fullWidth sx={{ maxWidth: 300 }}>
-            <InputLabel sx={{ color: 'var(--text-secondary)' }}>Theme</InputLabel>
+            <InputLabel sx={{ color: 'var(--text)' }}>Theme</InputLabel>
             <Select
               value={selectedPresetKey || 'image'}
               onChange={(e) => setThemeByKey && setThemeByKey(e.target.value)}
               label="Theme"
               sx={{ 
                 color: 'var(--text)', 
-                '.MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.2)' },
+                '.MuiOutlinedInput-notchedOutline': { borderColor: '(var(--text)' },
                 '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--accent)' }
               }}
             >
@@ -229,7 +229,7 @@ export default function Settings({ selectedPresetKey, setThemeByKey, presets }) 
             </div>
           </div>
         </Paper>
-      </div> <
-		/div>
-	);
+      </Box>
+    </div>
+  );
 }

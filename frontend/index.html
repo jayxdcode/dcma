@@ -22,6 +22,7 @@
          ERUDA AUTOLOAD (Main Page)
          ======================================================================== */
       const erudaSrc = "https://cdn.jsdelivr.net/npm/eruda";
+      const isEnabled = JSON.parse(localStorage.getItem('htr-eruda'));
       
       function loadErudaAt(targetDoc, callback) {
         if (targetDoc.defaultView.eruda) {
@@ -41,7 +42,7 @@
       
       // Initialize Eruda on the parent page
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => loadErudaAt(document), { once: true });
+        document.addEventListener('DOMContentLoaded', () => { if (!window.eruda && isEnabled) loadErudaAt(document) }, { once: true });
       } else {
         loadErudaAt(document);
       }

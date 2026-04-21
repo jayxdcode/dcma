@@ -392,10 +392,10 @@ export default function SearchPage() {
             '& .MuiFilledInput-root': {
               borderRadius: '12px',
               backgroundColor: 'transparent',
-              border: '1px solid rgba(255,255,255,0.06)',
+              border: '0.75px solid var(--text)',
               transition: 'all 0.12s',
-              '&:hover': { backgroundColor: 'rgba(255,255,255,0.02)' },
-              '&.Mui-focused': { backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid var(--accent, #fff)' },
+              '&:hover': { backgroundColor: 'calc( var(--overlay2) * 0.25 )' },
+              '&.Mui-focused': { backgroundColor: 'calc( var(--overlay2) * 0.25 )', border: '1px solid var(--accent, #fff)' },
               '& input': { paddingTop: '10px', paddingBottom: '10px', color: 'var(--text, white)' }
             }
           }}
@@ -410,7 +410,7 @@ export default function SearchPage() {
             paddingX: 3,
             fontWeight: 700,
             textTransform: 'none',
-            background: 'linear-gradient(90deg, var(--accent, #1db954), var(--accent-2, #1ed760))',
+            background: 'linear-gradient(90deg, var(--accent, #1db954), var(--accent2, #1ed760))',
             boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
           }}
         >
@@ -451,7 +451,7 @@ export default function SearchPage() {
                   paddingY: 0.25,
                   borderRadius: 1,
                   '&:hover': { opacity: 1 },
-                  borderBottom: selected ? '2px solid var(--accent-2, #1ed760)' : '2px solid transparent'
+                  borderBottom: selected ? '2px solid var(--accent2, #1ed760)' : '2px solid transparent'
                 }}
               >
                 {opt.label}
@@ -516,7 +516,7 @@ export default function SearchPage() {
         {/* Top result card */}
         {!loading && topResult && (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Typography variant="subtitle2" sx={{ color: 'var(--subtext,#bbb)', fontWeight: 700 }}>Top result</Typography>
+            <Typography variant="subtitle2" sx={{ color: 'var(--subtext0,#bbb)', fontWeight: 700 }}>Top result</Typography>
             <Box
               className="top-result"
               sx={{
@@ -525,7 +525,7 @@ export default function SearchPage() {
                 gap: 2,
                 padding: 2,
                 borderRadius: 2,
-                backgroundColor: 'var(--surface-2, rgba(255,255,255,0.02))',
+                backgroundColor: 'var(--surface2, rgba(255,255,255,0.02))',
                 border: '1px solid rgba(255,255,255,0.04)'
               }}
             >
@@ -565,17 +565,17 @@ export default function SearchPage() {
                 <Typography variant="h6" sx={{ fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {topResult.title}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'var(--subtext, #aaa)', mt: 0.5 }}>
+                <Typography variant="body2" sx={{ color: 'var(--subtext0, #aaa)', mt: 0.5 }}>
                   {topResult.artist}
                 </Typography>
                 {topResult.album ? (
-                  <Typography variant="caption" sx={{ color: 'var(--subtext, #999)', mt: 0.5 }}>
+                  <Typography variant="caption" sx={{ color: 'var(--subtext0, #999)', mt: 0.5 }}>
                     {topResult.album}
                   </Typography>
                 ) : null}
                 <Box sx={{ mt: 1, display: 'flex', gap: 2, alignItems: 'center' }}>
-                  {topResult.duration ? <Typography variant="caption" sx={{ color: 'var(--subtext,#999)' }}>{formatDuration(topResult.duration)}</Typography> : null}
-                  {topResult.views ? <Typography variant="caption" sx={{ color: 'var(--subtext,#999)' }}>{prettyViews(topResult.views)}</Typography> : null}
+                  {topResult.duration ? <Typography variant="caption" sx={{ color: 'var(--subtext0,#999)' }}>{formatDuration(topResult.duration)}</Typography> : null}
+                  {topResult.views ? <Typography variant="caption" sx={{ color: 'var(--subtext0,#999)' }}>{prettyViews(topResult.views)}</Typography> : null}
                 </Box>
               </Box>
 

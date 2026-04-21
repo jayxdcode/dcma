@@ -41,7 +41,7 @@ export default function Home() {
         {/* Hero Card */}
         <Grid item xs={12}>
           <Paper className="card" sx={{
-            background: 'linear-gradient(120deg, var(--surface-2), var(--surface))',
+            background: 'linear-gradient(120deg, var(--surface2), var(--surface))',
             padding: 3, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2
           }}>
             <div>

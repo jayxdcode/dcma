@@ -1,19 +1,28 @@
 /* index.css */
 :root {
   --accent: #2AA9F2;
-  --accent-2: #E382A8;
+  --accent2: #E382A8;
   --surface: #0F1724;
-  --surface-2: #1C2536;
+  --surface2: #1C2536;
   --text: #E6EEF8;
-  --text-secondary: rgba(230, 238, 248, 0.6);
+  --subtext0: rgba(230, 238, 248, 0.6);
   --player-z: 2000;
   --nav-z: 1300;
   --background: #071029;
+  --error: #FF5D5D;
+  --warn: #FFB347;
+  --info: #4FC3F7;
+  --success: #4ADE80;
 }
 
 * { box-sizing: border-box; }
 
-html, body, #root { height: 100%; overflow: hidden; }
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  
+  color: var(--text);
+}
 
 body {
   margin: 0;
@@ -56,8 +65,8 @@ body {
 
 /* Typography */
 .page-title { font-size: 1.5rem; font-weight: 700; margin: 0 0 16px 0; letter-spacing: -0.02em; }
-.text-grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.small { font-size: 0.85rem; color: var(--text-secondary); }
+.text-grad { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.small { font-size: 0.85rem; color: var(--subtext0); }
 
 /* Components */
 .card {
@@ -115,3 +124,4 @@ body {
   opacity: 0.5 !important;
   background: rgba(227, 130, 168, 0.05);
 }
+
